@@ -1,125 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/activity_log_in_acitvity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/myColorOneBody"
+    android:orientation="vertical"
     tools:context="com.vumobile.fan.login.LogInAcitvity">
 
     <include
         android:id="@+id/tool_bar_login"
-        layout="@layout/toolbar_main"/>
-
-   <LinearLayout
-       android:layout_weight=".8"
-       android:gravity="center"
-       android:orientation="vertical"
-       android:layout_width="match_parent"
-       android:layout_height="0dp">
-
-       <android.support.design.widget.TextInputLayout
-           android:gravity="center"
-           android:id="@+id/usernameWrapper"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-
-           <EditText
-               android:gravity="center"
-               android:id="@+id/etUserName"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:maxLines="1"
-               android:inputType="textPersonName"
-               android:hint="Username"/>
-
-       </android.support.design.widget.TextInputLayout>
-
-       <android.support.design.widget.TextInputLayout
-           android:gravity="center"
-           android:visibility="visible"
-           android:id="@+id/userphoneWrapper"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-
-           <EditText
-               android:gravity="center"
-               android:maxLines="1"
-               android:id="@+id/etUserPhone"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:inputType="phone"
-               android:hint="Phone Number"
-               android:maxLength="11" />
-
-
-
-       </android.support.design.widget.TextInputLayout>
-
-       <android.support.design.widget.TextInputLayout
-           android:gravity="center"
-           android:visibility="gone"
-           android:id="@+id/userCodeWrapper"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-
-           <EditText
-               android:gravity="center"
-               android:maxLines="1"
-               android:id="@+id/etVerificationCode"
-               android:layout_width="250dp"
-               android:layout_height="wrap_content"
-               android:inputType="number"
-               android:hint="Verify"
-               android:maxLength="6" />
-
-
-
-       </android.support.design.widget.TextInputLayout>
-
-       <Button
-           android:id="@+id/btnLoginCont"
-           android:onClick="btnLoginCont"
-           android:padding="5dp"
-           android:layout_width="100dp"
-           style="@style/Widget.AppCompat.Button.Colored"
-           android:layout_height="wrap_content"
-           android:text="Continue"
-           android:elevation="5dp"
-           android:textSize="15sp"/>
-       <Button
-           android:id="@+id/btnSubmitCode"
-           android:visibility="gone"
-           android:onClick="btnSubmitCode"
-           android:padding="5dp"
-           android:layout_width="100dp"
-           style="@style/Widget.AppCompat.Button.Colored"
-           android:layout_height="wrap_content"
-           android:text="Submit"
-           android:elevation="5dp"
-           android:textSize="15sp"/>
-
-       <TextView
-           android:clickable="true"
-           android:id="@+id/txt_become_celeb"
-           android:textColor="@color/colorAccent"
-           android:text="Become a Celebrity"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
-
-   </LinearLayout>
+        layout="@layout/toolbar_login" />
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_weight=".1"
+        android:id="@+id/linearLayoutLoginMain"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight=".8"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/usernameWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/etUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_icon_profile"
+                        android:drawablePadding="5dp"
+                        android:gravity="left"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:textColorHint="@color/myColorOneBody" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/userphoneWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:visibility="visible">
+
+                    <EditText
+                        android:id="@+id/etUserPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_icon_mobile"
+                        android:drawablePadding="5dp"
+                        android:gravity="left"
+                        android:hint="Mobile No."
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:textColorHint="@color/myColorOneBody" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btnLoginCont"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/white"
+                    android:elevation="5dp"
+                    android:onClick="btnLoginCont"
+                    android:padding="5dp"
+                    android:text="Sign Up"
+                    android:textAllCaps="false"
+                    android:textColor="@color/myColorOneBody"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#dcdbdb" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".1" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_become_celeb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:text="Become a Celebrity"
+            android:textColor="@color/myColorOneBody" />
+
+    </LinearLayout>
+
+    <!--pin submit part-->
+    <LinearLayout
+        android:id="@+id/linearLayoutOtpVerification"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".8"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Active your account"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Enter the code you received via sms"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Enter your pin code"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/userCodeWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <EditText
+                    android:id="@+id/etVerificationCode"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Verify"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textColor="@color/myColorOneBody" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnResendPinSms"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@color/myColorOneBody"
+                android:elevation="5dp"
+                android:onClick="btnResendPinSms"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="Resend SMS"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnSubmitCode"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/white"
+                android:elevation="5dp"
+                android:onClick="btnSubmitCode"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/myColorOneBody"
+                android:textSize="18sp"
+                android:visibility="visible" />
+
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".1"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/txtCopyright"
-            android:text="©2017 VU Mobile Ltd."
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="©2017 VU Mobile Ltd." />
 
     </LinearLayout>
 

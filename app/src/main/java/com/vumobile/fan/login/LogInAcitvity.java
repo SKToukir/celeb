@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,9 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     private Button btnSubmitCode, btnLogInCont;
     TextInputLayout userphoneWrapper, usernameWrapper, userCodeWrapper;
     private boolean isCeleb;
+    public static String whichButtonClicked;
+
+    private LinearLayout linearLayoutLoginMain, linearLayoutOtpVerification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,10 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         txtBecomeCeleb.setOnClickListener(this);
 
+        linearLayoutLoginMain = (LinearLayout) findViewById(R.id.linearLayoutLoginMain);
+        linearLayoutOtpVerification = (LinearLayout) findViewById(R.id.linearLayoutOtpVerification);
+
+
     }
 
     // login for fan
@@ -117,8 +125,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 uPhone = "88" + uPhone;
                 Log.d("msisdn", uPhone);
 
-                showConfirmDialog(uPhone,"0");
-
+                showConfirmDialog(uPhone, "0");
 
 
             } else if (uPhone.equals("") || uPhone.equals(" ")
@@ -140,20 +147,24 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showConfirmDialog(String uPhone, String rqst) {
+
+        whichButtonClicked = rqst;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        alertDialogBuilder.setMessage("Is this your mobile number?\n\n"+"+"+uPhone+"\n\n\nYou will receive sms soon");
+        alertDialogBuilder.setMessage("Is this your mobile number?\n\n" + "+" + uPhone + "\n\n\nYou will receive sms soon");
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 otpRequest(rqst);
                 // only visible verify button
-                userphoneWrapper.setVisibility(View.GONE);
-                txtBecomeCeleb.setVisibility(View.GONE);
-                usernameWrapper.setVisibility(View.GONE);
-                btnLogInCont.setVisibility(View.GONE);
-                btnSubmitCode.setVisibility(View.VISIBLE);
-                userCodeWrapper.setVisibility(View.VISIBLE);
+//                userphoneWrapper.setVisibility(View.GONE);
+//                txtBecomeCeleb.setVisibility(View.GONE);
+//                usernameWrapper.setVisibility(View.GONE);
+//                btnLogInCont.setVisibility(View.GONE);
+//                btnSubmitCode.setVisibility(View.VISIBLE);
+//                userCodeWrapper.setVisibility(View.VISIBLE);
+                linearLayoutLoginMain.setVisibility(View.GONE);
+                linearLayoutOtpVerification.setVisibility(View.VISIBLE);
             }
         });
 
@@ -181,8 +192,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                             JSONObject jsonObj = new JSONObject(response);
                             tempVerificationCode = jsonObj.getString("CODE");
                             etVerificationCode.setText(tempVerificationCode);
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -191,15 +200,15 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("FromServer",""+error.getMessage());
+                        Log.d("FromServer", "" + error.getMessage());
 
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("MSISDN",uPhone);
-                params.put("flag",s);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("MSISDN", uPhone);
+                params.put("flag", s);
 
                 return params;
             }
@@ -239,7 +248,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                     // if verification code length is less then 6 then it will be celebrity
                 } else if (verificationCode.length() < 6) {
                     new Session().saveData(uName, uPhone, isCeleb, true, LogInAcitvity.this);
-                    Intent intent = new Intent(LogInAcitvity.this, ParentActivity.class);
+                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
@@ -287,7 +296,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                         uPhone = "88" + uPhone;
 
                         Log.d("msisdn", uPhone);
-                        showConfirmDialog(uPhone,"1");
+                        showConfirmDialog(uPhone, "1");
 //                        otpRequest("1");
 //                        // only visible verify button
 //                        userphoneWrapper.setVisibility(View.GONE);
@@ -305,11 +314,15 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                                 Toast.LENGTH_LONG).show();
                     }
 
-
                 }
 
                 break;
         }
 
+    }
+
+    public void btnResendPinSms(View view) {
+        otpRequest(whichButtonClicked);
+        Toast.makeText(this, "Request has been send, Please wait.", Toast.LENGTH_SHORT).show();
     }
 }
