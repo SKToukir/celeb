@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/activity_log_in_acitvity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vumobile.fan.login.LogInAcitvity">
+
+    <include
+        android:id="@+id/tool_bar_login"
+        layout="@layout/toolbar_main"/>
+
+   <LinearLayout
+       android:layout_weight=".8"
+       android:gravity="center"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="0dp">
+
+       <android.support.design.widget.TextInputLayout
+           android:gravity="center"
+           android:id="@+id/usernameWrapper"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <EditText
+               android:gravity="center"
+               android:id="@+id/etUserName"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:maxLines="1"
+               android:inputType="textPersonName"
+               android:hint="Username"/>
+
+       </android.support.design.widget.TextInputLayout>
+
+       <android.support.design.widget.TextInputLayout
+           android:gravity="center"
+           android:visibility="visible"
+           android:id="@+id/userphoneWrapper"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <EditText
+               android:gravity="center"
+               android:maxLines="1"
+               android:id="@+id/etUserPhone"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:inputType="phone"
+               android:hint="Phone Number"
+               android:maxLength="11" />
+
+
+
+       </android.support.design.widget.TextInputLayout>
+
+       <android.support.design.widget.TextInputLayout
+           android:gravity="center"
+           android:visibility="gone"
+           android:id="@+id/userCodeWrapper"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <EditText
+               android:gravity="center"
+               android:maxLines="1"
+               android:id="@+id/etVerificationCode"
+               android:layout_width="250dp"
+               android:layout_height="wrap_content"
+               android:inputType="number"
+               android:hint="Verify"
+               android:maxLength="6" />
+
+
+
+       </android.support.design.widget.TextInputLayout>
+
+       <Button
+           android:id="@+id/btnLoginCont"
+           android:onClick="btnLoginCont"
+           android:padding="5dp"
+           android:layout_width="100dp"
+           style="@style/Widget.AppCompat.Button.Colored"
+           android:layout_height="wrap_content"
+           android:text="Continue"
+           android:elevation="5dp"
+           android:textSize="15sp"/>
+       <Button
+           android:id="@+id/btnSubmitCode"
+           android:visibility="gone"
+           android:onClick="btnSubmitCode"
+           android:padding="5dp"
+           android:layout_width="100dp"
+           style="@style/Widget.AppCompat.Button.Colored"
+           android:layout_height="wrap_content"
+           android:text="Submit"
+           android:elevation="5dp"
+           android:textSize="15sp"/>
+
+       <TextView
+           android:clickable="true"
+           android:id="@+id/txt_become_celeb"
+           android:textColor="@color/colorAccent"
+           android:text="Become a Celebrity"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+   </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_weight=".1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/txtCopyright"
+            android:text="©2017 VU Mobile Ltd."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

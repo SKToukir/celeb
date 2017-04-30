@@ -1,6 +1,7 @@
 package com.vumobile.celeb.Adapters;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +54,18 @@ public class CommentListAdapter extends ArrayAdapter<CommentClass> {
             if (tt3 != null) {
                 tt3.setText(p.getTime());
             }
+
+//            if (tt4 != null) {
+//                Picasso.with(parent.getContext()).load(p.getImage()).into(tt4);
+//            }
         }
 
         return v;
     }
 
+    @Nullable
+    @Override
+    public CommentClass getItem(int position) {
+        return super.getItem(getCount() - position - 1);
+    }
 }

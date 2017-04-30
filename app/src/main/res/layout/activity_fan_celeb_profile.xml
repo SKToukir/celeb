@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_fan_celeb_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EA70BD"
+    android:orientation="vertical"
+    tools:context="com.vumobile.fan.login.FanCelebProfileActivity">
+
+    <include
+        android:id="@+id/toolbarFan"
+        layout="@layout/toolbar_fan" />
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageViewProfilePicFan"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="#00000000"
+            app:civ_border_color="#f10098"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:background="@drawable/golive"
+        android:gravity="center"
+        android:onClick="btnShowLive"
+        android:padding="19dp"
+        android:textColor="#fff" />
+
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgVcall"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/vcall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <ImageView
+                android:id="@+id/imgChat"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/imgVnImages"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/vnimages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <ImageView
+                android:id="@+id/imgGifts"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/gifts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

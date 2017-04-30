@@ -11,6 +11,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.github.glomadrian.grav.GravView
+        android:id="@+id/grav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        app:colorGenerator="com.github.glomadrian.grav.generator.paint.ArrayColorGenerator"
+        app:array_colors="@array/bubble"
+        app:pointGenerator="com.github.glomadrian.grav.generator.point.RegularPointGenerator"
+        app:regular_cell_size="300"
+        app:regular_variance="200"
+        app:gravGenerator="com.github.glomadrian.grav.generator.grav.BallGenerator"
+        app:ball_from_size="10dp"
+        app:ball_to_size="20dp"
+        app:animationGenerators="@array/BubbleAnimations"
+        app:side_to_side_min_duration="10000"
+        app:side_to_side_max_duration="10000"
+        app:side_to_side_direction="upToDown"
+        app:shake_direction="vertical"
+        app:shake_min_duration="5000"
+        app:shake_max_duration="10000"
+        app:shake_variance="500dp"
+        />
+
     <ViewStub
         android:id="@id/small_video_view_dock"
         android:layout_width="match_parent"
@@ -33,6 +56,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,12 +76,71 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="12sp" />
+
+
             </LinearLayout>
+
+
+
+
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="20" />
+
+            <TextView
+                android:layout_marginRight="3dp"
+                android:textColor="#fff"
+                android:gravity="center|right"
+                android:text="147k"
+                android:id="@+id/txtViews"
+                android:layout_width="54dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:scaleType="center"
+                android:src="@drawable/btn_mute" />
+
+            <ImageView
+                android:src="@drawable/ic_eye"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+
+
+
+
+            <RelativeLayout
+
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginRight="3dp"
+                    android:textColor="#fff"
+                    android:gravity="center|right"
+                    android:text="147k"
+                    android:id="@+id/txtLikes"
+                    android:layout_width="54dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:scaleType="center"
+                    android:src="@drawable/btn_mute" />
+                <TextView
+                    android:layout_toRightOf="@+id/txtLikes"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_like"
+                    android:textColor="#fff"
+                    android:gravity="center|left"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:scaleType="center"
+                    android:src="@drawable/btn_mute" />
+
+
+
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="54dp"
@@ -64,6 +148,8 @@
                 android:onClick="onClickClose"
                 android:scaleType="center"
                 android:src="@drawable/btn_close" />
+
+
 
         </com.vumobile.ui.AGLinearLayout>
 
@@ -115,6 +201,7 @@
                     android:layout_marginTop="5dp"
                     android:scaleType="center"
                     android:src="@drawable/btn_mute" />
+
             </com.vumobile.ui.AGLinearLayout>
 
         </LinearLayout>
@@ -146,39 +233,29 @@
 
             </LinearLayout>
 
-            <!--write comment and send layout-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3">
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-
+                <!--write comment and send layout-->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight=".5">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
 
                     <EditText
                         android:imeOptions="actionDone"
                         android:singleLine="true"
                         android:id="@+id/etComment"
-                        android:layout_width="310dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:hint="Comment"
                         android:textColor="#fff"
                         android:textColorHint="#fff" />
 
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="2.5">
-
                     <Button
+                        android:layout_marginLeft="5dp"
                         android:id="@+id/btnSendComment"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
@@ -186,10 +263,41 @@
                         android:layout_centerVertical="true"
                         android:background="@drawable/ic_send" />
 
+                    <ImageView
+                        android:clickable="true"
+                        android:id="@+id/btnLike"
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toRightOf="@+id/btnSendComment"
+                        android:src="@drawable/ic_like"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
 
-                </RelativeLayout>
+                    <ImageView
 
-            </LinearLayout>
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toRightOf="@+id/btnSendComment"
+                        android:src="@drawable/ic_gift"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+
+                    <ImageView
+
+                        android:layout_marginLeft="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toRightOf="@+id/btnSendComment"
+                        android:src="@drawable/ic_man"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
 
         </LinearLayout>
         <!--Comment layout section end-->

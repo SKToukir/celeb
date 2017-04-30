@@ -5,28 +5,30 @@
     android:id="@+id/content_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.vumobile.ParentActivity"
-    android:layout_gravity="center"
     tools:showIn="@layout/app_bar_parent">
 
-    <Button
-        android:background="@color/agora_blue"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:text="Celeb Go Live"
-        android:id="@+id/btnGoLive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="56dp" />
 
-    <Button
-        android:background="@color/agora_blue"
-        android:text="Fan View Live"
-        android:id="@+id/btnFanViewLive"
-        android:layout_width="wrap_content"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnGoLive"
-        android:layout_alignRight="@+id/btnGoLive"
-        android:layout_alignEnd="@+id/btnGoLive"
-        android:layout_marginTop="57dp" />
+        android:layout_below="@+id/view">
+
+        <ListView
+            android:id="@+id/list_of_celeb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
 </RelativeLayout>

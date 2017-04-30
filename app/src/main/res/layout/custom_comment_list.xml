@@ -2,9 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/line1"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/cmntRowImage"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_man"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
 
     <TextView
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/line1"
         android:textColor="#fff"
         android:id="@+id/txtCommentUserName"
         android:textSize="16sp"
@@ -14,6 +35,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:layout_toRightOf="@+id/line1"
         android:layout_below="@+id/txtCommentUserName"
         android:textColor="#fff"
         android:layout_marginTop="5dp"

@@ -1,6 +1,8 @@
 package com.vumobile.celeb.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -15,6 +17,8 @@ import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.ChildEventListener;
@@ -40,8 +45,14 @@ import com.vumobile.celeb.Utils.CommentClass;
 import com.vumobile.celeb.Utils.Methods;
 import com.vumobile.celeb.model.AGEventHandler;
 import com.vumobile.celeb.model.ConstantApp;
+import com.vumobile.celeb.model.MyBounceInterpolator;
+import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.celeb.model.VideoStatusData;
+import com.vumobile.fan.login.Session;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,11 +69,14 @@ import io.agora.rtc.Constants;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.video.VideoCanvas;
 
-public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener{
+public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
     InputMethodManager imm;
+    private int i = 5;
+    private ImageView btnLike;
+    private TextView txtLikes;
 
-    String temp_key,chat_user_name;
+    String temp_key, chat_user_name, user_name, id, op;
     String roomName;
     private static String video_id;
 
@@ -81,6 +95,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     private EditText etComment;
 
     CommentListAdapter adapter;
+    private String msisdn;
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
@@ -93,18 +108,21 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
         initUI();
 
-
         // initialize comment list adapter
         adapter = new CommentListAdapter(this, R.layout.custom_comment_list, commentClassList);
         listOfComment.setAdapter(adapter);
+
 
 
     }
 
     private void initUI() {
 
+        btnLike = (ImageView) findViewById(R.id.btnLike);
+        btnLike.setOnClickListener(this);
+        txtLikes = (TextView) findViewById(R.id.txtLikes);
+        txtLikes.setOnClickListener(this);
         listOfComment = (ListView) findViewById(R.id.listComment);
-
         etComment = (EditText) findViewById(R.id.etComment);
         // used this method for showing edittext view when keyboard shows
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -144,7 +162,24 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         }
 
         roomName = i.getStringExtra(ConstantApp.ACTION_KEY_ROOM_NAME);
+        Log.d("room_name",roomName);
+        String user = i.getStringExtra("user");
+        Log.d("fbName", user);
 
+        if (user.equals("celeb")){
+
+            String fb_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
+            msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+            Log.d("fbName", "celeb " + fb_name);
+            user_name = fb_name;
+        }else if (user.equals("fan")){
+            user_name = Session.retreiveName(getApplicationContext(), Session.USER_NAME);
+            Log.d("fbName", "fan " + user_name);
+        }
+
+
+
+        Log.d("user_name", user_name);
 
 
         doConfigEngine(cRole);
@@ -181,26 +216,24 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             mGridVideoViewContainer.initViewContainer(getApplicationContext(), 0, mUidsList); // first is now full view
             worker().preview(true, surfaceV, 0);
             broadcasterUI(button1, button2, button3);
-            //here videoid is the room name created on firebase database
+            /*here videoid is the room name created on firebase database
+            @video_id is used for creating a channel on firebase database.this id will randomly change when user
+            come on live*/
             video_id = String.valueOf(Methods.getSerialnumber(8));
-            Log.d("whomi","broadcaster");
+            Log.d("whoi", "broadcaster");
 
             // first staep to create room on firebase for comment
             createRoomOnFirebase(video_id);
 
             // save celebrity name and video id to server
-            saveLiveData(video_id,roomName);
+            saveLiveData(video_id, roomName);
 
         } else {
+            getVid(roomName);
             audienceUI(button1, button2, button3);
-            Log.d("whomi","audience");
+            Log.d("whoi", "Audience");
 
-            // get room id from database
-            getRoomIdFromServer(roomName);
-            getAllComment("66400166");
-
-            // here we get fan name
-            chat_user_name = "Audience";
+            // roomName = "Audience";
         }
 
         worker().joinChannel(roomName, config().mUid);
@@ -209,31 +242,27 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         textRoomName.setText(roomName);
     }
 
-    private void getRoomIdFromServer(String roomName) {
-        // get room id wehere celeb_name = roomName
-    }
-
     private void createRoomOnFirebase(String video_id) {
 
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put(video_id,"");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(video_id, "");
         root.updateChildren(map);
 
     }
 
     private void saveLiveData(String vid, String celeb_name) {
 
-        String url = "http://vumobile.biz/Toukir/celeb_comment/saveroomname.php?vid="+vid+"&celeb_name="+celeb_name;
+        String url = "http://vumobile.biz/Toukir/celeb_comment/saveroomname.php?vid=" + vid + "&celeb_name=" + celeb_name;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
-            public void onResponse (String response) {
+            public void onResponse(String response) {
                 Log.v("TAGG", "GET response: " + response);
                 getAllComment();
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse (VolleyError error) {
+            public void onErrorResponse(VolleyError error) {
                 Log.v("TAGG", "Volley GET error: " + error);
             }
         });
@@ -472,6 +501,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     public void onUserOffline(int uid, int reason) {
         log.debug("onUserOffline " + (uid & 0xFFFFFFFFL) + " " + reason);
         doRemoveRemoteUi(uid);
+
+
     }
 
     private void requestRemoteStreamType(final int currentHostCount) {
@@ -605,7 +636,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.btnSendComment:
 
@@ -613,8 +644,22 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                 // add comment to the comment list here
                 postComment(comment);
                 // hide keyboard
-                imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 etComment.setText("");
+                break;
+            case R.id.btnLike:
+                final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+
+                // Use bounce interpolator with amplitude 0.2 and frequency 20
+                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+                myAnim.setInterpolator(interpolator);
+
+                btnLike.startAnimation(myAnim);
+//                final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+//                btnLike.startAnimation(myAnim);
+                i++;
+                txtLikes.setText(String.valueOf(i));
+                txtLikes.startAnimation(myAnim);
                 break;
             default:
                 break;
@@ -624,22 +669,23 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     private void postComment(String comment) {
 
-        Map<String,Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         temp_key = root.push().getKey();
         root.updateChildren(map);
 
         DatabaseReference message_root = root.child(temp_key);
-        Map<String,Object> map2 = new HashMap<>();
-        map2.put("name",chat_user_name);
-        map2.put("msg",comment);
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("name", user_name);
+        map2.put("msg", comment);
 
         message_root.updateChildren(map2);
 
-        listOfComment.setSelection(adapter.getCount() - 1);
+//        listOfComment.setSelection(adapter.getCount() - 1);
 
     }
 
-    public String getTime(){
+
+    public String getTime() {
         DateFormat df = new SimpleDateFormat("d MMM yyyy, HH:mm");
         String date = df.format(Calendar.getInstance().getTime());
 
@@ -647,8 +693,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     }
 
     // this method will b removed..this method is used for only celebrity
-    public void getAllComment(){
-         root = FirebaseDatabase.getInstance().getReference().child(video_id);
+    public void getAllComment() {
+        root = FirebaseDatabase.getInstance().getReference().child(video_id);
 
         root.addChildEventListener(new ChildEventListener() {
             @Override
@@ -680,8 +726,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         });
     }
 
-    // this method will b removed..this method is used for only audience
-    public void getAllComment(String test){
+    // this method is used for only audience
+    public void getAllComment(String test) {
         root = FirebaseDatabase.getInstance().getReference().child(test);
 
         root.addChildEventListener(new ChildEventListener() {
@@ -715,17 +761,19 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     }
 
     private String chat_msg;
+
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
         Iterator i = dataSnapshot.getChildren().iterator();
 
-        while (i.hasNext()){
-            chat_msg = (String) ((DataSnapshot)i.next()).getValue();
-            chat_user_name = (String) ((DataSnapshot)i.next()).getValue();
+        while (i.hasNext()) {
+            chat_msg = (String) ((DataSnapshot) i.next()).getValue();
+            chat_user_name = (String) ((DataSnapshot) i.next()).getValue();
 
-           CommentClass commentClass = new CommentClass();
+            CommentClass commentClass = new CommentClass();
             commentClass.setUserName(chat_user_name);
             commentClass.setuComment(chat_msg);
+            //commentClass.setTime(getTime());
 
             commentClassList.add(commentClass);
         }
@@ -735,4 +783,73 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     }
 
+    // get random id which is the channel name on firebase
+    public void getVid(String name) {
+        String url = "http://vumobile.biz/Toukir/celeb_comment/getVid.php?room_name=" + name;
+        RequestQueue queue = Volley.newRequestQueue(LiveRoomActivity.this);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("log", response.toString());
+
+                        try {
+                            JSONArray array = response.getJSONArray("server_response");
+                            JSONObject object = array.getJSONObject(0);
+                            id = object.getString("vid");
+                            Log.d("logs", id + " " + op);
+                            op = id;
+                            getAllComment(id);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        queue.add(jsObjRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        showAlert();
+
+    }
+
+    private void showAlert() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setMessage("Are you sure you want to go offline?");
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+              new ServerPostRequest().onLive(getApplicationContext(),msisdn,"0");
+                finish();
+
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick
+                    (DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
 }

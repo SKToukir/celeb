@@ -9,6 +9,15 @@ public class CommentClass {
     private String userName;
     private String uComment;
     private String time;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getTime() {
         return time;

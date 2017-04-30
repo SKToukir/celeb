@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_celeb_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.vumobile.celeb.ui.CelebHomeActivity"
+    tools:showIn="@layout/app_bar_celeb_home">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"/>
+
+    <!--main layout-->
+    <LinearLayout
+        android:background="#D950A6"
+        android:orientation="vertical"
+        android:layout_below="@id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--first part-->
+        <LinearLayout
+            android:padding="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.vumobile.celeb.Utils.RoundedImageView
+                android:id="@+id/celebImage"
+                android:src="@drawable/ic_man"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <RelativeLayout
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textColor="#fff"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/txtCelebName"
+                    android:textSize="20sp"
+                    android:text="Someone Celeb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textColor="#fff"
+                    android:layout_below="@+id/txtCelebName"
+                    android:id="@+id/txtCelebLocation"
+                    android:textSize="15sp"
+                    android:text="Mirpur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Second part-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/quoteTextArea"
+                android:editable="true"
+                android:enabled="true"
+                android:minLines="6"
+                android:maxLines="6"
+                android:isScrollContainer="true"
+                android:hint="Whats on your mind?"
+                android:background="#eca5d3"
+                android:gravity="top"
+                android:padding="10dp" />
+
+            <Button
+                android:visibility="gone"
+                android:layout_gravity="right"
+                android:text="Post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnPost" />
+
+        </LinearLayout>
+
+        <!--third part-->
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:weightSum="2"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+              <LinearLayout
+                  android:gravity="center"
+                  android:layout_weight="1"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+                  <ImageView
+                      android:id="@+id/imgGoLive"
+                      android:clickable="true"
+                      android:src="@drawable/celebgolive"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content" />
+
+              </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/celebimagevideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/celebrqst"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/celebmsg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
