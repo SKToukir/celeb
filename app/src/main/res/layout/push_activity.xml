@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="260dp"
+    android:orientation="vertical"
+    android:background="#000"
+    android:id="@+id/MainlayoutCustom"
+
+    >
+
+    <LinearLayout
+        android:layout_below="@+id/notifiation_image"
+        android:id="@+id/layoutCustom"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:background="#000000"
+        >
+
+        <ImageView
+            android:layout_width="96px"
+            android:layout_height="96px"
+            android:background="@mipmap/ic_launcher"
+            android:layout_gravity="center"
+            />
+
+        <TextView android:id="@+id/text_view"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#ffffffff"
+            android:textSize="15sp"
+            android:layout_marginLeft="5dp"
+            android:maxLines="4"
+            android:background="#ff000000"
+            android:text=""
+            android:textStyle="bold" />
+
+        <TextView android:id="@+id/notificationTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="24"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="5dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/IconDownload"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutCustom"
+        android:background="#FF0000"
+        android:gravity="center"
+
+        >
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/titleTextView"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <ImageView
+            android:id="@+id/imageViewTest"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:background="@drawable/ic_launcher"
+
+
+            />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/NotifibtnDownload"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:text="Download"
+        android:textSize="22sp"
+        android:layout_marginTop="215dp"
+        android:gravity="center"
+        android:background="#bb000000"
+        android:textStyle="bold"
+        android:fontFamily="arial"
+
+        />
+
+
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/notifiation_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>

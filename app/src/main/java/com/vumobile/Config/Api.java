@@ -15,7 +15,28 @@ public class Api {
     public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
 
     public static final String URL_ACTIVATE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/RegisteredCelebrity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-    public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/LiveCelebrity?MSISDN=8801682657976&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+    /*Celeb online notification*/
+    public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/LiveCelebrity?MSISDN=";
+    public static final String URL_ONLINE_KEY = "&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+    public static final String CELEB_ID_NOTIFICATION= "ID";
+    public static final String CELEB_USERNAME_NOTIFICATION= "UserName";
+    public static final String CELEB_NAME_NOTIFICATION= "Name";
+    public static final String CELEB_MSISDN_NOTIFICATION= "MSISDN";
+    public static final String CELEB_COUNTRY_NOTIFICATION= "Country";
+    public static final String CELEB_CELEBID_NOTIFICATION= "Celeb_id";
+    public static final String CELEB_EMAIL_NOTIFICATION= "email";
+    public static final String CELEB_DOB_NOTIFICATION= "dob";
+    public static final String CELEB_GENDER_NOTIFICATION= "gender";
+    public static final String CELEB_IMAGE_URL_NOTIFICATION= "Image_url";
+    public static final String CELEB_REG_STATUS_NOTIFICATION= "Reg_status";
+    public static final String CELEB_FB_LOGIN_STATUS_NOTIFICATION= "Fb_login_status";
+    public static final String CELEB_REGID_STATUS_NOTIFICATION= "RegId";
+    public static final String CELEB_LIVE_STATUS_NOTIFICATION= "Live_status";
+    /*------------------------------------------------------------------*/
+
+
 
     // id to handle the notification in the notification tray
     public static final int NOTIFICATION_ID = 100;

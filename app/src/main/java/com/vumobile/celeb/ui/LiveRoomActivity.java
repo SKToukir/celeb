@@ -69,6 +69,7 @@ import io.agora.rtc.Constants;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.video.VideoCanvas;
 
+@SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
     InputMethodManager imm;
@@ -326,7 +327,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                 }
             }
         });
-        button1.clearColorFilter();
+        button1.setVisibility(View.GONE);
+        //button1.clearColorFilter();
         button2.setVisibility(View.GONE);
         button3.setTag(null);
         button3.setVisibility(View.GONE);
