@@ -164,7 +164,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         txtStatus = (TextView) findViewById(R.id.txtStatus);
         loginButton.setReadPermissions("public_profile email");
 
-
     }
 
 
@@ -255,54 +254,110 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     }
 
     private void sendDataToServer() {
+
         boolean celebOrNot = new Session().isCeleb(CelebrityProfileActivity.this, Session.IS_CELEB);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_SAVE_CELEB_DATA,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("FromServer", response.toString());
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            String successLog = jsonObj.getString("result");
-                            TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-                            if (!celebOrNot) {
+
+        if (!celebOrNot) {
+
+            // send data to fan table
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_SAVE_FAN_DATA,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("FromServer", response.toString());
+                            try {
+                                JSONObject jsonObj = new JSONObject(response);
+                                String successLog = jsonObj.getString("result");
+                                TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("FromServer", "" + error.getMessage());
-                        TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("FromServer", "" + error.getMessage());
+                            TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
 
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Name", fbName);
-                params.put("UserName", Session.retreiveName(getApplicationContext(), Session.USER_NAME));
-                params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
-                params.put("Celeb_id", userId);
-                params.put("gender", gender);
-                params.put("Image_url", profile_url);
-                params.put("Fb_login_status", "1");
-                params.put("RegId", regId);
-                params.put("Flag", String.valueOf(celebOrNot));
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Name", fbName);
+                    params.put("FbName", Session.retreiveName(getApplicationContext(), Session.USER_NAME));
+                    params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                    params.put("email", userId);
+                    params.put("dob", gender);
+                    params.put("gender", profile_url);
+                    params.put("Image_url", "1");
+                    params.put("Device_name", regId);
+                    params.put("Device_model", regId);
+                    params.put("Device_os", regId);
 
+                    return params;
+                }
 
-                return params;
-            }
+            };
 
-        };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        } else {
+
+            // send data to celebrity table
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_SAVE_CELEB_DATA,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("FromServer", response.toString());
+                            try {
+                                JSONObject jsonObj = new JSONObject(response);
+                                String successLog = jsonObj.getString("result");
+                                TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                                if (!celebOrNot) {
+                                    startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("FromServer", "" + error.getMessage());
+                            TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Name", fbName);
+                    params.put("UserName", Session.retreiveName(getApplicationContext(), Session.USER_NAME));
+                    params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                    params.put("Celeb_id", userId);
+                    params.put("gender", gender);
+                    params.put("Image_url", profile_url);
+                    params.put("Fb_login_status", "1");
+                    params.put("RegId", regId);
+
+                    return params;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+
+        }
+
 
     }
 
@@ -319,7 +374,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         taggedUserIds.add("{USER_ID}");
         taggedUserIds.add("{USER_ID}");
         taggedUserIds.add("{USER_ID}");
-
 
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse("http://www.sitepoint.com"))

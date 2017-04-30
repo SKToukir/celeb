@@ -46,6 +46,7 @@ public class Api {
 
     public static final String SHARED_PREF = "ah_firebase";
     public static final String URL_SAVE_CELEB_DATA= "http://wap.shabox.mobi/testwebapi/celebrity/CelebrityRegistration?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String URL_SAVE_FAN_DATA= "http://wap.shabox.mobi/testwebapi/celebrity/FanRegistration?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
 
     public static final String URL_PARENT_SAVE_CELEB = "http://vumobile.biz/Toukir/celeb_comment/savebroadcastdata.php?vid=";

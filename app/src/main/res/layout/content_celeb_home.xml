@@ -12,162 +12,165 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="56dp"/>
+        android:layout_height="56dp" />
 
     <!--main layout-->
     <LinearLayout
-        android:background="#D950A6"
-        android:orientation="vertical"
-        android:layout_below="@id/view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/view"
+        android:background="#D950A6"
+        android:orientation="vertical">
 
         <!--first part-->
         <LinearLayout
-            android:padding="5dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <com.vumobile.celeb.Utils.RoundedImageView
                 android:id="@+id/celebImage"
-                android:src="@drawable/ic_man"
                 android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_height="80dp"
+                android:src="@drawable/ic_man" />
 
             <RelativeLayout
-                android:padding="5dp"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
-                    android:textColor="#fff"
-                    android:layout_marginTop="15dp"
                     android:id="@+id/txtCelebName"
-                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:text="Someone Celeb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
                     android:textColor="#fff"
-                    android:layout_below="@+id/txtCelebName"
+                    android:textSize="20sp" />
+
+                <TextView
                     android:id="@+id/txtCelebLocation"
-                    android:textSize="15sp"
-                    android:text="Mirpur"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtCelebName"
+                    android:text="Mirpur"
+                    android:textColor="#fff"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
         </LinearLayout>
 
         <!--Second part-->
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
             <EditText
-                android:clickable="true"
+                android:id="@+id/etWhatsYourMind"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/etWhatsYourMind"
-                android:editable="true"
-                android:enabled="true"
-                android:minLines="6"
-                android:maxLines="6"
-                android:isScrollContainer="true"
-                android:hint="Whats on your mind?"
                 android:background="#eca5d3"
+                android:clickable="true"
+                android:editable="true"
+                android:ems="10"
+                android:enabled="true"
                 android:gravity="top"
+                android:hint="Whats on your mind?"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="true"
+                android:maxLines="6"
+                android:minLines="6"
                 android:padding="10dp" />
 
             <Button
-                android:visibility="gone"
-                android:layout_gravity="right"
-                android:text="Post"
+                android:id="@+id/btnPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnPost" />
+                android:layout_gravity="right"
+                android:text="Post"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <!--third part-->
         <LinearLayout
-            android:layout_margin="5dp"
-            android:weightSum="2"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:weightSum="2">
 
             <LinearLayout
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-              <LinearLayout
-                  android:gravity="center"
-                  android:layout_weight="1"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent">
-
-                  <ImageView
-                      android:id="@+id/imgGoLive"
-                      android:clickable="true"
-                      android:src="@drawable/celebgolive"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content" />
-
-              </LinearLayout>
                 <LinearLayout
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
 
                     <ImageView
-                        android:src="@drawable/celebimagevideo"
+                        android:id="@+id/imgGoLive"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:src="@drawable/celebgolive" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/celebimagevideo" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <LinearLayout
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
 
                     <ImageView
-                        android:src="@drawable/celebrqst"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/celebrqst" />
 
                 </LinearLayout>
+
                 <LinearLayout
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
 
                     <ImageView
-                        android:src="@drawable/celebmsg"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/celebmsg" />
 
                 </LinearLayout>
 

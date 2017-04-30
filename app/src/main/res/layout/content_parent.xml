@@ -15,11 +15,52 @@
         android:layout_width="match_parent"
         android:layout_height="56dp" />
 
+    <LinearLayout
+        android:id="@+id/linearLayoutFilter"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/view"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="#"
+            android:padding="0dp"
+            android:text="Celebrity List"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="@color/white"
+            android:padding="0dp"
+            android:text="Following"
+            android:textAllCaps="false"
+            android:textColor="@color/myColorOneBody" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="@color/white"
+            android:padding="0dp"
+            android:text="Live"
+            android:textAllCaps="false"
+            android:textColor="@color/myColorOneBody" />
+
+
+    </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view">
+        android:layout_below="@+id/linearLayoutFilter">
 
         <ListView
             android:id="@+id/list_of_celeb"

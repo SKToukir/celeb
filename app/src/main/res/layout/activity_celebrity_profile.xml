@@ -17,7 +17,8 @@
         android:layout_height="150dp"
         android:layout_below="@+id/toolbar_celeb"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/txtStatus"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgProfilePic"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="LogIn status" />
 
     <Button
