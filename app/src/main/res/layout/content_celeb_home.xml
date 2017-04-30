@@ -69,11 +69,12 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/quoteTextArea"
+                android:id="@+id/etWhatsYourMind"
                 android:editable="true"
                 android:enabled="true"
                 android:minLines="6"

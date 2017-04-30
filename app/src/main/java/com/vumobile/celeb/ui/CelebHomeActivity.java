@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class CelebHomeActivity extends BaseActivity
     ImageView profilePictureView, imgGoLive, imgPic;
     NavigationView navigationView;
     TextView txtProfileName, txtCele;
+    EditText etWhatsYourMind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,8 @@ public class CelebHomeActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initUI();
-
         initNavHeaderView();
+
     }
 
     @Override
@@ -74,10 +76,12 @@ public class CelebHomeActivity extends BaseActivity
 
     private void initUI() {
 
+        etWhatsYourMind = (EditText) findViewById(R.id.etWhatsYourMind);
         txtCele = (TextView) findViewById(R.id.txtCelebName);
         imgPic = (ImageView) findViewById(R.id.celebImage);
         imgGoLive = (ImageView) findViewById(R.id.imgGoLive);
         imgGoLive.setOnClickListener(this);
+        etWhatsYourMind.setOnClickListener(this);
 
 
         txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
@@ -155,6 +159,11 @@ public class CelebHomeActivity extends BaseActivity
                 //startActivity(new Intent(CelebHomeActivity.this, CameraViewActivity.class));
                 TastyToast.makeText(getApplicationContext(),"Start Live",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                 CelebHomeActivity.this.forwardToLiveRoom(Constants.CLIENT_ROLE_BROADCASTER);
+                break;
+            case R.id.etWhatsYourMind:
+
+
+
                 break;
         }
     }

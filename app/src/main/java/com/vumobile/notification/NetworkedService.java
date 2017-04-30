@@ -15,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
+import com.vumobile.fan.login.Session;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,13 +99,41 @@ public class NetworkedService extends Service {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.URL_ONLINE_USERS, null, new Response.Listener<JSONObject>() {
+            String msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+            String url = Api.URL_ONLINE_USERS+msisdn+Api.URL_ONLINE_KEY;
+            Log.d("FromServer",url);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @SuppressWarnings("NewApi")
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     Log.d("FromServer", jsonObject.toString());
 
-                    try {
-                        JSONArray array = jsonObject.getJSONArray("result");
+                   if (jsonObject!=null){
+                       try {
+                           JSONArray array = jsonObject.getJSONArray("result");
+
+                           for (int i = 0; i <= array.length() -1; i++){
+
+                               JSONObject object = array.getJSONObject(i);
+                               Log.d("FromServer", object.toString());
+                               String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
+                               String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
+                               String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
+
+                               Utils.setCustomViewNotification(getApplicationContext(),name,msisdn,profilePic);
+
+
+
+//
+//                            msisdn = intent.getStringExtra("msisdn");
+//                            name = intent.getStringExtra("name");
+//                            fbName = intent.getStringExtra("fbname");
+//                            profilePic = intent.getStringExtra("profilePic");
+
+
+                           }
+
 
 //
 //                    } catch (JSONException e) {
@@ -115,9 +144,10 @@ public class NetworkedService extends Service {
 //
 
 
-                        } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
+                       } catch (JSONException e1) {
+                           e1.printStackTrace();
+                       }
+                   }
 
 
 
