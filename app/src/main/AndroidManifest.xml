@@ -85,7 +85,7 @@
         </service>
 
         <activity android:name=".ui.CameraViewActivity" />
-        <activity android:name="com.vumobile.fan.login.FanCelebProfileActivity"></activity>
+        <activity android:name="com.vumobile.fan.login.FanCelebProfileActivity" />
 
         <receiver android:name="com.vumobile.notification.MyReceiver">
             <intent-filter>

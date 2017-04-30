@@ -43,6 +43,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
+import com.vumobile.ParentActivity;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.fan.login.Session;
@@ -58,7 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CelebrityProfileActivity extends BaseActivity implements View.OnClickListener{
+public class CelebrityProfileActivity extends BaseActivity implements View.OnClickListener {
 
     private static String profile_url = "", fbName;
     private String regId;
@@ -70,10 +71,10 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
     private LoginButton loginButton;
-    private String firstName,lastName, email,birthday,gender;
+    private String firstName, lastName, email, birthday, gender;
     private URL profilePicture;
     private static String userId;
-    private TextView txtStatus,txtConfirmationMessage;
+    private TextView txtStatus, txtConfirmationMessage;
     private ImageView imgProfilePic;
     private String TAG = "LoginActivity";
 
@@ -86,7 +87,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         notificationRegister();
 
 
-        if (Session.isReg(getApplicationContext(),Session.REGISTERED_CELEB) == false){
+        if (Session.isReg(getApplicationContext(), Session.REGISTERED_CELEB) == false) {
             initUI();
             initializeControls();
             loginWithFb();
@@ -96,17 +97,18 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                 public void run() {
                     isRegistered();
                 }
-            });thread.start();
+            });
+            thread.start();
 
 
-            if (profile_url!=""){
-                Log.d("profile_url","Url "+Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL));
-                txtStatus.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
-                Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgProfilePic);
+            if (profile_url != "") {
+                Log.d("profile_url", "Url " + Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL));
+                txtStatus.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+                Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(imgProfilePic);
                 txtConfirmationMessage.setVisibility(View.VISIBLE);
             }
-        }else {
-            new Session().saveCelebState(getApplicationContext(),true);
+        } else {
+            new Session().saveCelebState(getApplicationContext(), true);
             startActivity(new Intent(CelebrityProfileActivity.this, CelebHomeActivity.class));
             finish();
         }
@@ -171,8 +173,8 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
             @Override
             public void onSuccess(LoginResult loginResult) {
                 //txtStatus.setText(loginResult.getAccessToken().getToken());
-                Log.d("permission",loginResult.getAccessToken().getToken());
-                Log.d("status",loginResult.toString());
+                Log.d("permission", loginResult.getAccessToken().getToken());
+                Log.d("status", loginResult.toString());
                 txtConfirmationMessage.setVisibility(View.VISIBLE);
                 callGraphApi(loginResult.getAccessToken());
 
@@ -201,33 +203,33 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         GraphRequest request = GraphRequest.newMeRequest(access_toke, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                Log.e(TAG,object.toString());
-                Log.e(TAG,response.toString());
+                Log.e(TAG, object.toString());
+                Log.e(TAG, response.toString());
 
                 try {
                     userId = object.getString("id");
                     profilePicture = new URL("https://graph.facebook.com/" + userId + "/picture?width=500&height=500");
                     profile_url = "https://graph.facebook.com/" + userId + "/picture?width=500&height=500";
-                    Log.d("profile_url",profile_url);
+                    Log.d("profile_url", profile_url);
                     Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + userId + "/picture?width=500&height=500").into(imgProfilePic);
-                    Log.e("lol","profile"+profilePicture);
-                    if(object.has("first_name"))
+                    Log.e("lol", "profile" + profilePicture);
+                    if (object.has("first_name"))
                         firstName = object.getString("first_name");
-                    Log.e("lol","first name"+firstName);
-                    if(object.has("last_name"))
+                    Log.e("lol", "first name" + firstName);
+                    if (object.has("last_name"))
                         lastName = object.getString("last_name");
-                    Log.e("lol","last name"+lastName);
+                    Log.e("lol", "last name" + lastName);
                     if (object.has("email"))
                         email = object.getString("email");
-                    Log.e("lol","email"+email);
+                    Log.e("lol", "email" + email);
                     if (object.has("birthday"))
                         birthday = object.getString("birthday");
-                    Log.e("lol","birthday"+birthday);
+                    Log.e("lol", "birthday" + birthday);
                     if (object.has("gender"))
                         gender = object.getString("gender");
-                    Log.e("lol","gender"+gender);
-                    fbName = firstName+" "+lastName;
-                    new Session().saveProfilePicUrl(getApplicationContext(),profile_url,fbName);
+                    Log.e("lol", "gender" + gender);
+                    fbName = firstName + " " + lastName;
+                    new Session().saveProfilePicUrl(getApplicationContext(), profile_url, fbName);
                     txtStatus.setText(fbName);
 
                     sendDataToServer();
@@ -253,7 +255,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     }
 
     private void sendDataToServer() {
-
+        boolean celebOrNot = new Session().isCeleb(CelebrityProfileActivity.this, Session.IS_CELEB);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_SAVE_CELEB_DATA,
                 new Response.Listener<String>() {
                     @Override
@@ -262,7 +264,10 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                         try {
                             JSONObject jsonObj = new JSONObject(response);
                             String successLog = jsonObj.getString("result");
-                            TastyToast.makeText(getApplicationContext(),successLog,TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                            TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                            if (!celebOrNot) {
+                                startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -272,22 +277,23 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("FromServer",""+error.getMessage());
-                        TastyToast.makeText(getApplicationContext(),"Error!",TastyToast.LENGTH_LONG,TastyToast.ERROR);
+                        Log.d("FromServer", "" + error.getMessage());
+                        TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
 
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Name",fbName);
-                params.put("UserName",Session.retreiveName(getApplicationContext(),Session.USER_NAME));
-                params.put("MSISDN",Session.retreivePhone(getApplicationContext(),Session.USER_PHONE));
-                params.put("Celeb_id",userId);
-                params.put("gender",gender);
-                params.put("Image_url",profile_url);
-                params.put("Fb_login_status","1");
-                params.put("RegId",regId);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Name", fbName);
+                params.put("UserName", Session.retreiveName(getApplicationContext(), Session.USER_NAME));
+                params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                params.put("Celeb_id", userId);
+                params.put("gender", gender);
+                params.put("Image_url", profile_url);
+                params.put("Fb_login_status", "1");
+                params.put("RegId", regId);
+                params.put("Flag", String.valueOf(celebOrNot));
 
 
                 return params;
@@ -304,12 +310,12 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        Log.d("data",data.toString());
+        Log.d("data", data.toString());
     }
 
-    private void share(){
+    private void share() {
         shareDialog = new ShareDialog(this);
-        List<String> taggedUserIds= new ArrayList<String>();
+        List<String> taggedUserIds = new ArrayList<String>();
         taggedUserIds.add("{USER_ID}");
         taggedUserIds.add("{USER_ID}");
         taggedUserIds.add("{USER_ID}");
@@ -327,7 +333,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         shareDialog.show(content);
     }
 
-    private void sharePhoto(){
+    private void sharePhoto() {
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
         shareDialog = new ShareDialog(this);
@@ -363,7 +369,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
 
     public void forwardToLiveRoom(int cRole) {
 
-        String room = Session.retreiveName(CelebrityProfileActivity.this,Session.USER_NAME);
+        String room = Session.retreiveName(CelebrityProfileActivity.this, Session.USER_NAME);
 
         Intent i = new Intent(CelebrityProfileActivity.this, LiveRoomActivity.class);
         i.putExtra(ConstantApp.ACTION_KEY_CROLE, cRole);
@@ -372,26 +378,26 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         startActivity(i);
     }
 
-    public boolean isRegistered(){
+    public boolean isRegistered() {
 
-        String msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
         boolean check = false;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.URL_CHECK_CELEB_REG+msisdn, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.URL_CHECK_CELEB_REG + msisdn, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("FromServer",response.toString());
+                Log.d("FromServer", response.toString());
 
                 try {
                     String result = response.getString("result");
 
-                    if (result.matches("1")){
-                        Log.d("FromServer","confirm");
-                        new Session().saveCelebState(getApplicationContext(),true);
+                    if (result.matches("1")) {
+                        Log.d("FromServer", "confirm");
+                        new Session().saveCelebState(getApplicationContext(), true);
                         startActivity(new Intent(CelebrityProfileActivity.this, CelebHomeActivity.class));
                         finish();
-                    }else {
-                        Log.d("FromServer","not confirm");
-                        TastyToast.makeText(getApplicationContext(),"Not Confirm yet!",TastyToast.LENGTH_LONG,TastyToast.ERROR);
+                    } else {
+                        Log.d("FromServer", "not confirm");
+                        TastyToast.makeText(getApplicationContext(), "Not Confirm yet!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -414,9 +420,9 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnGoLive:
-                startActivity(new Intent(CelebrityProfileActivity.this,CelebHomeActivity.class));
+                startActivity(new Intent(CelebrityProfileActivity.this, CelebHomeActivity.class));
                 break;
         }
 
