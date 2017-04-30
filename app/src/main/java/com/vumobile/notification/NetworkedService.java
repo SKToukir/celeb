@@ -106,6 +106,13 @@ public class NetworkedService extends Service {
                     try {
                         JSONArray array = jsonObject.getJSONArray("result");
 
+                        for (int i = 0; i <= array.length() -1; i++){
+
+                            JSONObject object = array.getJSONObject(i);
+                            
+                        }
+
+
 //
 //                    } catch (JSONException e) {
 //                        e.printStackTrace();
