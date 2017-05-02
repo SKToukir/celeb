@@ -293,7 +293,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                 params.put("Image_url", profile_url);
                 params.put("Fb_login_status", "1");
                 params.put("RegId", regId);
-                params.put("Flag", String.valueOf(celebOrNot));
+//                params.put("Flag", String.valueOf(celebOrNot));
 
 
                 return params;

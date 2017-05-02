@@ -122,7 +122,7 @@ public class ParentActivity extends AppCompatActivity
             pendingIntent = PendingIntent.getBroadcast(ParentActivity.this, 0, myIntent, 0);
 
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 90 * 1000, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 20 * 1000, pendingIntent);
 
         } catch (Exception e) {
             e.printStackTrace();

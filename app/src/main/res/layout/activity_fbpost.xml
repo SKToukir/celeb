@@ -4,21 +4,30 @@
     android:id="@+id/activity_fbpost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/myColorOneBody"
     tools:context="com.vumobile.celeb.ui.FBPostActivity">
 
+    <include
+        android:id="@+id/toolBar_post"
+        layout="@layout/tool_bar_post"/>
+
     <LinearLayout
+        android:layout_below="@+id/toolBar_post"
         android:id="@+id/linearLayout"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.vumobile.celeb.Utils.RoundedImageView
+            android:id="@+id/imgCelebImage"
             android:src="@drawable/ic_man"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"/>
 
         <TextView
+            android:textColor="#fff"
+            android:id="@+id/txtCelebName"
             android:layout_marginLeft="20dp"
             android:textSize="25sp"
             android:layout_gravity="center"
@@ -29,7 +38,8 @@
     </LinearLayout>
 
     <Button
-        android:layout_margin="5dp"
+        android:id="@+id/btnPost"
+        android:layout_marginRight="10dp"
         android:background="#d950a6"
         android:layout_alignParentRight="true"
         android:layout_below="@id/linearLayout"
@@ -37,6 +47,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+
+    <EditText
+        android:layout_margin="10dp"
+        android:layout_below="@+id/btnPost"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/etWhatsYourMind"
+        android:editable="true"
+        android:enabled="true"
+        android:minLines="6"
+        android:maxLines="6"
+        android:isScrollContainer="true"
+        android:hint="Whats on your mind?"
+        android:background="#fff"
+        android:gravity="top"
+        android:padding="10dp" />
 
 
 </RelativeLayout>

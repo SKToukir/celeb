@@ -36,6 +36,12 @@ public class Api {
     public static final String CELEB_LIVE_STATUS_NOTIFICATION= "Live_status";
     /*------------------------------------------------------------------*/
 
+    /*Get single celeb name and msisdn*/
+    public static final String URL_GET_SINGLE_CELEB = "http://wap.shabox.mobi/testwebapi/celebrity/CelebrityInformation?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=";
+    public static final String URL_GET_SINGLE_CELEB_NAME = "Name";
+    public static final String URL_GET_SINGLE_CELEB_PHONE = "MSISDN";
+
+
 
 
     // id to handle the notification in the notification tray
