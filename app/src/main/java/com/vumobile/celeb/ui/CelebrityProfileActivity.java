@@ -284,24 +284,26 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
 
                         }
                     }) {
+
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Name", fbName);
-                    params.put("FbName", Session.retreiveName(getApplicationContext(), Session.USER_NAME));
+                    params.put("UserName", Session.retreiveName(getApplicationContext(), Session.USER_NAME));
                     params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
-                    params.put("email", userId);
-                    params.put("dob", gender);
-                    params.put("gender", profile_url);
-                    params.put("Image_url", "1");
-                    params.put("Device_name", regId);
-                    params.put("Device_model", regId);
-                    params.put("Device_os", regId);
+                    params.put("Celeb_id", userId);
+                    params.put("gender", gender);
+                    params.put("Image_url", profile_url);
+                    params.put("Fb_login_status", "1");
+                    params.put("RegId", regId);
+//                params.put("Flag", String.valueOf(celebOrNot));
+
 
                     return params;
                 }
 
             };
+
 
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);

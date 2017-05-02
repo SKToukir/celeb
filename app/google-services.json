@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "396896655888",
-    "firebase_url": "https://celebritycomments-45650.firebaseio.com",
-    "project_id": "celebritycomments-45650",
-    "storage_bucket": "celebritycomments-45650.appspot.com"
+    "project_number": "633921246089",
+    "firebase_url": "https://vuceleb.firebaseio.com",
+    "project_id": "vuceleb",
+    "storage_bucket": "vuceleb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:396896655888:android:bd5105d48a7750e9",
+        "mobilesdk_app_id": "1:633921246089:android:bd5105d48a7750e9",
         "android_client_info": {
           "package_name": "com.vumobile.celeb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "396896655888-9ln5bph0gverafpvki96gphks02rhjk0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vumobile.celeb",
-            "certificate_hash": "2c551e8167d14cc61875477bb1e7554db1aa5b4c"
-          }
-        },
-        {
-          "client_id": "396896655888-o68eh2bodcuuikije2iut25gfngj116h.apps.googleusercontent.com",
+          "client_id": "633921246089-f98t2s06d07r5ofd9u3n4hjk54f72ntr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCv_Twn6ud9xURxhv57Bj-3dIfGRmGhwSU"
+          "current_key": "AIzaSyDeJ4_oT1DnNHjdyC1hed8orscyfAvo5kU"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "396896655888-o68eh2bodcuuikije2iut25gfngj116h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

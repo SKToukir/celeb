@@ -67,6 +67,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                     tt3.setTextColor(Color.WHITE);
                 } else {
                     tt3.setText("offline");
+                    tt3.setTextColor(Color.BLACK);
                 }
             }
             flw.setOnClickListener(new View.OnClickListener() {

@@ -31,6 +31,18 @@ public class Session {
 
     }
 
+    public void saveData(Context cntx, String uName, String phoneNumber,boolean isCeleb, boolean checkLogin,String imgUrl){
+
+        SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(FB_PROFILE_NAME, uName);
+        editor.putString(USER_PHONE, phoneNumber);
+        editor.putString(FB_PROFILE_PIC_URL, imgUrl);
+        editor.putBoolean(CHECK_LOGIN, checkLogin);
+        editor.putBoolean(IS_CELEB, isCeleb);
+        editor.commit();
+
+    }
+
     public void saveProfilePicUrl(Context cntx, String pfUrl, String fbName){
         SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString(FB_PROFILE_PIC_URL, pfUrl);
