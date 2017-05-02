@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.CelebrityClass;
+import com.vumobile.fan.login.Session;
 
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
         if (p != null) {
             TextView tt1 = (TextView) v.findViewById(R.id.txtCelebName);
             ImageView tt2 = (ImageView) v.findViewById(R.id.imgCeleb);
+            ImageView flw = (ImageView) v.findViewById(R.id.imageViewFollower);
             TextView tt3 = (TextView) v.findViewById(R.id.txtCelebIsOnline);
             if (tt1 != null) {
                 tt1.setText(p.getCeleb_name());
@@ -59,14 +62,24 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
             if (tt3 != null) {
                 String isOnline = p.getIsOnline();
-                if (isOnline.equals("1") || isOnline.matches("1")){
+                if (isOnline.equals("1") || isOnline.matches("1")) {
                     tt3.setText("online");
                     tt3.setTextColor(Color.WHITE);
-                }else {
+                } else {
                     tt3.setText("offline");
                     tt3.setTextColor(Color.BLACK);
                 }
             }
+            flw.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CelebrityClass p = getItem(position);
+                    String ph = Session.retreivePhone(mContext, Session.USER_PHONE);
+                    Toast.makeText(mContext, "hi" + p.getCeleb_code() + "--" + ph, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
         }
 
         return v;

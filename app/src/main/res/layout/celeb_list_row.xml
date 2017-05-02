@@ -1,89 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:layout_marginBottom="3dp"
-    >
+    android:orientation="horizontal">
 
     <LinearLayout
-
-        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
-        android:layout_marginBottom="3dp"
-        android:background="#5cd6caca"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="3dp">
 
         <RelativeLayout
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:layout_weight=".7"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight=".7">
 
             <com.vumobile.celeb.Utils.RoundedImageView
-                android:foreground="@drawable/circular_image"
                 android:id="@+id/imgCeleb"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_man"
                 android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:foreground="@drawable/circular_image"
+                android:src="@drawable/ic_man" />
 
         </RelativeLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_weight=".3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:orientation="horizontal">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:gravity="center|left"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:orientation="vertical">
 
                 <TextView
-                    android:textStyle="normal"
-                    android:textSize="22dp"
                     android:id="@+id/txtCelebName"
-                    android:layout_centerVertical="true"
-                    android:textColor="#fff"
-                    android:text="Shahrukh Khan"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Shahrukh Khan"
+                    android:textColor="#fff"
+                    android:textSize="22dp"
+                    android:textStyle="normal" />
 
                 <TextView
                     android:id="@+id/txtCelebIsOnline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/txtCelebName"
                     android:layout_centerVertical="true"
-                    android:text="offline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
+                    android:text="offline" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_weight="0.8"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:gravity="center">
 
                 <ImageView
-                    android:src="@drawable/like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:id="@+id/imageViewFollower"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    android:src="@drawable/follow" />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>
