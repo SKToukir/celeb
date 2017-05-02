@@ -3,6 +3,7 @@ package com.vumobile;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
@@ -63,6 +64,7 @@ public class ParentActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
+        displayFirebaseRegId();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -91,7 +93,7 @@ public class ParentActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-      //  loadCelebrityData(Api.URL_ACTIVATE_USERS);
+        //  loadCelebrityData(Api.URL_ACTIVATE_USERS);
 
 
         listCeleb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,12 +123,20 @@ public class ParentActivity extends AppCompatActivity
             Intent myIntent = new Intent(ParentActivity.this, MyReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(ParentActivity.this, 0, myIntent, 0);
 
-            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 20 * 1000, pendingIntent);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 30 * 1000, pendingIntent);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Api.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e("TAG", "Firebase reg id: " + regId);
+        Log.e("taggg", "Firebase:" + regId);
     }
 
     private void loadCelebrityData(String urlCelebrity) {

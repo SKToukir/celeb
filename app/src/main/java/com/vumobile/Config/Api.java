@@ -20,6 +20,8 @@ public class Api {
     public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/LiveCelebrity?MSISDN=";
     public static final String URL_ONLINE_KEY = "&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
+    public static final String AUTH_KEY = "bTVseGU4cWc5Nks3VTlrM2VZSXRKN2s2a0NTRHJlOkNlbGViQXBw";
+
     public static final String CELEB_ID_NOTIFICATION= "ID";
     public static final String CELEB_USERNAME_NOTIFICATION= "UserName";
     public static final String CELEB_NAME_NOTIFICATION= "Name";
