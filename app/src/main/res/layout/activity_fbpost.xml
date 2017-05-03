@@ -67,5 +67,24 @@
         android:gravity="top"
         android:padding="10dp" />
 
+    <Button
+        android:background="@drawable/glivebutton"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/etWhatsYourMind"
+        android:layout_alignLeft="@+id/etWhatsYourMind"
+        android:layout_alignStart="@+id/etWhatsYourMind"
+        android:id="@+id/btnGoLive" />
+
+    <Button
+        android:background="@drawable/photovbutton"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/btnGoLive"
+        android:layout_alignLeft="@+id/btnGoLive"
+        android:layout_alignStart="@+id/btnGoLive"
+        android:layout_marginTop="19dp"
+        android:id="@+id/btnPhotoVideo" />
+
 
 </RelativeLayout>

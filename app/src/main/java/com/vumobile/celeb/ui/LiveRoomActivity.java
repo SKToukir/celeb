@@ -43,6 +43,7 @@ import com.vumobile.celeb.Adapters.CommentListAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.CommentClass;
 import com.vumobile.celeb.Utils.Methods;
+import com.vumobile.celeb.Utils.NetworkState;
 import com.vumobile.celeb.model.AGEventHandler;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.MyBounceInterpolator;
@@ -72,6 +73,8 @@ import io.agora.rtc.video.VideoCanvas;
 @SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
+    public static String signal = "";
+    public static String linkRate = "";
     InputMethodManager imm;
     private int i = 5;
     private ImageView btnLike;
@@ -114,8 +117,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         listOfComment.setAdapter(adapter);
 
 
-
     }
+
 
     private void initUI() {
 
@@ -130,6 +133,12 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         imm.showSoftInput(etComment, InputMethodManager.SHOW_IMPLICIT);
         btnSendComment = (Button) findViewById(R.id.btnSendComment);
         btnSendComment.setOnClickListener(this);
+
+        // hide like button for celebrity
+        // celebruty can not give like
+        if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
+            btnLike.setVisibility(View.GONE);
+        }
 
     }
 
@@ -163,21 +172,20 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         }
 
         roomName = i.getStringExtra(ConstantApp.ACTION_KEY_ROOM_NAME);
-        Log.d("room_name",roomName);
+        Log.d("room_name", roomName);
         String user = i.getStringExtra("user");
         Log.d("fbName", user);
 
-        if (user.equals("celeb")){
+        if (user.equals("celeb")) {
 
             String fb_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
-            msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+            msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
             Log.d("fbName", "celeb " + fb_name);
             user_name = fb_name;
-        }else if (user.equals("fan")){
+        } else if (user.equals("fan")) {
             user_name = Session.retreiveName(getApplicationContext(), Session.USER_NAME);
             Log.d("fbName", "fan " + user_name);
         }
-
 
 
         Log.d("user_name", user_name);
@@ -341,10 +349,81 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         if (prefIndex > ConstantApp.VIDEO_PROFILES.length - 1) {
             prefIndex = ConstantApp.DEFAULT_PROFILE_IDX;
         }
-        int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
 
+        int status = new NetworkState(getApplicationContext()).haveNetworkConnection();
+
+        // if connected wifi
+        if (status == 1) {
+            Log.d("LinkRate:",linkRate);
+            int vProfile = Constants.VIDEO_PROFILE_240P;
+            // default smothness 1.0f and lightness 0.65f
+            // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+            worker().setPreParameters(.50f, 1.0f);
+            worker().configEngine(cRole, vProfile);
+
+//            Log.d("Connected:","wifi");
+//            if (signal.matches("good")){
+//                Log.d("signal:","good");
+//                // previous code
+//                //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
+//                // my code
+//                int vProfile = Constants.VIDEO_PROFILE_240P;
+//                // default smothness 1.0f and lightness 0.65f
+//                // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+//                worker().setPreParameters(.50f,1.0f);
+//                worker().configEngine(cRole, vProfile);
+//            }else if ( signal.matches("fair")){
+//                Log.d("signal:","fair");
+//                // previous code
+//                //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
+//                // my code
+//                int vProfile = Constants.VIDEO_PROFILE_360P_4;
+//                // default smothness 1.0f and lightness 0.65f
+//                // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+//                worker().setPreParameters(2.0f,1.0f);
+//                worker().configEngine(cRole, vProfile);
+//
+//            }else if ( signal.matches("poor")){
+//                Log.d("signal:","poor");
+//                // previous code
+//                //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
+//                // my code
+//                int vProfile = Constants.VIDEO_PROFILE_180P;
+//                // default smothness 1.0f and lightness 0.65f
+//                // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+//                worker().setPreParameters(.50f,1.0f);
+//                worker().configEngine(cRole, vProfile);
+//
+//            }else if (signal.matches("excellent")){
+//                Log.d("signal:","excellent");
+//                // previous code
+//                //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
+//                // my code
+//                int vProfile = Constants.VIDEO_PROFILE_720P;
+//                // default smothness 1.0f and lightness 0.65f
+//                // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+//                worker().setPreParameters(3.0f,1.0f);
+//                worker().configEngine(cRole, vProfile);
+
+
+        // if conneted apn
+    }
+
+    else if(status==0)
+
+    {
+        Log.d("Connected:", "apn");
+        // previous code
+        //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
+        // my code
+        int vProfile = Constants.VIDEO_PROFILE_180P_4;
+        // default smothness 1.0f and lightness 0.65f
+        // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+        worker().setPreParameters(0.5f, 0.50f);
         worker().configEngine(cRole, vProfile);
     }
+
+}
 
     @Override
     protected void deInitUIandEvent() {
@@ -836,7 +915,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-              new ServerPostRequest().onLive(getApplicationContext(),msisdn,"0");
+                new ServerPostRequest().onLive(getApplicationContext(), msisdn, "0");
                 finish();
 
             }

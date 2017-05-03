@@ -176,11 +176,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                 Log.d("status", loginResult.toString());
                 txtConfirmationMessage.setVisibility(View.VISIBLE);
                 callGraphApi(loginResult.getAccessToken());
-
-                //TODO
-                // send user profile to server
-
-
             }
 
             @Override
@@ -199,6 +194,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     private void callGraphApi(AccessToken token) {
 
         AccessToken access_toke = token;
+        Log.e("lol", "profile" + token.toString());
         GraphRequest request = GraphRequest.newMeRequest(access_toke, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
@@ -304,7 +300,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
 
             };
 
-
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
 
@@ -359,8 +354,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
             requestQueue.add(stringRequest);
 
         }
-
-
     }
 
     @Override

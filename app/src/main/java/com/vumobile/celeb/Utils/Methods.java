@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.util.Patterns;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -49,5 +52,12 @@ public class Methods {
         }
 
         return possibleEmail;
+    }
+
+    public String getDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+
+        return dateFormat.format(date);
     }
 }

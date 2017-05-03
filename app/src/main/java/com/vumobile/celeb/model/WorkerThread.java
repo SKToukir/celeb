@@ -263,7 +263,7 @@ public class WorkerThread extends Thread {
             mRtcEngine.enableVideo();
             mRtcEngine.setLogFile(Environment.getExternalStorageDirectory()
                     + File.separator + mContext.getPackageName() + "/log/agora-rtc.log");
-            mRtcEngine.enableDualStreamMode(true);
+            mRtcEngine.enableDualStreamMode(false);
         }
         return mRtcEngine;
     }

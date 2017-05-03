@@ -13,13 +13,19 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.Config.Api;
+import com.vumobile.celeb.Utils.Methods;
 import com.vumobile.fan.login.Session;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by toukirul on 27/4/2017.
@@ -99,9 +105,9 @@ public class NetworkedService extends Service {
         @Override
         protected Void doInBackground(Void... arg0) {
 
-            String msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
-            String url = Api.URL_ONLINE_USERS+msisdn+Api.URL_ONLINE_KEY;
-            Log.d("FromServer",url);
+            String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+            String url = Api.URL_ONLINE_USERS + msisdn + Api.URL_ONLINE_KEY;
+            Log.d("FromServer", url);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @SuppressWarnings("NewApi")
@@ -109,48 +115,34 @@ public class NetworkedService extends Service {
                 public void onResponse(JSONObject jsonObject) {
                     Log.d("FromServer", jsonObject.toString());
 
-                   if (jsonObject!=null){
-                       try {
-                           JSONArray array = jsonObject.getJSONArray("result");
+                    if (jsonObject != null) {
+                        try {
+                            JSONArray array = jsonObject.getJSONArray("result");
 
-                           for (int i = 0; i <= array.length() -1; i++){
+                            for (int i = 0; i <= array.length() - 1; i++) {
 
-                               JSONObject object = array.getJSONObject(i);
-                               Log.d("FromServer", object.toString());
-                               String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
-                               String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
-                               String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
+                                JSONObject object = array.getJSONObject(i);
+                                Log.d("FromServer", object.toString());
+                                String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
+                                String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
+                                String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
+                                String gender = object.getString(Api.CELEB_GENDER_NOTIFICATION);
+                                String celeb_id = object.getString(Api.CELEB_ID_NOTIFICATION);
+                                String currentTime = new Methods().getDate();
 
-                               Utils.setCustomViewNotification(getApplicationContext(),name,msisdn,profilePic);
+                                // save notification data to server
+                                saveNotification(name, msisdn, profilePic, gender, celeb_id, currentTime);
 
-
-
-//
-//                            msisdn = intent.getStringExtra("msisdn");
-//                            name = intent.getStringExtra("name");
-//                            fbName = intent.getStringExtra("fbname");
-//                            profilePic = intent.getStringExtra("profilePic");
+                                Utils.setCustomViewNotification(getApplicationContext(), name, msisdn, profilePic);
 
 
-                           }
+                            }
 
 
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-
-
-//                    }
-//
-
-
-                       } catch (JSONException e1) {
-                           e1.printStackTrace();
-                       }
-                   }
-
-
-
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -174,6 +166,51 @@ public class NetworkedService extends Service {
             super.onPostExecute(result);
             Log.d("Response onPostExecute ", "> " + "onPostExecute");
         }
+
+    }
+
+    private void saveNotification(String name, String msisdn, String profilePicture, String gender, String celeb_id, String currentTime) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_SAVE_NOTIFICATION_DATA,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+                        try {
+                            TastyToast.makeText(getApplicationContext(), response.toString(), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+                        TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Name", name);
+                params.put("MSISDN", msisdn);
+                params.put("celeb_id", celeb_id);
+                params.put("gender", gender);
+                params.put("Image_url", profilePicture);
+                //params.put("time", currentTime);
+//                params.put("Flag", String.valueOf(celebOrNot));
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
 
     }
 }

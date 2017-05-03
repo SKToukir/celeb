@@ -106,10 +106,14 @@
             android:stopWithTask="false" />
 
         <activity android:name=".ui.FBPostActivity" />
+
         <activity
             android:name="com.vumobile.fan.login.ui.FanNotificationActivity"
             android:label="@string/title_activity_fan_notification"
             android:theme="@style/AppTheme"></activity>
+
+        <activity android:name=".ui.GaleeryActivityCeleb"></activity>
+
     </application>
 
 </manifest>

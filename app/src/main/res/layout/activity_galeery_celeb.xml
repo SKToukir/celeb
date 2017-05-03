@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_galeery_celeb"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myColorOneBody"
+    tools:context="com.vumobile.celeb.ui.GaleeryActivityCeleb">
+
+    <include
+        android:id="@+id/tool_bar_gallery"
+        layout="@layout/toolbar_gallery"/>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tool_bar_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/s"
+            android:src="@drawable/imagesborder"
+            android:layout_width="100dp"
+            android:layout_height="40dp" />
+        <ImageView
+            android:layout_marginLeft="-3dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/s"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+    </RelativeLayout>
+
+</RelativeLayout>
