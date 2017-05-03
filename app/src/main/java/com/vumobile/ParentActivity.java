@@ -169,7 +169,7 @@ public class ParentActivity extends BaseActivity
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
 
-        String fullUrl = urlCelebrity+"&MSISDN="+Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        String fullUrl = urlCelebrity + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
@@ -222,50 +222,13 @@ public class ParentActivity extends BaseActivity
         requestQueue.add(request);
         //AppController.getInstance().addToRequestQueue(request);
 
-//        JsonArrayRequest request = new JsonArrayRequest(urlCelebrity, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray jsonArray) {
-//
-//
-//                for (int i = 0; i<=15; i++){
-//                    try {
-//
-//                        JSONObject obj = jsonArray.getJSONObject(i);
-//                        celebrityClass = new CelebrityClass();
-//                        celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
-//                        celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE));
-//                        celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
-//
-//                        celebrityClassList.add(celebrityClass);
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                listCeleb.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(getApplicationContext(),volleyError.getMessage(),Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
-//
-//        //Adding request to the queue
-//        requestQueue.add(request);
-//        //AppController.getInstance().addToRequestQueue(request);
-
     }
 
     private void loadCelebrityDataWhoIsLive(String urlCelebrity) {
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlCelebrity, null, new Response.Listener<JSONObject>() {
+        String fullUrl = urlCelebrity + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Log.d("FromServer", jsonObject.toString());
@@ -283,6 +246,7 @@ public class ParentActivity extends BaseActivity
                             celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
                             celebrityClass.setFb_name(obj.getString("Name"));
                             celebrityClass.setIsOnline(obj.getString("Live_status"));
+                            celebrityClass.setIsfollow(obj.getString("Isfollow"));
 
                             celebrityClassList.add(celebrityClass);
                         }
@@ -336,6 +300,7 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
                         celebrityClass.setFb_name(obj.getString("Name"));
                         celebrityClass.setIsOnline(obj.getString("Live_status"));
+                        celebrityClass.setIsfollow(obj.getString("Isfollow"));
 
                         celebrityClassList.add(celebrityClass);
 

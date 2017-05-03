@@ -96,7 +96,8 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                     CelebrityClass p = getItem(position);
                     String ph = Session.retreivePhone(mContext, Session.USER_PHONE);
                     makeFollower(ph, p.getCeleb_code());
-                    if (flw.getDrawable().equals(mContext.getResources().getDrawable(R.drawable.unfollow))) {
+                    if (flw.getDrawable().getConstantState().equals
+                            (mContext.getResources().getDrawable(R.drawable.unfollow).getConstantState())) {
                         Toast.makeText(mContext, "1", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(mContext, "2", Toast.LENGTH_SHORT).show();
