@@ -22,7 +22,7 @@
         android:layout_below="@+id/view"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="6dp">
+        android:padding="3dp">
 
         <Button
             android:id="@+id/buttonFilterAll"

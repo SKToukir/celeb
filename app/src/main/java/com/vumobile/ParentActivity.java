@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,8 +32,12 @@ import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.CelebrityListAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.CelebrityClass;
+import com.vumobile.celeb.model.ConstantApp;
+import com.vumobile.celeb.ui.BaseActivity;
+import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.ui.FanNotificationActivity;
 import com.vumobile.notification.MyReceiver;
 import com.vumobile.notification.NetworkedService;
 
@@ -45,7 +48,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParentActivity extends AppCompatActivity
+import io.agora.rtc.Constants;
+
+public class ParentActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private CelebrityClass celebrityClass;
@@ -56,9 +61,10 @@ public class ParentActivity extends AppCompatActivity
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    Button btnViewLiveFan;
+    Button buttonFilterAll, buttonFilterFollowing, buttonFilterLive;
     Toolbar toolbar;
     ImageView imageViewNotification, imageViewMessage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,14 +110,24 @@ public class ParentActivity extends AppCompatActivity
                 String msisdn = celebrityClassList.get(i).getCeleb_code();
                 String fbName = celebrityClassList.get(i).getFb_name();
                 String profilePic = celebrityClassList.get(i).getCeleb_image();
+                String isOnline = celebrityClassList.get(i).getIsOnline();
 
 
-                Intent intent = new Intent(ParentActivity.this, FanCelebProfileActivity.class);
-                intent.putExtra("name", name);
-                intent.putExtra("msisdn", msisdn);
-                intent.putExtra("fbname", fbName);
-                intent.putExtra("profilePic", profilePic);
-                startActivity(intent);
+                if (isOnline.equals("1") || isOnline.matches("1")) {
+                    String room = fbName;
+                    Intent in = new Intent(ParentActivity.this, LiveRoomActivity.class);
+                    in.putExtra(ConstantApp.ACTION_KEY_CROLE, Constants.CLIENT_ROLE_AUDIENCE);
+                    in.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, room);
+                    in.putExtra("user", "fan");
+                    startActivity(in);
+                } else {
+                    Intent intent = new Intent(ParentActivity.this, FanCelebProfileActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("msisdn", msisdn);
+                    intent.putExtra("fbname", fbName);
+                    intent.putExtra("profilePic", profilePic);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -129,6 +145,16 @@ public class ParentActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void initUIandEvent() {
+
+    }
+
+    @Override
+    protected void deInitUIandEvent() {
+
     }
 
     private void displayFirebaseRegId() {
@@ -232,6 +258,111 @@ public class ParentActivity extends AppCompatActivity
 
     }
 
+    private void loadCelebrityDataWhoIsLive(String urlCelebrity) {
+        swipeRefreshLayout.setRefreshing(true);
+        celebrityClassList.clear();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlCelebrity, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.d("FromServer", jsonObject.toString());
+
+                try {
+                    JSONArray array = jsonObject.getJSONArray("result");
+
+                    for (int i = 0; i <= array.length() - 1; i++) {
+
+                        JSONObject obj = array.getJSONObject(i);
+                        celebrityClass = new CelebrityClass();
+                        if (obj.getString("Live_status").equals("1")) {
+                            celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
+                            celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
+                            celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
+                            celebrityClass.setFb_name(obj.getString("Name"));
+                            celebrityClass.setIsOnline(obj.getString("Live_status"));
+
+                            celebrityClassList.add(celebrityClass);
+                        }
+
+
+                        listCeleb.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("FromServer", volleyError.toString());
+                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
+
+        //Adding request to the queue
+        requestQueue.add(request);
+
+
+    }
+
+    private void loadCelebrityDataWhoIsFollowing(String urlCelebrityFollowing) {
+        Toast.makeText(this, "Following TODO", Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setRefreshing(true);
+        celebrityClassList.clear();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlCelebrityFollowing, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.d("FromServer", jsonObject.toString());
+
+                try {
+                    JSONArray array = jsonObject.getJSONArray("result");
+
+                    for (int i = 0; i <= array.length() - 1; i++) {
+
+                        JSONObject obj = array.getJSONObject(i);
+                        celebrityClass = new CelebrityClass();
+                        if (obj.getString("Live_status").equals("1")) {
+                            celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
+                            celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
+                            celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
+                            celebrityClass.setFb_name(obj.getString("Name"));
+                            celebrityClass.setIsOnline(obj.getString("Live_status"));
+
+                            celebrityClassList.add(celebrityClass);
+                        }
+
+                        listCeleb.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("FromServer", volleyError.toString());
+                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
+
+        //Adding request to the queue
+        requestQueue.add(request);
+
+    }
+
     private void initUI() {
 
         listCeleb = (ListView) findViewById(R.id.list_of_celeb);
@@ -243,22 +374,44 @@ public class ParentActivity extends AppCompatActivity
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+
+        buttonFilterAll = (Button) findViewById(R.id.buttonFilterAll);
+        buttonFilterFollowing = (Button) findViewById(R.id.buttonFilterFollowing);
+        buttonFilterLive = (Button) findViewById(R.id.buttonFilterLive);
+        buttonFilterAll.setOnClickListener(this);
+        buttonFilterFollowing.setOnClickListener(this);
+        buttonFilterLive.setOnClickListener(this);
+        buttonFilterAll.setTag("SELECT_ITEM");
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         swipeRefreshLayout.setRefreshing(true);
                                         //celebrityClassList = new ArrayList<CelebrityClass>();
-                                        loadCelebrityData(Api.URL_ACTIVATE_USERS);
+                                        if (buttonFilterAll.getTag().equals("SELECT_ITEM")) {
+                                            loadCelebrityData(Api.URL_ACTIVATE_USERS);
+                                        } else if (buttonFilterFollowing.getTag().equals("SELECT_ITEM")) {
+                                            loadCelebrityDataWhoIsFollowing("");
+                                        } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
+                                            loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
+                                        }
+
                                     }
                                 }
         );
+
 
     }
 
     @Override
     public void onRefresh() {
-
-        loadCelebrityData(Api.URL_ACTIVATE_USERS);
+        if (buttonFilterAll.getTag().equals("SELECT_ITEM")) {
+            loadCelebrityData(Api.URL_ACTIVATE_USERS);
+        } else if (buttonFilterFollowing.getTag().equals("SELECT_ITEM")) {
+            loadCelebrityDataWhoIsFollowing("");
+        } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
+            loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
+        }
     }
 
     @Override
@@ -323,12 +476,34 @@ public class ParentActivity extends AppCompatActivity
         switch (view.getId()) {
 
             case R.id.imageViewNotification:
-                Toast.makeText(this, "Notification", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), FanNotificationActivity.class));
                 break;
 
             case R.id.imageViewMessage:
                 Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.buttonFilterAll:
+
+                loadCelebrityData(Api.URL_ACTIVATE_USERS);
+                changeButtonSelectFocus(buttonFilterAll);
+
+                break;
+
+            case R.id.buttonFilterFollowing:
+
+                Toast.makeText(this, "fff", Toast.LENGTH_SHORT).show();
+                changeButtonSelectFocus(buttonFilterFollowing);
+
+                break;
+
+            case R.id.buttonFilterLive:
+
+                loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
+                changeButtonSelectFocus(buttonFilterLive);
+
+                break;
+
 
 //            case R.id.btnGoLive:
 //                startActivity(new Intent(ParentActivity.this, MainActivityLive.class));
@@ -340,6 +515,22 @@ public class ParentActivity extends AppCompatActivity
 //                break;
         }
 
+    }
+
+    private void changeButtonSelectFocus(Button button) {
+        buttonFilterAll.setBackgroundColor(getResources().getColor(R.color.white));
+        buttonFilterAll.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterAll.setTag("ITEM");
+        buttonFilterFollowing.setBackgroundColor(getResources().getColor(R.color.white));
+        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterFollowing.setTag("ITEM");
+        buttonFilterLive.setBackgroundColor(getResources().getColor(R.color.white));
+        buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterLive.setTag("ITEM");
+
+        button.setBackgroundColor(getResources().getColor(R.color.myColorTwoHeader));
+        button.setTextColor(getResources().getColor(R.color.white));
+        button.setTag("SELECT_ITEM");
     }
 
 

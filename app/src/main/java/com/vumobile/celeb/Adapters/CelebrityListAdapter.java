@@ -63,10 +63,10 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
             if (tt3 != null) {
                 String isOnline = p.getIsOnline();
                 if (isOnline.equals("1") || isOnline.matches("1")) {
-                    tt3.setText("online");
+                    tt3.setText("Online");
                     tt3.setTextColor(Color.WHITE);
                 } else {
-                    tt3.setText("offline");
+                    tt3.setText("Offline");
                     tt3.setTextColor(Color.BLACK);
                 }
             }
