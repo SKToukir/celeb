@@ -105,7 +105,8 @@
             android:exported="false"
             android:stopWithTask="false" />
 
-        <activity android:name=".ui.FBPostActivity"></activity>
+        <activity android:name=".ui.FBPostActivity" />
+        <activity android:name=".ui.GaleeryActivityCeleb"></activity>
     </application>
 
 </manifest>

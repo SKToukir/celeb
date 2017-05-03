@@ -42,7 +42,7 @@ import io.agora.rtc.Constants;
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    ImageView profilePictureView, imgGoLive, imgPic;
+    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb;
     NavigationView navigationView;
     TextView txtProfileName, txtCele;
     EditText etWhatsYourMind;
@@ -140,12 +140,14 @@ public class CelebHomeActivity extends BaseActivity
 
     private void initUI() {
 
+        imgImageVideoCeleb = (ImageView) findViewById(R.id.imgImageVideoCeleb);
         etWhatsYourMind = (EditText) findViewById(R.id.etWhatsYourMind);
         txtCele = (TextView) findViewById(R.id.txtCelebName);
         imgPic = (ImageView) findViewById(R.id.celebImage);
         imgGoLive = (ImageView) findViewById(R.id.imgGoLive);
         imgGoLive.setOnClickListener(this);
         etWhatsYourMind.setOnClickListener(this);
+        imgImageVideoCeleb.setOnClickListener(this);
 
 
         txtCele.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
@@ -227,6 +229,9 @@ public class CelebHomeActivity extends BaseActivity
             case R.id.etWhatsYourMind:
                 //TODO
                 startActivity(new Intent(CelebHomeActivity.this,FBPostActivity.class));
+                break;
+            case R.id.imgImageVideoCeleb:
+                startActivity(new Intent(CelebHomeActivity.this,GaleeryActivityCeleb.class));
                 break;
         }
     }

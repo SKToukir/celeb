@@ -69,5 +69,7 @@ public class Api {
     public static final String CELEB_IMAGE = "Image_url";
     public static final String CELEB_CODE_MSISDN = "MSISDN";
 
+    public static final String URL_SAVE_NOTIFICATION_DATA = "http://wap.shabox.mobi/testwebapi/notification/setNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
 
 }
