@@ -11,6 +11,7 @@ public class CelebrityClass {
     private String celeb_code;
     private String fb_name;
     private String isOnline;
+    private String Isfollow;
 
     public String getIsOnline() {
         return isOnline;
@@ -50,5 +51,13 @@ public class CelebrityClass {
 
     public void setCeleb_code(String celeb_code) {
         this.celeb_code = celeb_code;
+    }
+
+    public String getIsfollow() {
+        return Isfollow;
+    }
+
+    public void setIsfollow(String isfollow) {
+        Isfollow = isfollow;
     }
 }

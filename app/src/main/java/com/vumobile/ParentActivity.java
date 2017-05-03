@@ -169,7 +169,9 @@ public class ParentActivity extends BaseActivity
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlCelebrity, null, new Response.Listener<JSONObject>() {
+        String fullUrl = urlCelebrity+"&MSISDN="+Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 Log.d("FromServer", jsonObject.toString());
@@ -186,6 +188,7 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
                         celebrityClass.setFb_name(obj.getString("Name"));
                         celebrityClass.setIsOnline(obj.getString("Live_status"));
+                        celebrityClass.setIsfollow(obj.getString("Isfollow"));
 
                         celebrityClassList.add(celebrityClass);
 //
@@ -284,10 +287,8 @@ public class ParentActivity extends BaseActivity
                             celebrityClassList.add(celebrityClass);
                         }
 
-
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-
 
                     }
 
@@ -309,18 +310,18 @@ public class ParentActivity extends BaseActivity
         //Adding request to the queue
         requestQueue.add(request);
 
-
     }
 
-    private void loadCelebrityDataWhoIsFollowing(String urlCelebrityFollowing) {
-        Toast.makeText(this, "Following TODO", Toast.LENGTH_SHORT).show();
+    private void loadCelebrityDataWhoIsFollowing(String urlCelebrityFollowing, String mFanPhone) {
+
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlCelebrityFollowing, null, new Response.Listener<JSONObject>() {
+        String fullUrl = urlCelebrityFollowing + "&MSISDN=" + mFanPhone;
+        Log.d("Full url", "loadCelebrityDataWhoIsFollowing: " + fullUrl);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.d("FromServer", jsonObject.toString());
+                Log.d("FromServer 12", jsonObject.toString());
 
                 try {
                     JSONArray array = jsonObject.getJSONArray("result");
@@ -329,15 +330,14 @@ public class ParentActivity extends BaseActivity
 
                         JSONObject obj = array.getJSONObject(i);
                         celebrityClass = new CelebrityClass();
-                        if (obj.getString("Live_status").equals("1")) {
-                            celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
-                            celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
-                            celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
-                            celebrityClass.setFb_name(obj.getString("Name"));
-                            celebrityClass.setIsOnline(obj.getString("Live_status"));
 
-                            celebrityClassList.add(celebrityClass);
-                        }
+                        celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
+                        celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
+                        celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
+                        celebrityClass.setFb_name(obj.getString("Name"));
+                        celebrityClass.setIsOnline(obj.getString("Live_status"));
+
+                        celebrityClassList.add(celebrityClass);
 
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -356,6 +356,7 @@ public class ParentActivity extends BaseActivity
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
         RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
 
         //Adding request to the queue
@@ -390,7 +391,7 @@ public class ParentActivity extends BaseActivity
                                         if (buttonFilterAll.getTag().equals("SELECT_ITEM")) {
                                             loadCelebrityData(Api.URL_ACTIVATE_USERS);
                                         } else if (buttonFilterFollowing.getTag().equals("SELECT_ITEM")) {
-                                            loadCelebrityDataWhoIsFollowing("");
+                                            loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
                                         } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
                                             loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
                                         }
@@ -407,7 +408,7 @@ public class ParentActivity extends BaseActivity
         if (buttonFilterAll.getTag().equals("SELECT_ITEM")) {
             loadCelebrityData(Api.URL_ACTIVATE_USERS);
         } else if (buttonFilterFollowing.getTag().equals("SELECT_ITEM")) {
-            loadCelebrityDataWhoIsFollowing("");
+            loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
         } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
             loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
         }
@@ -491,7 +492,7 @@ public class ParentActivity extends BaseActivity
 
             case R.id.buttonFilterFollowing:
 
-                Toast.makeText(this, "fff", Toast.LENGTH_SHORT).show();
+                loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
                 changeButtonSelectFocus(buttonFilterFollowing);
 
                 break;

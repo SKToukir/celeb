@@ -7,13 +7,26 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.adapter.FanNotificationAdapter;
 import com.vumobile.fan.login.model.FanNotificationModelEnity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +35,10 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
 
     RecyclerView recyclerViewNotification;
     SwipeRefreshLayout swipeRefreshLayoutNotification;
+    FanNotificationModelEnity fanNotificationModelEnity;
+    List<FanNotificationModelEnity> fanNotificationModelEnities;
+    FanNotificationAdapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +58,28 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
         swipeRefreshLayoutNotification = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutNotification);
         recyclerViewNotification = (RecyclerView) findViewById(R.id.recyclerViewNotification);
 
-        FanNotificationModelEnity notificationModelEnity = new FanNotificationModelEnity();
-        notificationModelEnity.setName("Touhid");
-        notificationModelEnity.setLikeCount("12 " + "K");
-        notificationModelEnity.setMessage("Hello notification");
-        notificationModelEnity.setNotificationImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGMGFWVJIqODvtTaOp7W-qTnRuH0EFnlJ7OhuxGxVESU-L7oTnyury-xbM");
-        notificationModelEnity.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
-        notificationModelEnity.setTime("12:11 PM");
+//        FanNotificationModelEnity notificationModelEnity = new FanNotificationModelEnity();
+//        notificationModelEnity.setName("Touhid");
+//        notificationModelEnity.setLikeCount("12 " + "K");
+//        notificationModelEnity.setMessage("Hello notification");
+//        notificationModelEnity.setNotificationImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGMGFWVJIqODvtTaOp7W-qTnRuH0EFnlJ7OhuxGxVESU-L7oTnyury-xbM");
+//        notificationModelEnity.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
+//        notificationModelEnity.setTime("12:11 PM");
+//
+//        FanNotificationModelEnity notificationModelEnity2 = new FanNotificationModelEnity();
+//        notificationModelEnity2.setName("Touhid");
+//        notificationModelEnity2.setLikeCount("12 " + "K");
+//        notificationModelEnity2.setMessage("Hello notification");
+//        notificationModelEnity2.setNotificationImageUrl("http://wallpaper-gallery.net/images/image-wallpaper/image-wallpaper-13.jpg");
+//        notificationModelEnity2.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
+//        notificationModelEnity2.setTime("12:11 PM");
 
-        FanNotificationModelEnity notificationModelEnity2 = new FanNotificationModelEnity();
-        notificationModelEnity2.setName("Touhid");
-        notificationModelEnity2.setLikeCount("12 " + "K");
-        notificationModelEnity2.setMessage("Hello notification");
-        notificationModelEnity2.setNotificationImageUrl("http://wallpaper-gallery.net/images/image-wallpaper/image-wallpaper-13.jpg");
-        notificationModelEnity2.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
-        notificationModelEnity2.setTime("12:11 PM");
 
-        List<FanNotificationModelEnity> fanNotificationModelEnities = new ArrayList<>();
-        fanNotificationModelEnities.add(notificationModelEnity);
-        fanNotificationModelEnities.add(notificationModelEnity2);
-
-        FanNotificationAdapter mAdapter = new FanNotificationAdapter(FanNotificationActivity.this, fanNotificationModelEnities);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        fanNotificationModelEnities = new ArrayList<>();
+        mAdapter = new FanNotificationAdapter(FanNotificationActivity.this, fanNotificationModelEnities);
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewNotification.setLayoutManager(mLayoutManager);
         recyclerViewNotification.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewNotification.setAdapter(mAdapter);
 
         swipeRefreshLayoutNotification.setOnRefreshListener(FanNotificationActivity.this);
         swipeRefreshLayoutNotification.post(new Runnable() {
@@ -87,7 +101,51 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
     }
 
     private void fetchAllNotification() {
+
         swipeRefreshLayoutNotification.setRefreshing(false);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.URL_GET_ALL_NOTIFICATION_LIST, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.d("FromServer 12", jsonObject.toString());
+
+                try {
+                    JSONArray array = jsonObject.getJSONArray("result");
+
+                    for (int i = 0; i <= array.length() - 1; i++) {
+
+                        JSONObject obj = array.getJSONObject(i);
+                        fanNotificationModelEnity = new FanNotificationModelEnity();
+                        fanNotificationModelEnity.setName(obj.getString(Api.NOTIF_CELEB_NAME));
+                        fanNotificationModelEnity.setTime(obj.getString(Api.NOTIF_TIME));
+                        fanNotificationModelEnity.setProfileImageUrl(obj.getString(Api.NOTIF_CELEB_PIC_URL));
+
+                        fanNotificationModelEnities.add(fanNotificationModelEnity);
+
+                        recyclerViewNotification.setAdapter(mAdapter);
+
+                        mAdapter.notifyDataSetChanged();
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                swipeRefreshLayoutNotification.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("FromServer", volleyError.toString());
+                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                swipeRefreshLayoutNotification.setRefreshing(false);
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(FanNotificationActivity.this);
+
+        //Adding request to the queue
+        requestQueue.add(request);
     }
 
     @Override

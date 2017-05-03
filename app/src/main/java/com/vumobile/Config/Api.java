@@ -54,7 +54,7 @@ public class Api {
 
     public static final String SHARED_PREF = "ah_firebase";
     public static final String URL_SAVE_CELEB_DATA= "http://wap.shabox.mobi/testwebapi/celebrity/CelebrityRegistration?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-    public static final String URL_SAVE_FAN_DATA= "http://wap.shabox.mobi/testwebapi/celebrity/FanRegistration?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String URL_SAVE_FAN_DATA= "http://wap.shabox.mobi/testwebapi/Fan/FanRegistration?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
 
     public static final String URL_PARENT_SAVE_CELEB = "http://vumobile.biz/Toukir/celeb_comment/savebroadcastdata.php?vid=";
@@ -68,6 +68,22 @@ public class Api {
     public static final String CELEB_NAME = "Name";
     public static final String CELEB_IMAGE = "Image_url";
     public static final String CELEB_CODE_MSISDN = "MSISDN";
+
+
+    // fan subscribe
+    public static final String URL_POST_FOLLOW = "http://wap.shabox.mobi/testwebapi/follower/Follow?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String URL_GET_FOLLOW_CELEB_LIST = "http://wap.shabox.mobi/testwebapi/follower/FollowerList?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+    // notification
+    public static final String URL_GET_ALL_NOTIFICATION_LIST = "http://wap.shabox.mobi/testwebapi/Notification/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String NOTIF_CELEB_NAME = "Name";
+    public static final String NOTIF_CELEB_MSISDN = "MSISDN";
+    public static final String NOTIF_CELEB_ID = "Celeb_id";
+    public static final String NOTIF_CELEB_GENDER = "gender";
+    public static final String NOTIF_CELEB_PIC_URL = "Image_url";
+    public static final String NOTIF_TIME = "TimeStamp";
+
+
 
 
 }
