@@ -15,6 +15,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
+import com.vumobile.fan.login.ui.FanNotificationActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.agora.rtc.Constants;
@@ -68,7 +69,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         switch (view.getId()) {
 
             case R.id.imageViewNotification:
-                Toast.makeText(this, "notification", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), FanNotificationActivity.class));
                 break;
 
             case R.id.imageViewMessage:
@@ -76,7 +77,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.imageViewHome:
-                Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
         }
 

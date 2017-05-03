@@ -375,7 +375,6 @@ public class ParentActivity extends BaseActivity
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-
         buttonFilterAll = (Button) findViewById(R.id.buttonFilterAll);
         buttonFilterFollowing = (Button) findViewById(R.id.buttonFilterFollowing);
         buttonFilterLive = (Button) findViewById(R.id.buttonFilterLive);

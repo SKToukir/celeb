@@ -53,7 +53,7 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
         notificationModelEnity2.setName("Touhid");
         notificationModelEnity2.setLikeCount("12 " + "K");
         notificationModelEnity2.setMessage("Hello notification");
-        notificationModelEnity2.setNotificationImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGMGFWVJIqODvtTaOp7W-qTnRuH0EFnlJ7OhuxGxVESU-L7oTnyury-xbM");
+        notificationModelEnity2.setNotificationImageUrl("http://wallpaper-gallery.net/images/image-wallpaper/image-wallpaper-13.jpg");
         notificationModelEnity2.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
         notificationModelEnity2.setTime("12:11 PM");
 
