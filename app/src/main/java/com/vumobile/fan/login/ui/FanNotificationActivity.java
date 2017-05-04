@@ -58,22 +58,6 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
         swipeRefreshLayoutNotification = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutNotification);
         recyclerViewNotification = (RecyclerView) findViewById(R.id.recyclerViewNotification);
 
-//        FanNotificationModelEnity notificationModelEnity = new FanNotificationModelEnity();
-//        notificationModelEnity.setName("Touhid");
-//        notificationModelEnity.setLikeCount("12 " + "K");
-//        notificationModelEnity.setMessage("Hello notification");
-//        notificationModelEnity.setNotificationImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGMGFWVJIqODvtTaOp7W-qTnRuH0EFnlJ7OhuxGxVESU-L7oTnyury-xbM");
-//        notificationModelEnity.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
-//        notificationModelEnity.setTime("12:11 PM");
-//
-//        FanNotificationModelEnity notificationModelEnity2 = new FanNotificationModelEnity();
-//        notificationModelEnity2.setName("Touhid");
-//        notificationModelEnity2.setLikeCount("12 " + "K");
-//        notificationModelEnity2.setMessage("Hello notification");
-//        notificationModelEnity2.setNotificationImageUrl("http://wallpaper-gallery.net/images/image-wallpaper/image-wallpaper-13.jpg");
-//        notificationModelEnity2.setProfileImageUrl("http://www.leytonorient.com/images/common/bg_player_profile_default_big.png");
-//        notificationModelEnity2.setTime("12:11 PM");
-
 
         fanNotificationModelEnities = new ArrayList<>();
         mAdapter = new FanNotificationAdapter(FanNotificationActivity.this, fanNotificationModelEnities);
@@ -93,6 +77,8 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
         );
 
 
+
+
     } // end of onCreate
 
     @Override
@@ -103,6 +89,7 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
     private void fetchAllNotification() {
 
         swipeRefreshLayoutNotification.setRefreshing(false);
+        fanNotificationModelEnities.clear();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.URL_GET_ALL_NOTIFICATION_LIST, null, new Response.Listener<JSONObject>() {
             @Override
@@ -116,8 +103,10 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
 
                         JSONObject obj = array.getJSONObject(i);
                         fanNotificationModelEnity = new FanNotificationModelEnity();
+                        fanNotificationModelEnity.setId(obj.getString(Api.NOTIF_ID));
                         fanNotificationModelEnity.setName(obj.getString(Api.NOTIF_CELEB_NAME));
                         fanNotificationModelEnity.setTime(obj.getString(Api.NOTIF_TIME));
+                        fanNotificationModelEnity.setLikeCount(obj.getString(Api.NOTIF_LIKE_COUNT));
                         fanNotificationModelEnity.setProfileImageUrl(obj.getString(Api.NOTIF_CELEB_PIC_URL));
 
                         fanNotificationModelEnities.add(fanNotificationModelEnity);

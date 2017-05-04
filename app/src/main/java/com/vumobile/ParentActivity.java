@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.CelebrityListAdapter;
 import com.vumobile.celeb.R;
@@ -64,6 +66,8 @@ public class ParentActivity extends BaseActivity
     Button buttonFilterAll, buttonFilterFollowing, buttonFilterLive;
     Toolbar toolbar;
     ImageView imageViewNotification, imageViewMessage;
+    TextView navUserName;
+    ImageView navUserPic;
 
 
     @Override
@@ -98,6 +102,13 @@ public class ParentActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        loadFanProfileData(Api.URL_GET_CELEB_PROFILE);
+        View hView = navigationView.getHeaderView(0);
+        navUserName = (TextView) hView.findViewById(R.id.textView);
+        navUserPic = (ImageView) hView.findViewById(R.id.imageView);
+
 
         //  loadCelebrityData(Api.URL_ACTIVATE_USERS);
 
@@ -164,6 +175,38 @@ public class ParentActivity extends BaseActivity
         Log.e("TAG", "Firebase reg id: " + regId);
         Log.e("taggg", "Firebase:" + regId);
     }
+
+    private void loadFanProfileData(String urlFanProfile) {
+
+        String fullUrl = urlFanProfile + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        Log.d("fanurl", "loadFanProfileData: " + fullUrl);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.d("FromServer fan p", jsonObject.toString());
+                try {
+                    JSONArray array = jsonObject.getJSONArray("result");
+                    JSONObject obj = array.getJSONObject(0);
+                    navUserName.setText(obj.getString("Name"));
+                    Glide.with(ParentActivity.this).load(obj.getString("Image_url")).into(navUserPic);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("FromServer fan p", volleyError.toString());
+                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //Adding request to the queue
+        Volley.newRequestQueue(ParentActivity.this).add(request);
+
+    }
+
 
     private void loadCelebrityData(String urlCelebrity) {
         swipeRefreshLayout.setRefreshing(true);
@@ -300,7 +343,7 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
                         celebrityClass.setFb_name(obj.getString("Name"));
                         celebrityClass.setIsOnline(obj.getString("Live_status"));
-                        celebrityClass.setIsfollow(obj.getString("Isfollow"));
+                        celebrityClass.setIsfollow("1");
 
                         celebrityClassList.add(celebrityClass);
 

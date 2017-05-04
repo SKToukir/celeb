@@ -72,16 +72,26 @@ public class Api {
 
     // fan subscribe
     public static final String URL_POST_FOLLOW = "http://wap.shabox.mobi/testwebapi/follower/Follow?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String URL_POST_UNFOLLOW = "http://wap.shabox.mobi/testwebapi/Follower/Unfollow?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
     public static final String URL_GET_FOLLOW_CELEB_LIST = "http://wap.shabox.mobi/testwebapi/follower/FollowerList?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+    // fan profile
+    public static final String URL_GET_CELEB_PROFILE = "http://wap.shabox.mobi/testwebapi/fan/FanInformation?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; //&MSISDN=8801856565865
+
 
     // notification
     public static final String URL_GET_ALL_NOTIFICATION_LIST = "http://wap.shabox.mobi/testwebapi/Notification/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String NOTIF_ID = "ID";
     public static final String NOTIF_CELEB_NAME = "Name";
     public static final String NOTIF_CELEB_MSISDN = "MSISDN";
     public static final String NOTIF_CELEB_ID = "Celeb_id";
     public static final String NOTIF_CELEB_GENDER = "gender";
     public static final String NOTIF_CELEB_PIC_URL = "Image_url";
     public static final String NOTIF_TIME = "TimeStamp";
+    public static final String NOTIF_LIKE_COUNT = "likeCount";
+    // notif like url
+    public static final String URL_NOTIFICATION_LIKE_SET_GET = "http://wap.shabox.mobi/testwebapi/Notification/like?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; // post
+
 
 
 

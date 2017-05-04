@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -95,12 +94,13 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                 public void onClick(View v) {
                     CelebrityClass p = getItem(position);
                     String ph = Session.retreivePhone(mContext, Session.USER_PHONE);
-                    makeFollower(ph, p.getCeleb_code());
                     if (flw.getDrawable().getConstantState().equals
-                            (mContext.getResources().getDrawable(R.drawable.unfollow).getConstantState())) {
-                        Toast.makeText(mContext, "1", Toast.LENGTH_SHORT).show();
+                            (mContext.getResources().getDrawable(R.drawable.follow).getConstantState())) {
+                        makeFollower(ph, p.getCeleb_code());
+                        flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.unfollow));
                     } else {
-                        Toast.makeText(mContext, "2", Toast.LENGTH_SHORT).show();
+                        makeUnFollower(ph, p.getCeleb_code());
+                        flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.follow));
                     }
                 }
             });
@@ -111,9 +111,53 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
     }
 
     private void makeFollower(String fanPhone, String celebPhone) {
-        Log.d("phone of both", "makeFollower: fan:" + fanPhone +" Cel:"+ celebPhone);
+        Log.d("phone of both", "makeFollower: fan:" + fanPhone + " Cel:" + celebPhone);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_POST_FOLLOW,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer follow", response.toString());
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String res = jsonObject.getString("result");
+                            TastyToast.makeText(mContext, res, TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer follow", "" + error.getMessage());
+                        //    TastyToast.makeText(mContext, "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("fan", fanPhone);
+                params.put("celebrity", celebPhone);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    private void makeUnFollower(String fanPhone, String celebPhone) {
+        Log.d("phone of both", "make un Follower: fan:" + fanPhone + " Cel:" + celebPhone);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_POST_UNFOLLOW,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
