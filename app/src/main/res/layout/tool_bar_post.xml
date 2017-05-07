@@ -14,12 +14,16 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:clickable="true"
+            android:id="@+id/btn_back"
             android:layout_alignParentLeft="true"
             android:src="@drawable/back"
             android:layout_width="50dp"
             android:layout_height="50dp" />
 
         <ImageView
+            android:clickable="true"
+            android:id="@+id/btnHome"
             android:layout_marginRight="5dp"
             android:layout_marginTop="2dp"
             android:layout_alignParentRight="true"

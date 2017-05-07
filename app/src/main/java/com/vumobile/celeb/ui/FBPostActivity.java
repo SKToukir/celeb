@@ -12,10 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,7 +27,6 @@ import android.widget.VideoView;
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
-import com.vumobile.celeb.Utils.ConvertImageClass;
 import com.vumobile.celeb.Utils.ScalingUtilities;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.fan.login.Session;
@@ -36,6 +37,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -49,11 +51,11 @@ import java.util.Locale;
 
 import io.agora.rtc.Constants;
 
-public class FBPostActivity extends BaseActivity implements View.OnClickListener{
+public class FBPostActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView imgCelebImage;
     private TextView txtCelebName;
-    private Button btnGoLive,btnGetPhotoVideo;
+    private Button btnGoLive, btnGetPhotoVideo;
     public static final int IMAGE_PICKER_SELECT = 1;
     private String filePath = null;
     private boolean isImage = true;
@@ -65,6 +67,11 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     long totalSize = 0;
     private TextView txtPercentage;
     float rotateDegree = 270f;
+    private ImageView btnBack, btnHome;
+    private Toolbar toolbar;
+    private Intent intent;
+    public String celebComment;
+    private EditText etComment;
 
 
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -74,6 +81,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fbpost);
+        toolbar = (Toolbar) findViewById(R.id.toolBar_post);
+        setSupportActionBar(toolbar);
 
 
         initUI();
@@ -92,6 +101,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initUI() {
+        etComment = (EditText) findViewById(R.id.etWhatsYourMind);
+        etComment.setOnClickListener(this);
+        btnBack = (ImageView) toolbar.findViewById(R.id.btn_back);
+        btnHome = (ImageView) toolbar.findViewById(R.id.btnHome);
+        btnBack.setOnClickListener(this);
+        btnHome.setOnClickListener(this);
+
         txtPercentage = (TextView) findViewById(R.id.txtPercentage);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnPost = (Button) findViewById(R.id.btnPost);
@@ -105,14 +121,14 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         btnPost.setOnClickListener(this);
         btnGetPhotoVideo.setOnClickListener(this);
 
-        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgCelebImage);
-        txtCelebName.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(imgCelebImage);
+        txtCelebName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
     }
 
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnGoLive:
                 FBPostActivity.this.forwardToLiveRoom(Constants.CLIENT_ROLE_BROADCASTER);
                 break;
@@ -120,9 +136,20 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 choose_from_gallery();
                 break;
             case R.id.btnPost:
-                String img = new ConvertImageClass().baseImage(imageBitmap);
-                Log.d("Image",img);
-                new UploadFileToServer().execute(filePath);
+                celebComment = etComment.getText().toString();
+                new UploadFileToServer().execute(filePath,celebComment);
+                break;
+            case R.id.btn_back:
+                intent = new Intent(FBPostActivity.this, CelebHomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                this.finish();
+                break;
+            case R.id.btnHome:
+                intent = new Intent(FBPostActivity.this, CelebHomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                this.finish();
                 break;
         }
     }
@@ -140,20 +167,20 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
             if (selectedMediaUri.toString().contains("images")) {
                 //handle image
-                Toast.makeText(getApplicationContext(),"This is a image", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "This is a image", Toast.LENGTH_LONG).show();
                 isImage = true;
                 Uri uri = data.getData();
-                filePath = decodeFile(getRealPathFromURI(FBPostActivity.this,uri));
+                filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, uri));
                 decodeFile(filePath);
-                previewMedia(isImage,decodeFile(filePath));
+                previewMedia(isImage, decodeFile(filePath));
 
             } else if (selectedMediaUri.toString().contains("video")) {
                 //handle video
-                Toast.makeText(getApplicationContext(),"This is a video",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "This is a video", Toast.LENGTH_LONG).show();
                 isImage = false;
                 Uri uri = data.getData();
-                filePath = getRealPathFromURI(getApplicationContext(),uri);
-                previewMedia(isImage, getRealPathFromURI(FBPostActivity.this,uri));
+                filePath = getRealPathFromURI(getApplicationContext(), uri);
+                previewMedia(isImage, filePath);
 
             }
 
@@ -190,7 +217,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         // here put the room name
         //roomname@ which room user wants to join
         //String room = msisdn;
-        String room = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+        String room = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         Intent i = new Intent(FBPostActivity.this, LiveRoomActivity.class);
         i.putExtra(ConstantApp.ACTION_KEY_CROLE, cRole);
         i.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, room);
@@ -250,8 +277,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     public String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
@@ -318,7 +345,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
     /**
      * Uploading the file to server
-     * */
+     */
     private class UploadFileToServer extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
@@ -343,12 +370,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         @Override
         protected String doInBackground(String... params) {
             String fPath = params[0];
+            String comment = params[1];
 
-            return uploadFile(fPath);
+            return uploadFile(fPath,comment);
         }
 
         @SuppressWarnings("deprecation")
-        private String uploadFile(String fPath) {
+        private String uploadFile(String fPath,String cmnt) {
             String responseString = null;
 
 
@@ -370,13 +398,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 // Adding file data to http body
 
 
-
 //                entity.addPart("Name", new StringBody("name"));
 //                entity.addPart("MSISDN", new StringBody("name"));
 //                entity.addPart("celeb_id", new StringBody("name"));
 //                entity.addPart("gender", new StringBody("name"));
 //                entity.addPart("Image_url", new StringBody("name"));
                 entity.addPart("Image", new FileBody(sourceFile));
+                entity.addPart("Post",new StringBody(cmnt));
 //                // Extra parameters if you want to pass to server
 //                entity.addPart("complain",new StringBody(complainText));
 //                entity.addPart("isImage",new StringBody(String.valueOf(imageOrNot)));
@@ -424,7 +452,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
     /**
      * Method to show alert dialog
-     * */
+     */
     private void showAlert(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Response from Servers")
