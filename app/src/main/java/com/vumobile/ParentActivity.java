@@ -234,16 +234,9 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setIsfollow(obj.getString("Isfollow"));
 
                         celebrityClassList.add(celebrityClass);
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
+
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-
-
                     }
 
                 } catch (JSONException e) {
@@ -263,7 +256,6 @@ public class ParentActivity extends BaseActivity
 
         //Adding request to the queue
         requestQueue.add(request);
-        //AppController.getInstance().addToRequestQueue(request);
 
     }
 
