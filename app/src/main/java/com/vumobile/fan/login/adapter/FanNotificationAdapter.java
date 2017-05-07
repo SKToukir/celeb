@@ -26,6 +26,10 @@ import com.vumobile.fan.login.model.FanNotificationModelEnity;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,7 +89,25 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
 
         holder.textViewNotificationCelebName.setText(fanNotificationModelEnity.getName());
 
-        holder.textViewNotificationTime.setText(fanNotificationModelEnity.getTime());
+
+        //  Get convert form and set date
+        String dtStart = fanNotificationModelEnity.getTime(); //"2010-10-15T18:13:42.607"; // "2010-10-15T09:27:370";
+        try {
+            DateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            DateFormat formatter = new SimpleDateFormat("dd-mm-yy hh:mm a");
+            Date convertedDate = parser.parse(dtStart);
+            String output = formatter.format(convertedDate);
+            Log.d("tttd", "onBindViewHolder: " + output);
+            // make am pm to capital and remove .
+            output = output.replace(".", "").replace("a", "A").replace("p", "P").replace("m", "M");
+
+            holder.textViewNotificationTime.setText(output);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
         holder.textViewNotificationMessage.setText(fanNotificationModelEnity.getMessage());
         holder.textViewNotificationLikeCount.setText(fanNotificationModelEnity.getLikeCount());
         holder.textViewNotificationCelebName.setTag(fanNotificationModelEnity.getId());
