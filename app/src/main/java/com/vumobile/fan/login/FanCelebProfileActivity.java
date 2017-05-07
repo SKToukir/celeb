@@ -18,7 +18,6 @@ import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.agora.rtc.Constants;
 
 public class FanCelebProfileActivity extends BaseActivity implements View.OnClickListener {
 
@@ -116,9 +115,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
     }
 
-    public void btnShowLive(View view) {
-        FanCelebProfileActivity.this.forwardToLiveRoom(Constants.CLIENT_ROLE_AUDIENCE);
-    }
 
     public void forwardToLiveRoom(int cRole) {
 

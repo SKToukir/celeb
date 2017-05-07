@@ -6,7 +6,15 @@ package com.vumobile.fan.login.model;
 
 public class FanNotificationModelEnity {
 
-    String name, profileImageUrl, time, message, notificationImageUrl, likeCount;
+    String id, name, profileImageUrl, time, message, notificationImageUrl, likeCount;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
