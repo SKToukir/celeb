@@ -127,10 +127,10 @@
 
                     <ImageView
                         android:id="@+id/imgGoLive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:clickable="true"
-                        android:src="@drawable/celebgolive" />
+                        android:src="@drawable/golive" />
 
                 </LinearLayout>
 
@@ -142,9 +142,9 @@
 
                     <ImageView
                         android:id="@+id/imgImageVideoCeleb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/celebimagevideo" />
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/imageandvideo" />
 
                 </LinearLayout>
 
@@ -164,9 +164,9 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/celebrqst" />
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/request" />
 
                 </LinearLayout>
 
@@ -177,9 +177,9 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/celebmsg" />
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/massege" />
 
                 </LinearLayout>
 
