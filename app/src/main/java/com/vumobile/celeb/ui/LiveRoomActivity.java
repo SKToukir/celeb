@@ -354,11 +354,11 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
         // if connected wifi
         if (status == 1) {
-            Log.d("LinkRate:",linkRate);
-            int vProfile = Constants.VIDEO_PROFILE_240P;
+            Log.d("Connected:",linkRate);
+            int vProfile = Constants.VIDEO_PROFILE_180P_4;
             // default smothness 1.0f and lightness 0.65f
             // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
-            worker().setPreParameters(.50f, 1.0f);
+            worker().setPreParameters(0.80f, 1.0f);
             worker().configEngine(cRole, vProfile);
 
 //            Log.d("Connected:","wifi");
@@ -441,6 +441,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     }
 
     public void onClickClose(View view) {
+        new ServerPostRequest().onLive(getApplicationContext(), msisdn, "0");
         finish();
     }
 
@@ -581,8 +582,27 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     @Override
     public void onUserOffline(int uid, int reason) {
         log.debug("onUserOffline " + (uid & 0xFFFFFFFFL) + " " + reason);
+        //showOffLineAlert(uid);
         doRemoveRemoteUi(uid);
+    }
 
+    private void showOffLineAlert(int uID) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setMessage("Celebrity goes offline!");
+        alertDialogBuilder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                new ServerPostRequest().onLive(getApplicationContext(), msisdn, "0");
+
+                finish();
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
     }
 

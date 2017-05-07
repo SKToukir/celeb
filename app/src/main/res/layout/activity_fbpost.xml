@@ -11,6 +11,17 @@
         android:id="@+id/toolBar_post"
         layout="@layout/tool_bar_post"/>
 
+    <ScrollView
+        android:layout_below="@+id/toolBar_post"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_below="@+id/toolBar_post"
         android:id="@+id/linearLayout"
@@ -37,54 +48,122 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnPost"
-        android:layout_marginRight="10dp"
-        android:background="#d950a6"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/linearLayout"
-        android:text="POST"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-    <EditText
-        android:layout_margin="10dp"
-        android:layout_below="@+id/btnPost"
-        android:clickable="true"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/etWhatsYourMind"
-        android:editable="true"
-        android:enabled="true"
-        android:minLines="6"
-        android:maxLines="6"
-        android:isScrollContainer="true"
-        android:hint="Whats on your mind?"
-        android:background="#fff"
-        android:gravity="top"
-        android:padding="10dp" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:background="@drawable/glivebutton"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/etWhatsYourMind"
-        android:layout_alignLeft="@+id/etWhatsYourMind"
-        android:layout_alignStart="@+id/etWhatsYourMind"
-        android:id="@+id/btnGoLive" />
-
-    <Button
-        android:background="@drawable/photovbutton"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/btnGoLive"
-        android:layout_alignLeft="@+id/btnGoLive"
-        android:layout_alignStart="@+id/btnGoLive"
-        android:layout_marginTop="19dp"
-        android:id="@+id/btnPhotoVideo" />
+        <Button
+            android:layout_gravity="right"
+            android:id="@+id/btnPost"
+            android:layout_marginRight="10dp"
+            android:background="#d950a6"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/linearLayout"
+            android:text="POST"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
+        <EditText
+            android:layout_margin="10dp"
+            android:layout_below="@+id/btnPost"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/etWhatsYourMind"
+            android:editable="true"
+            android:enabled="true"
+            android:minLines="6"
+            android:maxLines="6"
+            android:isScrollContainer="true"
+            android:hint="Whats on your mind?"
+            android:background="#fff"
+            android:gravity="top"
+            android:padding="10dp" />
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"/>
+
+        <!-- Videoview to preview recorded video -->
+
+        <VideoView
+            android:id="@+id/videoPreview"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"/>
+
+        <ProgressBar
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="200dp"
+            android:layout_height="10dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:visibility="gone"
+            android:text="100%"
+            android:layout_gravity="center"
+            android:id="@+id/txtPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <Button
+               android:layout_marginLeft="10dp"
+               android:background="@drawable/photovbutton"
+               android:layout_width="160dp"
+               android:layout_height="50dp"
+               android:layout_below="@+id/btnGoLive"
+               android:layout_alignLeft="@+id/btnGoLive"
+               android:layout_alignStart="@+id/btnGoLive"
+               android:layout_marginTop="19dp"
+               android:id="@+id/btnGetPhotoVideo" />
+
+           <Button
+               android:layout_marginTop="5dp"
+               android:layout_marginLeft="10dp"
+               android:background="@drawable/glivebutton"
+               android:layout_width="160dp"
+               android:layout_height="50dp"
+               android:layout_below="@+id/etWhatsYourMind"
+               android:layout_alignLeft="@+id/etWhatsYourMind"
+               android:layout_alignStart="@+id/etWhatsYourMind"
+               android:id="@+id/btnGoLive" />
+
+       </LinearLayout>
+
+    </LinearLayout>
+
+
+    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
