@@ -118,10 +118,14 @@
             android:label="@string/title_activity_fan_notification"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.GaleeryActivityCeleb" />
+
         <activity android:name=".ui.RequestActivity" />
         <activity android:name=".ui.ScheduleActivity" />
         <activity android:name="com.vumobile.fan.login.ui.FanChatProfileActivity" />
         <activity android:name=".ui.SetScheduleActivity"></activity>
+
+        <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo"></activity>
+
     </application>
 
 </manifest>

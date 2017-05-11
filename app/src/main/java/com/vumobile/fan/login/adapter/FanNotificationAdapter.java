@@ -84,8 +84,8 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
 
         FanNotificationModelEnity fanNotificationModelEnity = fanNotificationModelEnities.get(position);
 
-        Glide.with(mContext).load(fanNotificationModelEnity.getProfileImageUrl()).into(holder.imageViewNotificationProfilePic);
-        Glide.with(mContext).load(fanNotificationModelEnity.getNotificationImageUrl()).into(holder.imageViewNotificationImage);
+        Glide.with(mContext).load(fanNotificationModelEnity.getProfileImageUrl()).thumbnail(0.5f).into(holder.imageViewNotificationProfilePic);
+        Glide.with(mContext).load(fanNotificationModelEnity.getNotificationImageUrl()).thumbnail(0.5f).into(holder.imageViewNotificationImage);
 
         holder.textViewNotificationCelebName.setText(fanNotificationModelEnity.getName());
 

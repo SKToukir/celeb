@@ -26,6 +26,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
+import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
 import org.json.JSONException;
@@ -40,7 +41,9 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
     String msisdn, name, fbName, profilePic;
 
-    ImageView imageViewNotification, imageViewMessage, imageViewHome, imgChat;
+    ImageView imageViewNotification, imageViewMessage, imageViewHome;
+    ImageView imageViewVideoCall, imageViewChat, imageViewImageAndVideo, imageViewGift;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +61,21 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         });
 
 
-        imgChat = (ImageView) findViewById(R.id.imgChat);
         imageViewNotification = (ImageView) toolbar.findViewById(R.id.imageViewNotification);
         imageViewMessage = (ImageView) toolbar.findViewById(R.id.imageViewMessage);
         imageViewHome = (ImageView) toolbar.findViewById(R.id.imageViewHome);
         imageViewNotification.setOnClickListener(this);
         imageViewMessage.setOnClickListener(this);
         imageViewHome.setOnClickListener(this);
-        imgChat.setOnClickListener(this);
+
+        imageViewVideoCall = (ImageView) findViewById(R.id.imageViewVideoCall);
+        imageViewChat = (ImageView) findViewById(R.id.imageViewChat);
+        imageViewImageAndVideo = (ImageView) findViewById(R.id.imageViewImageAndVideo);
+        imageViewGift = (ImageView) findViewById(R.id.imageViewGift);
+        imageViewVideoCall.setOnClickListener(this);
+        imageViewChat.setOnClickListener(this);
+        imageViewImageAndVideo.setOnClickListener(this);
+        imageViewGift.setOnClickListener(this);
 
         CircleImageView imageViewProfilePicFan = (CircleImageView) findViewById(R.id.imageViewProfilePicFan);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
@@ -97,10 +107,26 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
             case R.id.imageViewHome:
                 finish();
                 break;
-            case R.id.imgChat:
+
+            case R.id.imageViewVideoCall:
+                Toast.makeText(this, "v call", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.imageViewChat:
                 String fan_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
                 // show chat request dialog
                 chatRequestDialog(msisdn,fan_msisdn,name,"1");
+                break;
+
+            case R.id.imageViewImageAndVideo:
+                Intent intent = new Intent(getApplicationContext(), FanCelebProfileImageVideo.class);
+                intent.putExtra("MSISDN", msisdn);
+                startActivity(intent);
+                break;
+
+            case R.id.imageViewGift:
+                Toast.makeText(this, "Gift", Toast.LENGTH_SHORT).show();
+
                 break;
         }
 
@@ -219,7 +245,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
     protected void deInitUIandEvent() {
 
     }
-
 
     public void forwardToLiveRoom(int cRole) {
 
