@@ -105,16 +105,15 @@
             android:exported="false"
             android:stopWithTask="false" />
 
-        <activity android:name=".ui.FBPostActivity"
+        <activity
+            android:name=".ui.FBPostActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name="com.vumobile.fan.login.ui.FanNotificationActivity"
             android:label="@string/title_activity_fan_notification"
-            android:theme="@style/AppTheme"></activity>
-
-        <activity android:name=".ui.GaleeryActivityCeleb"></activity>
-
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.GaleeryActivityCeleb" />
+        <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo"></activity>
     </application>
 
 </manifest>

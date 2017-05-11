@@ -33,8 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="John Dow"
             android:padding="8dp"
+            android:text="John Dow"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -52,7 +52,7 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/imgVcall"
+                android:id="@+id/imageViewVideoCall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -62,7 +62,7 @@
                 android:src="@drawable/camera" />
 
             <ImageView
-                android:id="@+id/imgChat"
+                android:id="@+id/imageViewChat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -81,7 +81,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imgVnImages"
+                android:id="@+id/imageViewImageAndVideo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -91,7 +91,7 @@
                 android:src="@drawable/image_video" />
 
             <ImageView
-                android:id="@+id/imgGifts"
+                android:id="@+id/imageViewGift"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"

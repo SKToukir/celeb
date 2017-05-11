@@ -58,7 +58,6 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
         swipeRefreshLayoutNotification = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutNotification);
         recyclerViewNotification = (RecyclerView) findViewById(R.id.recyclerViewNotification);
 
-
         fanNotificationModelEnities = new ArrayList<>();
         mAdapter = new FanNotificationAdapter(FanNotificationActivity.this, fanNotificationModelEnities);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());

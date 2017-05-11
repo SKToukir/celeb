@@ -15,6 +15,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
+import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -24,6 +25,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
     String msisdn, name, fbName, profilePic;
 
     ImageView imageViewNotification, imageViewMessage, imageViewHome;
+    ImageView imageViewVideoCall, imageViewChat, imageViewImageAndVideo, imageViewGift;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,15 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         imageViewNotification.setOnClickListener(this);
         imageViewMessage.setOnClickListener(this);
         imageViewHome.setOnClickListener(this);
+
+        imageViewVideoCall = (ImageView) findViewById(R.id.imageViewVideoCall);
+        imageViewChat = (ImageView) findViewById(R.id.imageViewChat);
+        imageViewImageAndVideo = (ImageView) findViewById(R.id.imageViewImageAndVideo);
+        imageViewGift = (ImageView) findViewById(R.id.imageViewGift);
+        imageViewVideoCall.setOnClickListener(this);
+        imageViewChat.setOnClickListener(this);
+        imageViewImageAndVideo.setOnClickListener(this);
+        imageViewGift.setOnClickListener(this);
 
         CircleImageView imageViewProfilePicFan = (CircleImageView) findViewById(R.id.imageViewProfilePicFan);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
@@ -77,6 +88,24 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
             case R.id.imageViewHome:
                 finish();
+                break;
+
+            case R.id.imageViewVideoCall:
+                Toast.makeText(this, "v call", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.imageViewChat:
+                Toast.makeText(this, "chat", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.imageViewImageAndVideo:
+                Intent intent = new Intent(getApplicationContext(), FanCelebProfileImageVideo.class);
+                intent.putExtra("MSISDN", msisdn);
+                startActivity(intent);
+                break;
+
+            case R.id.imageViewGift:
+                Toast.makeText(this, "Gift", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -114,7 +143,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
     protected void deInitUIandEvent() {
 
     }
-
 
     public void forwardToLiveRoom(int cRole) {
 
