@@ -276,23 +276,12 @@
                         android:layout_height="40dp" />
 
                     <ImageView
-
+                        android:id="@+id/btnGift"
                         android:layout_marginLeft="15dp"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:layout_toRightOf="@+id/btnSendComment"
                         android:src="@drawable/ic_gift"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp" />
-
-
-                    <ImageView
-
-                        android:layout_marginLeft="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_toRightOf="@+id/btnSendComment"
-                        android:src="@drawable/ic_man"
                         android:layout_width="40dp"
                         android:layout_height="40dp" />
 

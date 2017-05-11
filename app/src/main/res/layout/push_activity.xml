@@ -71,10 +71,7 @@
             android:id="@+id/imageViewTest"
             android:layout_width="170dp"
             android:layout_height="170dp"
-            android:background="@drawable/ic_launcher"
-
-
-            />
+            android:background="@drawable/ic_launcher" />
 
     </LinearLayout>
 

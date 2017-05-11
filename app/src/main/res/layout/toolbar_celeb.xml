@@ -15,7 +15,7 @@
 
 
 
-        <TextView
+        <com.vumobile.utils.MyTextView
             android:textStyle="normal"
             android:textColor="#fff"
             android:layout_centerVertical="true"

@@ -34,7 +34,7 @@ public class MyReceiver extends BroadcastReceiver
                 Intent myIntent = new Intent(context, MyReceiver.class);
                 pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
                 AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
-                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 90 * 1000, pendingIntent);
+                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60 * 1000, pendingIntent);
             }
             context.startService(new Intent(context.getApplicationContext(), NetworkedService.class));
 

@@ -32,6 +32,7 @@ import java.util.Map;
  */
 
 public class NetworkedService extends Service {
+    private boolean isRunning  = false;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -113,28 +114,63 @@ public class NetworkedService extends Service {
                 @SuppressWarnings("NewApi")
                 @Override
                 public void onResponse(JSONObject jsonObject) {
-                    Log.d("FromServer", jsonObject.toString());
+                    Log.d("FromServerrrPOST", jsonObject.toString());
 
                     if (jsonObject != null) {
                         try {
                             JSONArray array = jsonObject.getJSONArray("result");
 
-                            for (int i = 0; i <= array.length() - 1; i++) {
+                            for (int i = 0; i < array.length(); i++) {
 
                                 JSONObject object = array.getJSONObject(i);
                                 Log.d("FromServer", object.toString());
-                                String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
-                                String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
-                                String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
-                                String gender = object.getString(Api.CELEB_GENDER_NOTIFICATION);
-                                String celeb_id = object.getString(Api.CELEB_ID_NOTIFICATION);
-                                String currentTime = new Methods().getDate();
+                                String notificationFlag = object.getString(Api.NOTIFICATION_FLAGS);
 
-                                // save notification data to server
-                                saveNotification(name, msisdn, profilePic, gender, celeb_id, currentTime);
+                                if (notificationFlag.equals("1") || notificationFlag.matches("1")){
 
-                                Utils.setCustomViewNotification(getApplicationContext(), name, msisdn, profilePic);
+                                    String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
+                                    String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
+                                    String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
+                                    String gender = object.getString(Api.CELEB_GENDER_NOTIFICATION);
+                                    String celeb_id = object.getString(Api.CELEB_ID_NOTIFICATION);
+                                    String currentTime = new Methods().getDate();
 
+                                    // save notification data to server
+                                    saveNotification(name, msisdn, profilePic, gender, celeb_id, currentTime);
+
+                                    Utils.setCustomViewNotification(getApplicationContext(), name, msisdn, profilePic);
+                                }else {
+                                    TastyToast.makeText(getApplicationContext(),"This is Post notification!",TastyToast.LENGTH_LONG,TastyToast.INFO);
+                                    Log.d("FromServerrrPOST", "POST Notific");
+
+                                    for (int j = 0; j < array.length(); j++ ){
+
+                                        JSONObject object1 = array.getJSONObject(i);
+                                        String name = object1.getString("name");
+                                        Log.d("post",name);
+                                        String celeb_image_url = object1.getString("Image_url");
+                                        Log.d("post",celeb_image_url);
+                                        JSONArray post_array = object1.getJSONArray("Post_Urls");
+                                        String post_url = post_array.getString(0);
+                                        Log.d("post",post_url);
+                                        String comment = object1.getString("post");
+                                        Log.d("post",comment);
+                                        String like = object1.getString("likeCount");
+                                        Log.d("post",like);
+                                        String flags_notific = object1.getString("Flags_Notificaton");
+                                        Log.d("post",flags_notific);
+                                        String gender = object1.getString("gender");
+                                        Log.d("post",gender);
+                                        String msisdn = object1.getString("MSISDN");
+                                        Log.d("post",msisdn);
+                                        String isImage = object1.getString("IsImage");
+                                        String celeb_id = object1.getString("Celeb_id");
+                                        Log.d("post",celeb_id);
+
+                                        Utils.setCustomViewPostNotification(getApplicationContext(),name,celeb_image_url,post_url,comment,like,flags_notific,gender,msisdn,celeb_id,isImage);
+
+                                    }
+                                }
 
                             }
 
@@ -168,6 +204,7 @@ public class NetworkedService extends Service {
         }
 
     }
+
 
     private void saveNotification(String name, String msisdn, String profilePicture, String gender, String celeb_id, String currentTime) {
 
@@ -212,5 +249,11 @@ public class NetworkedService extends Service {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
 
+    }
+    @Override
+    public void onDestroy() {
+        isRunning = false;
+        sendBroadcast(new Intent("YouWillNeverKillMe"));
+        Log.i("TAG", "Service onDestroy");
     }
 }

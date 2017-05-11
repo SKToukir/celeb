@@ -19,7 +19,9 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -29,6 +31,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
 import com.vumobile.celeb.Utils.ScalingUtilities;
 import com.vumobile.celeb.model.ConstantApp;
+import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.fan.login.Session;
 
 import org.apache.http.HttpEntity;
@@ -53,9 +56,11 @@ import io.agora.rtc.Constants;
 
 public class FBPostActivity extends BaseActivity implements View.OnClickListener {
 
+    private RelativeLayout imgVdoLayout;
+    private LinearLayout selectImageVideoLayout;
     private ImageView imgCelebImage;
     private TextView txtCelebName;
-    private Button btnGoLive, btnGetPhotoVideo;
+    private Button btnGoLive, btnGetPhotoVideo, btn_close, btn_edit;
     public static final int IMAGE_PICKER_SELECT = 1;
     private String filePath = null;
     private boolean isImage = true;
@@ -72,7 +77,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private Intent intent;
     public String celebComment;
     private EditText etComment;
-
+    private String name, msisdn, celebID,gender,flags_notification,image_url;
+    Uri uri;
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -86,6 +92,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
 
         initUI();
+
+        Intent intent = getIntent();
+        celebID = intent.getStringExtra("celeb_id");
+        gender = intent.getStringExtra("gender");
+        image_url = intent.getStringExtra("image_url");
+        name = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+        msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
 
 
     }
@@ -101,6 +114,14 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initUI() {
+
+        imgVdoLayout = (RelativeLayout) findViewById(R.id.imgVdoLayout);
+        selectImageVideoLayout = (LinearLayout) findViewById(R.id.selectImageVideoLayout);
+
+        btn_edit = (Button) findViewById(R.id.btn_edit);
+        btn_edit.setOnClickListener(this);
+        btn_close = (Button) findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(this);
         etComment = (EditText) findViewById(R.id.etWhatsYourMind);
         etComment.setOnClickListener(this);
         btnBack = (ImageView) toolbar.findViewById(R.id.btn_back);
@@ -151,6 +172,14 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 startActivity(intent);
                 this.finish();
                 break;
+            case R.id.btn_close:
+                imgPreview.setImageResource(0);
+                vdoPreview.setVideoURI(null);
+                imgVdoLayout.setVisibility(View.GONE);
+                selectImageVideoLayout.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_edit:
+                break;
         }
     }
 
@@ -169,12 +198,16 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 //handle image
                 Toast.makeText(getApplicationContext(), "This is a image", Toast.LENGTH_LONG).show();
                 isImage = true;
-                Uri uri = data.getData();
+                uri = data.getData();
                 filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, uri));
                 decodeFile(filePath);
-                previewMedia(isImage, decodeFile(filePath));
+                selectImageVideoLayout.setVisibility(View.GONE);
+                imgVdoLayout.setVisibility(View.VISIBLE);
+                previewMedia(isImage, filePath);
 
             } else if (selectedMediaUri.toString().contains("video")) {
+                selectImageVideoLayout.setVisibility(View.GONE);
+                imgVdoLayout.setVisibility(View.VISIBLE);
                 //handle video
                 Toast.makeText(getApplicationContext(), "This is a video", Toast.LENGTH_LONG).show();
                 isImage = false;
@@ -190,22 +223,29 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private void previewMedia(boolean isImage, String s) {
         // Checking whether captured media is image or video
         if (isImage) {
-            //imgPreview.setVisibility(View.VISIBLE);
-            // bimatp factory
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            // down sizing image as it throws OutOfMemory Exception for larger
-            // images
-            options.inSampleSize = 8;
-
-            final Bitmap bitmap = BitmapFactory.decodeFile(s, options);
-
-            imageBitmap = bitmap;
+            imgPreview.setVisibility(View.VISIBLE);
+            vdoPreview.setVisibility(View.GONE);
+//            // bimatp factory
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//
+//            // down sizing image as it throws OutOfMemory Exception for larger
+//            // images
+//            options.inSampleSize = 8;
+//
+//            final Bitmap bitmap = BitmapFactory.decodeFile(s, options);
+//
+//            imageBitmap = bitmap;
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
             imgPreview.setImageBitmap(bitmap);
-            rotate(rotateDegree);
+            //rotate(rotateDegree);
         } else {
-            //imgPreview.setVisibility(View.GONE);
+            imgPreview.setVisibility(View.GONE);
             vdoPreview.setVisibility(View.VISIBLE);
             vdoPreview.setVideoPath(s);
             // start playing
@@ -214,6 +254,12 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     }
 
     public void forwardToLiveRoom(int cRole) {
+
+        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+
+        if (!msisdn.isEmpty() || msisdn != null || msisdn != "") {
+            new ServerPostRequest().onLive(getApplicationContext(), msisdn, "1");
+        }
         // here put the room name
         //roomname@ which room user wants to join
         //String room = msisdn;
@@ -381,7 +427,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://wap.shabox.mobi/testwebapi/Notification/upload");
+            //HttpPost httppost = new HttpPost("http://vumobile.biz/Toukir/sendFileToServer.php");
+            HttpPost httppost = new HttpPost("http://wap.shabox.mobi/testwebapi/Notification/up?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre");
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -396,23 +443,34 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 File sourceFile = new File(fPath);
 
                 // Adding file data to http body
+                Log.d("data",name+" "+msisdn+" "+celebID+" "+gender+" "+IsImage(isImage)+" "+image_url+" "+flags_notification+" "+cmnt);
 
-
-//                entity.addPart("Name", new StringBody("name"));
-//                entity.addPart("MSISDN", new StringBody("name"));
-//                entity.addPart("celeb_id", new StringBody("name"));
-//                entity.addPart("gender", new StringBody("name"));
-//                entity.addPart("Image_url", new StringBody("name"));
-                entity.addPart("Image", new FileBody(sourceFile));
-                entity.addPart("Post",new StringBody(cmnt));
-//                // Extra parameters if you want to pass to server
-//                entity.addPart("complain",new StringBody(complainText));
-//                entity.addPart("isImage",new StringBody(String.valueOf(imageOrNot)));
-//                entity.addPart("user_id", new StringBody(uId));
-//                entity.addPart("user_location", new StringBody(loc.trim()));
+                entity.addPart("image", new FileBody(sourceFile));
+                // Extra parameters if you want to pass to server
+                entity.addPart("Name",
+                        new StringBody(name));
+                entity.addPart("MSISDN", new StringBody(msisdn));
+                entity.addPart("Celeb_id", new StringBody(celebID));
+                entity.addPart("gender", new StringBody(gender));
+                entity.addPart("IsImage", new StringBody(IsImage(isImage)));
+                entity.addPart("Image_url", new StringBody(image_url));
+                // set flag notification for post is 2
+                // and here all notification is post
+                entity.addPart("Flags_Notificaton", new StringBody("2"));
+                entity.addPart("post", new StringBody(cmnt));
+               // entity.addPart("Name",new StringBody("my name"));
+                Log.d("Image",sourceFile.toString());
+//                entity.addPart("Name",new StringBody(name));
+//                entity.addPart("MSISDN",new StringBody(msisdn));
+//                entity.addPart("Celeb_id",new StringBody(celebID));
+//                entity.addPart("gender",new StringBody(gender));
+//                entity.addPart("IsImage",new StringBody(String.valueOf(isImage)));
+//                entity.addPart("Image_url",new StringBody(String.valueOf(image_url)));
+//                entity.addPart("Flags_Notificaton",new StringBody("2"));
+//                entity.addPart("post",new StringBody(cmnt));
 
                 totalSize = entity.getContentLength();
-                //httppost.setHeader("Content-Type", "application/json; charset=utf8");
+                //httppost.setHeader("Content-Type", "multipart/form-data");
                 httppost.setEntity(entity);
 
                 // Making server call
@@ -448,6 +506,15 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             super.onPostExecute(result);
         }
 
+    }
+
+    private String IsImage(boolean isImage) {
+
+        if (isImage){
+            return "1";
+        }else {
+            return "2";
+        }
     }
 
     /**

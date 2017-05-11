@@ -6,6 +6,13 @@ package com.vumobile.Config;
 
 public class Api {
 
+
+    // chat and video call request url
+    public static final String URL_CHAT_REQUEST = "http://wap.shabox.mobi/testwebapi/Request/SendRequest?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String URL_VIDEO_CALL_REQUEST = "";
+    public static final String URL_FAN_REQUESTS = "http://wap.shabox.mobi/testwebapi/Request/RequestList?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=";
+    public static final String URL_REQUESTS_ACCEPT = "http://wap.shabox.mobi/testwebapi/Request/RequestAcceptDeny?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
     // global topic to receive app wide push notifications
     public static final String TOPIC_GLOBAL = "global";
 
@@ -15,16 +22,16 @@ public class Api {
     public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
 
     public static final String URL_ACTIVATE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/RegisteredCelebrity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-
     /*Celeb online notification*/
-    public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/LiveCelebrity?MSISDN=";
+    //public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/LiveCelebrity?MSISDN=";
+    public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/notification/pushnotification?MSISDN=";
     public static final String URL_ONLINE_KEY = "&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
     public static final String AUTH_KEY = "bTVseGU4cWc5Nks3VTlrM2VZSXRKN2s2a0NTRHJlOkNlbGViQXBw";
 
-    public static final String CELEB_ID_NOTIFICATION= "ID";
+    public static final String CELEB_ID_NOTIFICATION= "Celeb_id";
     public static final String CELEB_USERNAME_NOTIFICATION= "UserName";
-    public static final String CELEB_NAME_NOTIFICATION= "Name";
+    public static final String CELEB_NAME_NOTIFICATION= "name";
     public static final String CELEB_MSISDN_NOTIFICATION= "MSISDN";
     public static final String CELEB_COUNTRY_NOTIFICATION= "Country";
     public static final String CELEB_CELEBID_NOTIFICATION= "Celeb_id";
@@ -36,6 +43,7 @@ public class Api {
     public static final String CELEB_FB_LOGIN_STATUS_NOTIFICATION= "Fb_login_status";
     public static final String CELEB_REGID_STATUS_NOTIFICATION= "RegId";
     public static final String CELEB_LIVE_STATUS_NOTIFICATION= "Live_status";
+    public static final String NOTIFICATION_FLAGS = "Flags_Notificaton";
     /*------------------------------------------------------------------*/
 
     /*Get single celeb name and msisdn*/

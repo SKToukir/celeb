@@ -51,9 +51,10 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="141dp">
 
         <Button
+            android:textColor="#fff"
             android:layout_gravity="right"
             android:id="@+id/btnPost"
             android:layout_marginRight="10dp"
@@ -70,7 +71,7 @@
             android:layout_below="@+id/btnPost"
             android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/etWhatsYourMind"
@@ -84,42 +85,10 @@
             android:gravity="top"
             android:padding="10dp" />
 
-        <ImageView
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/imgPreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"/>
+
 
         <!-- Videoview to preview recorded video -->
 
-        <VideoView
-            android:id="@+id/videoPreview"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"/>
-
-        <ProgressBar
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="200dp"
-            android:layout_height="10dp"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:visibility="gone"
-            android:text="100%"
-            android:layout_gravity="center"
-            android:id="@+id/txtPercentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
 
     </LinearLayout>
@@ -132,7 +101,109 @@
         android:layout_height="wrap_content">
 
 
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/imgVdoLayout"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/imgVdo"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:id="@+id/imgPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+                <VideoView
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:id="@+id/videoPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_close"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_close"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_margin="5dp"
+                android:background="@drawable/editimage"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+
+
+            <com.vumobile.utils.MyTextView
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/myText"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:text="Add More"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/imgVdo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:id="@+id/imageIcon"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/myText"
+                android:src="@drawable/iamgeicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/imageIcon"
+                android:src="@drawable/videoicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+
+            <ProgressBar
+                android:layout_below="@+id/myText"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="200dp"
+                android:layout_height="10dp"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_below="@+id/progressBar"
+                android:visibility="gone"
+                android:text="100%"
+                android:layout_gravity="center"
+                android:id="@+id/txtPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
        <LinearLayout
+           android:id="@+id/selectImageVideoLayout"
            android:orientation="vertical"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content">

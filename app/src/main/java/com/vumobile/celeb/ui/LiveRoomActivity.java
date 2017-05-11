@@ -1,7 +1,6 @@
 package com.vumobile.celeb.ui;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +16,7 @@ import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -79,6 +79,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     private int i = 5;
     private ImageView btnLike;
     private TextView txtLikes;
+    private ImageView btnGift;
 
     String temp_key, chat_user_name, user_name, id, op;
     String roomName;
@@ -122,6 +123,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     private void initUI() {
 
+        btnGift = (ImageView) findViewById(R.id.btnGift);
+        btnGift.setOnClickListener(this);
         btnLike = (ImageView) findViewById(R.id.btnLike);
         btnLike.setOnClickListener(this);
         txtLikes = (TextView) findViewById(R.id.txtLikes);
@@ -129,15 +132,20 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         listOfComment = (ListView) findViewById(R.id.listComment);
         etComment = (EditText) findViewById(R.id.etComment);
         // used this method for showing edittext view when keyboard shows
-        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(etComment, InputMethodManager.SHOW_IMPLICIT);
+//        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(etComment, InputMethodManager.SHOW_IMPLICIT);
+
         btnSendComment = (Button) findViewById(R.id.btnSendComment);
         btnSendComment.setOnClickListener(this);
+
+        LiveRoomActivity.this.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // hide like button for celebrity
         // celebruty can not give like
         if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
             btnLike.setVisibility(View.GONE);
+            btnGift.setVisibility(View.GONE);
         }
 
     }
@@ -177,7 +185,6 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         Log.d("fbName", user);
 
         if (user.equals("celeb")) {
-
             String fb_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
             msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
             Log.d("fbName", "celeb " + fb_name);
@@ -358,7 +365,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             int vProfile = Constants.VIDEO_PROFILE_180P_4;
             // default smothness 1.0f and lightness 0.65f
             // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
-            worker().setPreParameters(0.80f, 1.0f);
+            worker().setPreParameters(0.50f, 0.50f);
             worker().configEngine(cRole, vProfile);
 
 //            Log.d("Connected:","wifi");
@@ -745,7 +752,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                 // add comment to the comment list here
                 postComment(comment);
                 // hide keyboard
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 etComment.setText("");
                 break;
             case R.id.btnLike:
@@ -761,6 +768,10 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                 i++;
                 txtLikes.setText(String.valueOf(i));
                 txtLikes.startAnimation(myAnim);
+                break;
+
+            case R.id.btnGift:
+                // TODO
                 break;
             default:
                 break;

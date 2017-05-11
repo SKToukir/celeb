@@ -42,11 +42,12 @@ import io.agora.rtc.Constants;
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb;
+    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest;
     NavigationView navigationView;
     TextView txtProfileName, txtCele;
     EditText etWhatsYourMind;
-    String celebName,msisdn,imageUrl;
+    String celebName,msisdn,imageUrl,celeb_id,gender;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +79,16 @@ public class CelebHomeActivity extends BaseActivity
 
         String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
-        getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdn);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdn);
+            }
+        });thread.start();
 
 
         // if can not access celeb name from session
-        if (Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)==null ||
+        if (Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)== null ||
                 Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)=="null"){
             txtCele.setText(celebName);
         }
@@ -106,6 +112,11 @@ public class CelebHomeActivity extends BaseActivity
                     Log.d("FromServer",msisdn);
                     imageUrl = obj.getString("Image_url");
                     Log.d("FromServer",imageUrl);
+                    gender = obj.getString("gender");
+                    Log.d("FromServer",gender);
+                    celeb_id = obj.getString("Celeb_id");
+                    Log.d("FromServer",celeb_id);
+
 
                     new Session().saveData(getApplicationContext(),celebName,msisdn,true,true,imageUrl);
 
@@ -140,6 +151,8 @@ public class CelebHomeActivity extends BaseActivity
 
     private void initUI() {
 
+        imgRequest = (ImageView) findViewById(R.id.imgRequest);
+        imgRequest.setOnClickListener(this);
         imgImageVideoCeleb = (ImageView) findViewById(R.id.imgImageVideoCeleb);
         etWhatsYourMind = (EditText) findViewById(R.id.etWhatsYourMind);
         txtCele = (TextView) findViewById(R.id.txtCelebName);
@@ -148,6 +161,7 @@ public class CelebHomeActivity extends BaseActivity
         imgGoLive.setOnClickListener(this);
         etWhatsYourMind.setOnClickListener(this);
         imgImageVideoCeleb.setOnClickListener(this);
+
 
 
         txtCele.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
@@ -228,10 +242,18 @@ public class CelebHomeActivity extends BaseActivity
                 break;
             case R.id.etWhatsYourMind:
                 //TODO
-                startActivity(new Intent(CelebHomeActivity.this,FBPostActivity.class));
+                Intent intent = new Intent(CelebHomeActivity.this,FBPostActivity.class);
+                intent.putExtra("celeb_id",celeb_id);
+                intent.putExtra("gender",gender);
+                intent.putExtra("image_url",imageUrl);
+                startActivity(intent);
+                //startActivity(new Intent(CelebHomeActivity.this,FBPostActivity.class));
                 break;
             case R.id.imgImageVideoCeleb:
                 startActivity(new Intent(CelebHomeActivity.this,GaleeryActivityCeleb.class));
+                break;
+            case R.id.imgRequest:
+                startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));
                 break;
         }
     }
@@ -255,6 +277,8 @@ public class CelebHomeActivity extends BaseActivity
 
     @Override
     protected void onResume() {
+        txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
         new ServerPostRequest().onLive(getApplicationContext(), Session.retreivePhone(getApplicationContext(), Session.USER_PHONE), "0");
         super.onResume();
     }
@@ -263,5 +287,12 @@ public class CelebHomeActivity extends BaseActivity
     protected void onDestroy() {
         new ServerPostRequest().onLive(getApplicationContext(), Session.retreivePhone(getApplicationContext(), Session.USER_PHONE), "0");
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
     }
 }

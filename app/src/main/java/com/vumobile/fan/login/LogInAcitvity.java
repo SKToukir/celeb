@@ -1,6 +1,7 @@
 package com.vumobile.fan.login;
 
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 public class LogInAcitvity extends AppCompatActivity implements View.OnClickListener {
 
+    PendingIntent pendingIntent;
     private static final String TAG = "LogInAcitvity.java";
     private EditText etUserName, etUserPhone, etVerificationCode;
     private TextView txtBecomeCeleb, txtCopyright;
@@ -49,11 +51,14 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_acitvity);
 
+
         initUI();
 
         isLogin();
 
     }
+
+
 
     private void isLogin() {
 

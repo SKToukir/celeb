@@ -18,6 +18,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
+import com.vumobile.fan.login.ui.FanNotificationActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ import io.agora.rtc.Constants;
 
 public class Utils extends BaseActivity{
 
-    private static NotificationManager mNotificationManager;
+
 
 
 
@@ -47,7 +48,7 @@ public class Utils extends BaseActivity{
 //        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
 //        String strDate = sdf.format(c.getTime());
 
-        mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // Creates an explicit intent for an ResultActivity to receive.
 
         Intent resultIntent;
@@ -118,6 +119,97 @@ public class Utils extends BaseActivity{
         notification.defaults |= Notification.DEFAULT_SOUND;
         mNotificationManager.notify(0, notification);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressWarnings("static-access")
+    public static void setCustomViewPostNotification(Context context,String name,String celeb_image_url,String post_url,String comment,String like,String flags_notific,String gender,String msisdn,String celeb_id,String isImage) {
+
+
+
+        //contentDownloadActivity.doAction=1;
+//        Calendar c = Calendar.getInstance();
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
+//        String strDate = sdf.format(c.getTime());
+
+       NotificationManager mNotificationManagerPost = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // Creates an explicit intent for an ResultActivity to receive.
+
+        Intent resultIntent;
+        resultIntent = new Intent(context,FanNotificationActivity.class);
+
+
+        resultIntent.putExtra("fbname", name);
+        resultIntent.putExtra("msisdn", msisdn);
+        resultIntent.putExtra("post_url", post_url);
+        resultIntent.putExtra("celeb_image_url",celeb_image_url);
+        resultIntent.putExtra("comment",comment);
+        resultIntent.putExtra("like",like);
+
+        resultIntent.putExtra("flags_notific",flags_notific);
+        resultIntent.putExtra("gender",gender);
+        resultIntent.putExtra("celeb_id",celeb_id);
+        resultIntent.putExtra("isImage",isImage);
+
+
+
+        Log.d("fbname", name);
+
+     /*   DownloadTask downloadTask = new DownloadTask();
+
+        *//** Starting the task created above *//*
+        downloadTask.execute(Image);*/
+        // This ensures that the back button follows the recommended convention for the back key.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(FanNotificationActivity.class);
+
+
+
+        // Adds the Intent that starts the Activity to the top of the stack.
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Create remote view and set bigContentView.
+        RemoteViews expandedView = new RemoteViews(context.getPackageName(), R.layout.push_activity);
+
+        Intent volume = new Intent(context, FanNotificationActivity.class);//NotifActivityHandler
+
+
+        volume.putExtra("DO", "2");
+        PendingIntent pVolume = PendingIntent.getActivity(context, 1, resultIntent, 0);
+        expandedView.setOnClickPendingIntent(R.id.MainlayoutCustom, pVolume);
+        expandedView.setTextViewText(R.id.text_view, name);
+
+        //expandedView.setTextViewText(R.id.notificationTime, strDate);
+        try {
+             //expandedView.setImageViewBitmap(R.id.imageViewTest, remote_picture);
+            //expandedView.setImageViewResource(R.id.imageViewTest,R.mipmap.ic_launcher);
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+        Notification notification = new NotificationCompat.Builder(context)
+                .setSmallIcon(getNotificationIcon())
+                //.setLargeIcon(remote_picture)
+                .setAutoCancel(true)
+                .setContentIntent(resultPendingIntent)
+                .setContentTitle(name)
+                .setContentText(comment)
+
+                //  .setDeleteIntent(pendintIntent)
+                .build();
+
+        notification.bigContentView = expandedView;
+
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        mNotificationManagerPost.notify(0, notification);
+    }
+
+
+
 
 
 

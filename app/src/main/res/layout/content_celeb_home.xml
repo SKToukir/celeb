@@ -49,16 +49,17 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <TextView
+                <com.vumobile.utils.MyTextView
                     android:id="@+id/txtCelebName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="Someone Celeb"
                     android:textColor="#fff"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:fontFamily=""/>
 
-                <TextView
+                <com.vumobile.utils.MyTextView
                     android:id="@+id/txtCelebLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,6 +106,13 @@
         </LinearLayout>
 
         <!--third part-->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -164,11 +172,16 @@
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/imgRequest"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/request" />
 
+
+
                 </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -185,9 +198,12 @@
 
             </LinearLayout>
 
+
+
         </LinearLayout>
 
 
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>
