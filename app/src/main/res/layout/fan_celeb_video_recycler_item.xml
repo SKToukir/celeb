@@ -12,7 +12,7 @@
         android:layout_marginRight="5dp"
         card_view:cardCornerRadius="4dp">
 
-        <ImageView
+        <VideoView
             android:id="@+id/imageViewRecyclerItemVThumb"
             android:layout_width="127dp"
             android:layout_height="112dp"

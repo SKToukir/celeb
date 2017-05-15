@@ -171,11 +171,12 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                             JSONObject obj = new JSONObject(response);
                             String request_status = obj.getString("result").replaceAll(" ", "_");
                             Log.d("FromServer", request_status);
-                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
-                                TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                            } else if (request_status.matches("success")) {
-                                // TODO
-                                TastyToast.makeText(getApplicationContext(), "Your request has been sent!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
+
+                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")){
+                                TastyToast.makeText(getApplicationContext(),"Your request is pending",TastyToast.LENGTH_LONG,TastyToast.INFO);
+                            }else if (request_status.matches("Accepted")){
+                                TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

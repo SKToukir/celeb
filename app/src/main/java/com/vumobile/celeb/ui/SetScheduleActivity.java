@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.Session;
@@ -71,12 +72,12 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                showMySchedule();
+                getFanRegId();
             }
         });thread.start();
     }
 
-    private void showMySchedule() {
+    private void getFanRegId() {
 
 
 
@@ -167,6 +168,7 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
                     public void onResponse(String response) {
                         Log.d("FromServer", response.toString());
 
+                        TastyToast.makeText(getApplicationContext(),response,TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                     }
                 },
                 new Response.ErrorListener() {

@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,6 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
@@ -50,12 +56,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import io.agora.rtc.Constants;
 
 public class FBPostActivity extends BaseActivity implements View.OnClickListener {
 
+    private ShareDialog shareDialog;
     private RelativeLayout imgVdoLayout;
     private LinearLayout selectImageVideoLayout;
     private ImageView imgCelebImage;
@@ -86,10 +94,10 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_fbpost);
         toolbar = (Toolbar) findViewById(R.id.toolBar_post);
         setSupportActionBar(toolbar);
-
 
         initUI();
 
@@ -142,6 +150,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         btnPost.setOnClickListener(this);
         btnGetPhotoVideo.setOnClickListener(this);
 
+
         Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(imgCelebImage);
         txtCelebName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
     }
@@ -158,7 +167,9 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btnPost:
                 celebComment = etComment.getText().toString();
+
                 new UploadFileToServer().execute(filePath,celebComment);
+
                 break;
             case R.id.btn_back:
                 intent = new Intent(FBPostActivity.this, CelebHomeActivity.class);
@@ -249,7 +260,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             vdoPreview.setVisibility(View.VISIBLE);
             vdoPreview.setVideoPath(s);
             // start playing
-            vdoPreview.start();
+            vdoPreview.pause();
         }
     }
 
@@ -544,6 +555,59 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         rotateAnim.setDuration(0);
         rotateAnim.setFillAfter(true);
         imgPreview.startAnimation(rotateAnim);
+    }
+
+    private void sharePhoto(Bitmap img, String cmnt) {
+        //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+
+        Bitmap image = img;
+
+        shareDialog = new ShareDialog(this);
+
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(image)
+                .setCaption(cmnt)
+                .build();
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+
+        shareDialog.show(content);
+    }
+
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath)
+            throws Throwable
+    {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever mediaMetadataRetriever = null;
+        try
+        {
+            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14)
+                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+            else
+                mediaMetadataRetriever.setDataSource(videoPath);
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new Throwable(
+                    "Exception in retriveVideoFrameFromVideo(String videoPath)"
+                            + e.getMessage());
+
+        }
+        finally
+        {
+            if (mediaMetadataRetriever != null)
+            {
+                mediaMetadataRetriever.release();
+            }
+        }
+        return bitmap;
     }
 
 }

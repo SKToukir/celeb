@@ -62,10 +62,15 @@ public class FanCelebImageRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FanCelebImageModelEntity fanCelebImageModelEntity = fanCelebImageModelEntities.get(position);
-        Glide.with(context)
-                .load(fanCelebImageModelEntity.getImageUrl())
-                .thumbnail(0.5f)
-                .into(holder.imageViewRecyclerItem);
+
+        String isImage = fanCelebImageModelEntity.getIsImage();
+
+
+
+            Glide.with(context)
+                    .load(fanCelebImageModelEntity.getImageUrl())
+                    .thumbnail(0.5f)
+                    .into(holder.imageViewRecyclerItem);
 
         // holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.unfollow));
         Log.d("adapter ttt", "onBindViewHolder: " + fanCelebImageModelEntity.getImageUrl());

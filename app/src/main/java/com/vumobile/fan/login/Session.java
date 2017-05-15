@@ -19,6 +19,7 @@ public class Session {
     public static String FB_PROFILE_PIC_URL= "fb_pf_url";
     public static String FB_PROFILE_NAME= "fb_name";
     public static String REGISTERED_CELEB = "registered_celeb";
+    public static String FB_LOGIN_STATUS = "fb_status";
 
     public void saveData(String uName, String phoneNumber,boolean isCeleb, boolean checkLogin, Context cntx){
 
@@ -54,6 +55,17 @@ public class Session {
         SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putBoolean(REGISTERED_CELEB, isReg);
         editor.commit();
+    }
+
+    public void saveFbLoginStatus(Context cntx, boolean isReg){
+        SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putBoolean(FB_LOGIN_STATUS, isReg);
+        editor.commit();
+    }
+
+    public static boolean isFbLogIn(Context cntx,String regKey){
+        boolean prefs = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getBoolean(regKey,false);
+        return prefs;
     }
 
     public static boolean isReg(Context cntx,String regKey){

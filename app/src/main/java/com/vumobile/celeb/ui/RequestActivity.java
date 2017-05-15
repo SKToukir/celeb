@@ -65,7 +65,7 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Api.URL_FAN_REQUESTS + msisdn, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                Log.d("request",response.toString());
                 try {
                     JSONArray array = response.getJSONArray("result");
 
@@ -88,9 +88,10 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 
                         String request_time = convertTimeStamp(obj.getString("RequestTime"));
                         Log.d("time",request_time);
-                        requestClass.setRequestTime(request_time);
+                        requestClass.setRequestToTime(request_time);
                         requestClass.setMSISDN(obj.getString("MSISDN"));
                         Log.d("dataa",request_time);
+
                         requestClasses.add(requestClass);
                         listOfRequests.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -116,7 +117,7 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 //            requestClass = new RequestClass();
 //            requestClass.setFanName("Tonmoy Sheikh");
 //            requestClass.setImageUrl("https://graph.facebook.com/1931218820457638/picture?width=500&height=500");
-//            requestClass.setRequest("Request for chat");
+//            requestClass.setRequestToTime("Request for chat");
 //            requestClass.setRequestTime("9/05/2017 5.30pm");
 //
 //            requestClasses.add(requestClass);

@@ -135,8 +135,8 @@
 
                     <ImageView
                         android:id="@+id/imgGoLive"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="140dp"
+                        android:layout_height="110dp"
                         android:clickable="true"
                         android:src="@drawable/golive" />
 
@@ -150,8 +150,8 @@
 
                     <ImageView
                         android:id="@+id/imgImageVideoCeleb"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="150dp"
+                        android:layout_height="120dp"
                         android:src="@drawable/imageandvideo" />
 
                 </LinearLayout>
@@ -173,8 +173,8 @@
 
                     <ImageView
                         android:id="@+id/imgRequest"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="140dp"
+                        android:layout_height="130dp"
                         android:src="@drawable/request" />
 
 
@@ -190,8 +190,8 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="140dp"
+                        android:layout_height="130dp"
                         android:src="@drawable/massege" />
 
                 </LinearLayout>

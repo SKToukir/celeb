@@ -31,6 +31,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -223,8 +224,8 @@ public class CelebHomeActivity extends BaseActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_gifts) {
-
+        } else if (id == R.id.nav_schedule) {
+            startActivity(new Intent(getApplicationContext(),ScheduleActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -250,7 +251,7 @@ public class CelebHomeActivity extends BaseActivity
                 //startActivity(new Intent(CelebHomeActivity.this,FBPostActivity.class));
                 break;
             case R.id.imgImageVideoCeleb:
-                startActivity(new Intent(CelebHomeActivity.this,GaleeryActivityCeleb.class));
+                startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
                 break;
             case R.id.imgRequest:
                 startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));

@@ -88,11 +88,11 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
             }
 
             if (tt2 != null) {
-                tt2.setText(requestClass.getRequest());
+                tt2.setText(requestClass.getRequestToTime());
             }
 
             if (tt3 != null) {
-                tt3.setText(requestClass.getRequestTime());
+                tt3.setText(requestClass.getRequest());
             }
 
             if (imgFan != null) {
