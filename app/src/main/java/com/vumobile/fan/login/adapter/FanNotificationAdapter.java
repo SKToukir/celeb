@@ -1,6 +1,8 @@
 package com.vumobile.fan.login.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,26 +12,30 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MyBounceInterpolator;
+import com.vumobile.fan.login.ImageOrVideoView;
+import com.vumobile.fan.login.ViaLive;
 import com.vumobile.fan.login.model.FanNotificationModelEnity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,11 +48,12 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
     Context mContext;
     String totalLike;
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageViewNotificationProfilePic, imageViewNotificationImage, imageViewNotificationLike;
+        public ImageView imageViewNotificationProfilePic, imageViewNotificationImage, imageViewNotificationLike, imageViewPlayIcon;
         public TextView textViewNotificationCelebName, textViewNotificationTime, textViewNotificationMessage, textViewNotificationLikeCount;
         public LinearLayout linearLayoutMain;
+        public VideoView videoViewNotif;
+        public RelativeLayout relativeLayoutImageAndVideo;
 
         public MyViewHolder(View view) {
             super(view);
@@ -55,12 +62,16 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
             imageViewNotificationProfilePic = (ImageView) view.findViewById(R.id.imageViewNotificationProfilePic);
             imageViewNotificationImage = (ImageView) view.findViewById(R.id.imageViewNotificationImage);
             imageViewNotificationLike = (ImageView) view.findViewById(R.id.imageViewNotificationLike);
+            imageViewPlayIcon = (ImageView) view.findViewById(R.id.imageViewPlayIcon);
 
             textViewNotificationCelebName = (TextView) view.findViewById(R.id.textViewNotificationCelebName);
             textViewNotificationTime = (TextView) view.findViewById(R.id.textViewNotificationTime);
             textViewNotificationMessage = (TextView) view.findViewById(R.id.textViewNotificationMessage);
             textViewNotificationLikeCount = (TextView) view.findViewById(R.id.textViewNotificationLikeCount);
 
+            videoViewNotif = (VideoView) view.findViewById(R.id.videoViewNotif);
+
+            relativeLayoutImageAndVideo = (RelativeLayout) view.findViewById(R.id.relativeLayoutImageAndVideo);
 
         }
     }
@@ -81,39 +92,103 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-
         FanNotificationModelEnity fanNotificationModelEnity = fanNotificationModelEnities.get(position);
 
-        Glide.with(mContext).load(fanNotificationModelEnity.getProfileImageUrl()).thumbnail(0.5f).into(holder.imageViewNotificationProfilePic);
-        Glide.with(mContext).load(fanNotificationModelEnity.getNotificationImageUrl()).thumbnail(0.5f).into(holder.imageViewNotificationImage);
+        Glide.with(mContext).load(fanNotificationModelEnity.getImage_url()).thumbnail(0.5f).into(holder.imageViewNotificationProfilePic);
+
 
         holder.textViewNotificationCelebName.setText(fanNotificationModelEnity.getName());
+        holder.textViewNotificationTime.setText(fanNotificationModelEnity.getTimeStamp());
+        holder.textViewNotificationMessage.setText(fanNotificationModelEnity.getPost());
+        holder.textViewNotificationLikeCount.setText(fanNotificationModelEnity.getLikeCount());
+
+        // tag
+        holder.textViewNotificationCelebName.setTag(fanNotificationModelEnity.getId()); // set tag with msisdn to make a new like
+        holder.textViewNotificationTime.setTag(fanNotificationModelEnity.getPost_Urls()); // set tag with image/video url
+        holder.textViewNotificationMessage.setTag(fanNotificationModelEnity.getIsImage()); // 1 for image 2 for video
+        holder.textViewNotificationLikeCount.setTag(fanNotificationModelEnity.getFlags_Notificaton()); // 1 is live , 2 is post
+
+        holder.videoViewNotif.setVisibility(View.GONE);
+        holder.imageViewNotificationImage.setVisibility(View.GONE);
+        holder.imageViewPlayIcon.setVisibility(View.GONE);
 
 
-        //  Get convert form and set date
-        String dtStart = fanNotificationModelEnity.getTime(); //"2010-10-15T18:13:42.607"; // "2010-10-15T09:27:370";
+        if (fanNotificationModelEnity.getFlags_Notificaton().equals("1")) {
+            holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
+//            holder.imageViewNotificationImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.live_icon));
+            Glide.with(mContext).load("").placeholder(mContext.getResources().getDrawable(R.drawable.live_icon)).into(holder.imageViewNotificationImage);
+            holder.textViewNotificationMessage.setText("Live video...");
+        }
+        Log.d("ttt o", "onBindViewHolder: " + fanNotificationModelEnity.getFlags_Notificaton() + fanNotificationModelEnity.getName());
+
+
+        JSONArray array = null;  //jsonObject.getJSONArray("result");
         try {
-            DateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            DateFormat formatter = new SimpleDateFormat("dd-mm-yy hh:mm a");
-            Date convertedDate = parser.parse(dtStart);
-            String output = formatter.format(convertedDate);
-            Log.d("tttd", "onBindViewHolder: " + output);
-            // make am pm to capital and remove .
-            output = output.replace(".", "").replace("a", "A").replace("p", "P").replace("m", "M");
+            array = new JSONArray(fanNotificationModelEnity.getPost_Urls());
+            for (int a = 0; a < array.length(); a++) {
+                if (!array.get(a).equals("")) {
+                    Log.d("touhid", "image or video link: " + array.get(a));
+                    if (fanNotificationModelEnity.getIsImage().equals("1")) {
+                        holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
+                        holder.videoViewNotif.setTag(array.get(a));
+                        Glide.with(mContext).load(array.get(a)).thumbnail(0.5f).into(holder.imageViewNotificationImage);
+                    } else if (fanNotificationModelEnity.getIsImage().equals("2")) {
+                        holder.videoViewNotif.setVisibility(View.VISIBLE);
+                        holder.imageViewPlayIcon.setVisibility(View.VISIBLE);
+                        Uri uri = Uri.parse(array.get(a).toString()); //Declare your url here.
+                        holder.videoViewNotif.setVideoURI(uri);
+                        holder.videoViewNotif.setTag(uri);
+                        holder.videoViewNotif.seekTo(1000);
+                        holder.videoViewNotif.pause();
 
-            holder.textViewNotificationTime.setText(output);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
+                    }
+
+                }
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
 
-
-        holder.textViewNotificationMessage.setText(fanNotificationModelEnity.getMessage());
-        holder.textViewNotificationLikeCount.setText(fanNotificationModelEnity.getLikeCount());
-        holder.textViewNotificationCelebName.setTag(fanNotificationModelEnity.getId());
-
         holder.linearLayoutMain.setOnClickListener(v -> {
-            Toast.makeText(mContext, "" + holder.textViewNotificationCelebName.getTag(), Toast.LENGTH_SHORT).show();
+
+            if (fanNotificationModelEnity.getFlags_Notificaton().equals("1")) {
+                // Go to live
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.CELEB_IS_ONLINE + fanNotificationModelEnity.getMSISDN(), null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        Log.d("FromServer 19", jsonObject.toString());
+
+                        try {
+
+                            if (!jsonObject.getString("result").equals("0")) {
+                                Intent intent = new Intent(mContext, ViaLive.class);
+                                intent.putExtra("CELEB_FB_NAME", holder.textViewNotificationCelebName.getText().toString());
+                                mContext.startActivity(intent);
+                            } else {
+                                Toast.makeText(mContext, holder.textViewNotificationCelebName.getText().toString()+" is offline now.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, null);
+
+                RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+
+                //Adding request to the queue
+                requestQueue.add(request);
+
+
+            } else {
+                Intent intent = new Intent(mContext, ImageOrVideoView.class);
+                intent.putExtra("IMG_OR_VID", holder.textViewNotificationMessage.getTag().toString());
+                intent.putExtra("IMG_OR_VID_URL", holder.videoViewNotif.getTag().toString());
+                mContext.startActivity(intent);
+            }
+
         });
 
         holder.imageViewNotificationLike.setOnClickListener(v -> {
@@ -141,7 +216,6 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
     private String makeLikeAndFetchTotalLike(String notifLikeUrl, TextView likePlaceHolder, String tagNotifId) {
 
         String fullUrl = notifLikeUrl + "&ID=" + tagNotifId;
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, fullUrl,
                 new Response.Listener<String>() {
@@ -173,3 +247,20 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
 
 
 }
+
+
+//        //  Get convert form and set date
+//        String dtStart = fanNotificationModelEnity.getTimeStamp(); //"2010-10-15T18:13:42.607"; // "2010-10-15T09:27:370";
+//        try {
+//            DateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//            DateFormat formatter = new SimpleDateFormat("dd-mm-yy hh:mm a");
+//            Date convertedDate = parser.parse(dtStart);
+//            String output = formatter.format(convertedDate);
+//            Log.d("tttd", "onBindViewHolder: " + output);
+//            // make am pm to capital and remove .
+//            output = output.replace(".", "").replace("a", "A").replace("p", "P").replace("m", "M");
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+

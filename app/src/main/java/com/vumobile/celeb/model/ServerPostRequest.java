@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class ServerPostRequest {
 
-    public void onLive(Context mContext,String msisdn,String liveStatus){
+    public void onLive(Context mContext, String msisdn, String liveStatus) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_POST_LIVE,
                 new Response.Listener<String>() {
@@ -39,15 +39,15 @@ public class ServerPostRequest {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("FromServer",""+error.getMessage());
+                        Log.d("FromServer", "" + error.getMessage());
 
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("MSISDN",msisdn);
-                params.put("live",liveStatus);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("MSISDN", msisdn);
+                params.put("live", liveStatus);
 
                 return params;
             }

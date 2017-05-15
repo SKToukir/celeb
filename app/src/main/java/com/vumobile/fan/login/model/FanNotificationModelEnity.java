@@ -6,7 +6,18 @@ package com.vumobile.fan.login.model;
 
 public class FanNotificationModelEnity {
 
-    String id, name, profileImageUrl, time, message, notificationImageUrl, likeCount;
+    String id,
+            name,
+            MSISDN,
+            Celeb_id,
+            gender,
+            IsImage, // 1 is image 2 is video
+            Flags_Notificaton, // 1 is live, 2 is post
+            Image_url, // profile image url
+            post,
+            likeCount,
+            TimeStamp,
+            Post_Urls; // image or video url
 
     public String getId() {
         return id;
@@ -24,36 +35,68 @@ public class FanNotificationModelEnity {
         this.name = name;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public String getMSISDN() {
+        return MSISDN;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void setMSISDN(String MSISDN) {
+        this.MSISDN = MSISDN;
     }
 
-    public String getTime() {
-        return time;
+    public String getCeleb_id() {
+        return Celeb_id;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setCeleb_id(String celeb_id) {
+        Celeb_id = celeb_id;
     }
 
-    public String getMessage() {
-        return message;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getNotificationImageUrl() {
-        return notificationImageUrl;
+    public String getIsImage() {
+        return IsImage;
     }
 
-    public void setNotificationImageUrl(String notificationImageUrl) {
-        this.notificationImageUrl = notificationImageUrl;
+    public void setIsImage(String isImage) {
+        IsImage = isImage;
+    }
+
+    public String getFlags_Notificaton() {
+        return Flags_Notificaton;
+    }
+
+    public void setFlags_Notificaton(String flags_Notificaton) {
+        Flags_Notificaton = flags_Notificaton;
+    }
+
+    public String getImage_url() {
+        return Image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        Image_url = image_url;
+    }
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+    public String getTimeStamp() {
+        return TimeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        TimeStamp = timeStamp;
     }
 
     public String getLikeCount() {
@@ -63,4 +106,13 @@ public class FanNotificationModelEnity {
     public void setLikeCount(String likeCount) {
         this.likeCount = likeCount;
     }
+
+    public String getPost_Urls() {
+        return Post_Urls;
+    }
+
+    public void setPost_Urls(String post_Urls) {
+        Post_Urls = post_Urls;
+    }
+
 }

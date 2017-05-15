@@ -114,18 +114,19 @@
             android:name=".ui.FBPostActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
+            android:name="com.vumobile.fan.login.ViaLive"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
             android:name="com.vumobile.fan.login.ui.FanNotificationActivity"
             android:label="@string/title_activity_fan_notification"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.GaleeryActivityCeleb" />
-
         <activity android:name=".ui.RequestActivity" />
         <activity android:name=".ui.ScheduleActivity" />
         <activity android:name="com.vumobile.fan.login.ui.FanChatProfileActivity" />
-        <activity android:name=".ui.SetScheduleActivity"></activity>
-
-        <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo"></activity>
-
+        <activity android:name=".ui.SetScheduleActivity" />
+        <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo" />
+        <activity android:name="com.vumobile.fan.login.ImageOrVideoView"></activity>
     </application>
 
 </manifest>

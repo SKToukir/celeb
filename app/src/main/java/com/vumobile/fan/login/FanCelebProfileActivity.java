@@ -113,9 +113,9 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.imageViewChat:
-                String fan_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+                String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
                 // show chat request dialog
-                chatRequestDialog(msisdn,fan_msisdn,name,"1");
+                chatRequestDialog(msisdn, fan_msisdn, name, "1");
                 break;
 
             case R.id.imageViewImageAndVideo:
@@ -136,13 +136,13 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        alertDialogBuilder.setMessage("Send chat request to "+name);
+        alertDialogBuilder.setMessage("Send chat request to " + name);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // here fan request for chat to celebrity
-                requestForChat(celeb_msisdn,fan_msisdn,type);
+                requestForChat(celeb_msisdn, fan_msisdn, type);
 
             }
         });
@@ -169,13 +169,13 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
                         try {
                             JSONObject obj = new JSONObject(response);
-                            String request_status = obj.getString("result").replaceAll(" ","_");
+                            String request_status = obj.getString("result").replaceAll(" ", "_");
                             Log.d("FromServer", request_status);
-                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")){
-                                TastyToast.makeText(getApplicationContext(),"Your request is pending",TastyToast.LENGTH_LONG,TastyToast.INFO);
-                            }else if (request_status.matches("success")){
+                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
+                                TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                            } else if (request_status.matches("success")) {
                                 // TODO
-                                TastyToast.makeText(getApplicationContext(),"Your request has been sent!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                TastyToast.makeText(getApplicationContext(), "Your request has been sent!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

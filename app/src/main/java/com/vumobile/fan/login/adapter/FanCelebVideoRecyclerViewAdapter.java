@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.model.FanCelebVideoModelEntity;
 
@@ -61,9 +60,9 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FanCelebVideoModelEntity fanCelebVideoModelEntity = fanCelebVideoModelEntities.get(position);
-        Glide.with(context)
-                .load(fanCelebVideoModelEntity.getVideoUrl())
-                .into(holder.imageViewRecyclerItem);
+//        Glide.with(context)
+//                .load(fanCelebVideoModelEntity.getVideoUrl())
+//                .into(holder.imageViewRecyclerItem);
 //        holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.background));
 
         // holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.unfollow));

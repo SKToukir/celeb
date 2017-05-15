@@ -26,6 +26,7 @@ public class Api {
     //public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/celebrity/LiveCelebrity?MSISDN=";
     public static final String URL_ONLINE_USERS = "http://wap.shabox.mobi/testwebapi/notification/pushnotification?MSISDN=";
     public static final String URL_ONLINE_KEY = "&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String CELEB_IS_ONLINE = "http://wap.shabox.mobi/testwebapi/Celebrity/IsLive?MSISDN="; // 0 return offline 1 return online
 
     public static final String AUTH_KEY = "bTVseGU4cWc5Nks3VTlrM2VZSXRKN2s2a0NTRHJlOkNlbGViQXBw";
 
@@ -91,14 +92,21 @@ public class Api {
 
     // notification
     public static final String URL_GET_ALL_NOTIFICATION_LIST = "http://wap.shabox.mobi/testwebapi/Notification/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-    public static final String NOTIF_ID = "ID";
-    public static final String NOTIF_CELEB_NAME = "Name";
+    public static final String NOTIF_ID = "id";
+    public static final String NOTIF_CELEB_NAME = "name";
     public static final String NOTIF_CELEB_MSISDN = "MSISDN";
     public static final String NOTIF_CELEB_ID = "Celeb_id";
     public static final String NOTIF_CELEB_GENDER = "gender";
+    public static final String NOTIF_IS_IMAGE = "IsImage"; // 1 IS IMAGE, 2 IS VIDEO
+    public static final String NOTIF_FLAG_NOTIF = "Flags_Notificaton";
     public static final String NOTIF_CELEB_PIC_URL = "Image_url";
+    public static final String NOTIF_CELEB_POST = "post";
     public static final String NOTIF_TIME = "TimeStamp";
     public static final String NOTIF_LIKE_COUNT = "likeCount";
+    public static final String NOTIF_POST_URLS = "Post_Urls";
+
+
+
     // notif like url
     public static final String URL_NOTIFICATION_LIKE_SET_GET = "http://wap.shabox.mobi/testwebapi/Notification/like?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; // post
 
