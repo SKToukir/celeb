@@ -9,16 +9,17 @@ public class RequestClass {
     private String imageUrl;
     private String fanName;
     private String request;
-    private String requestTime;
+
+    public String getRequestToTime() {
+        return requestToTime;
+    }
+
+    public void setRequestToTime(String requestToTime) {
+        this.requestToTime = requestToTime;
+    }
+
+    private String requestToTime;
     private String MSISDN;
-
-    public String getMSISDN() {
-        return MSISDN;
-    }
-
-    public void setMSISDN(String MSISDN) {
-        this.MSISDN = MSISDN;
-    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -44,11 +45,13 @@ public class RequestClass {
         this.request = request;
     }
 
-    public String getRequestTime() {
-        return requestTime;
+
+
+    public String getMSISDN() {
+        return MSISDN;
     }
 
-    public void setRequestTime(String requestTime) {
-        this.requestTime = requestTime;
+    public void setMSISDN(String MSISDN) {
+        this.MSISDN = MSISDN;
     }
 }

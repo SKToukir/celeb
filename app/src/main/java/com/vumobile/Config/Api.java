@@ -7,6 +7,12 @@ package com.vumobile.Config;
 public class Api {
 
 
+    // this is a post api. takes flags and MSISDN. flags = 0 means he/she is fan and when 1 then he/she is celeb
+    public static final String URL_GET_SCHEDULES = "http://wap.shabox.mobi/testwebapi/Notification/Schedule?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+    // get celeb posts...
+    public static final String URL_CELEB_POSTS = "http://wap.shabox.mobi/testwebapi/Notification/MyPost?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
     // chat and video call request url
     public static final String URL_CHAT_REQUEST = "http://wap.shabox.mobi/testwebapi/Request/SendRequest?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
     public static final String URL_VIDEO_CALL_REQUEST = "";

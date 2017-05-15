@@ -6,7 +6,19 @@ package com.vumobile.fan.login.model;
 
 public class FanCelebVideoModelEntity {
 
-    String videoName, videoUrl, videoOwnerPhone;
+    String videoName;
+    String videoUrl;
+    String videoOwnerPhone;
+
+    public String getSetIsImage() {
+        return setIsImage;
+    }
+
+    public void setSetIsImage(String setIsImage) {
+        this.setIsImage = setIsImage;
+    }
+
+    String setIsImage;
 
     public String getVideoName() {
         return videoName;

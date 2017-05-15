@@ -71,7 +71,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
     private LoginButton loginButton;
-    private String firstName, lastName, email, birthday, gender;
+    private String firstName, lastName, email = "null", birthday, gender, loc;
     private URL profilePicture;
     private static String userId;
     private TextView txtStatus, txtConfirmationMessage;
@@ -176,6 +176,8 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                 Log.d("status", loginResult.toString());
                 txtConfirmationMessage.setVisibility(View.VISIBLE);
                 callGraphApi(loginResult.getAccessToken());
+
+
             }
 
             @Override
@@ -198,8 +200,8 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         GraphRequest request = GraphRequest.newMeRequest(access_toke, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-                Log.e(TAG, object.toString());
-                Log.e(TAG, response.toString());
+                Log.d("lol", object.toString());
+                Log.d("lol", response.toString());
 
                 try {
                     userId = object.getString("id");
@@ -223,9 +225,15 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                     if (object.has("gender"))
                         gender = object.getString("gender");
                     Log.e("lol", "gender" + gender);
+
+                    if (object.has("location"))
+                        loc = object.getString("location");
+                    Log.e("lol", "location" + loc);
+
                     fbName = firstName + " " + lastName;
                     new Session().saveProfilePicUrl(getApplicationContext(), profile_url, fbName);
                     txtStatus.setText(fbName);
+
 
                     sendDataToServer();
 
@@ -244,7 +252,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         });
         //Here we put the requested fields to be returned from the JSONObject
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id, first_name, last_name, email, birthday, gender");
+        parameters.putString("fields", "id, birthday, first_name, last_name, email, gender, location");
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -267,6 +275,10 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                                 String successLog = jsonObj.getString("result");
                                 TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
+
+                                // user logged in with fb
+                                new Session().saveFbLoginStatus(getApplicationContext(),true);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -290,6 +302,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                     params.put("Celeb_id", userId);
                     params.put("gender", gender);
                     params.put("Image_url", profile_url);
+                    params.put("email",email);
                     params.put("Fb_login_status", "1");
                     params.put("RegId", regId);
 //                params.put("Flag", String.valueOf(celebOrNot));
@@ -476,4 +489,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         }
 
     }
+
+
 }

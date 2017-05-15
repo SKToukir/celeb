@@ -72,10 +72,18 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 this.finish();
             } else {
-                Intent intent = new Intent(LogInAcitvity.this, ParentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                this.finish();
+
+                if (Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)){
+                    Intent intent = new Intent(LogInAcitvity.this, ParentActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+                }else {
+                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+                }
             }
 
 

@@ -64,7 +64,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
         swipeRefreshLayoutCelebImages.setOnRefreshListener(this);
         swipeRefreshLayoutCelebVideos.setOnRefreshListener(this);
         swipeRefreshLayoutCelebImages.post(() -> {
-         //   fetchCelebImages(Api.URL_GET_CELEB_PROFILE, ); TODO touhid
+            //   fetchCelebImages(Api.URL_GET_CELEB_PROFILE, ); TODO touhid
         });
         swipeRefreshLayoutCelebVideos.post(() -> {
 
@@ -82,9 +82,16 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
         recyclerViewCelebVideos.setItemAnimator(new DefaultItemAnimator());
 
         // msisdn form previous activity
-        Intent intent = getIntent();
-        msisdn = intent.getExtras().getString("MSISDN");
-        Log.d("ttt msisdn", "onCreate: " + msisdn);
+        boolean isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
+
+        if (isCeleb) {
+            msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+            Log.d("ttt msisdn", "onCreate: " + msisdn);
+        } else {
+            Intent intent = getIntent();
+            msisdn = intent.getExtras().getString("MSISDN");
+            Log.d("ttt msisdn", "onCreate: " + msisdn);
+        }
 
         // Set up the RecyclerView for image
         int numberOfColumns = 2;
@@ -92,8 +99,8 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
         GridLayoutManager gridLayoutManagerV = new GridLayoutManager(this, numberOfColumns);
         recyclerViewCelebImages.setLayoutManager(gridLayoutManager);
         recyclerViewCelebVideos.setLayoutManager(gridLayoutManagerV);
-        fetchCelebImages(Api.URL_ACTIVATE_USERS, msisdn);
-        fetchCelebVideos(Api.URL_ACTIVATE_USERS, msisdn);
+        fetchCelebVideos(Api.URL_CELEB_POSTS, msisdn);
+        fetchCelebImages(Api.URL_CELEB_POSTS, msisdn);
         fanCelebImageRecyclerViewAdapter = new FanCelebImageRecyclerViewAdapter(FanCelebProfileImageVideo.this, fanCelebImageModelEntities);
         fanCelebVideoRecyclerViewAdapter = new FanCelebVideoRecyclerViewAdapter(FanCelebProfileImageVideo.this, fanCelebVideoModelEntities);
         fanCelebImageRecyclerViewAdapter.setClickListener(this);
@@ -122,14 +129,15 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
 
     @Override
     public void onRefresh() {
-        fetchCelebImages(Api.URL_ACTIVATE_USERS, msisdn);
+        fetchCelebImages(Api.URL_CELEB_POSTS, msisdn);
+        fetchCelebVideos(Api.URL_CELEB_POSTS,msisdn);
     }
 
     private void fetchCelebImages(String celebImagesUrl, String celebMsisdn) {
         swipeRefreshLayoutCelebImages.setRefreshing(true);
         fanCelebImageModelEntities.clear();
         // String fullUrl = celebImagesUrl + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), celebMsisdn);
-        String fullUrl = celebImagesUrl + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        String fullUrl = celebImagesUrl + "&MSISDN=" + celebMsisdn;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -144,7 +152,23 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
                         JSONObject obj = array.getJSONObject(i);
                         fanCelebImageModelEntity = new FanCelebImageModelEntity();
 
-                        fanCelebImageModelEntity.setImageUrl(obj.getString("Image_url"));
+                        String isImage = obj.getString("IsImage");
+                        Log.d("ttt", isImage);
+                        if (isImage.matches("1") || isImage.equals("1")) {
+                            fanCelebImageModelEntity.setIsImage(obj.getString("IsImage"));
+                            JSONArray posts = obj.getJSONArray("Post_Urls");
+
+                            String imageUrl = posts.getString(0).trim();
+
+                            if (imageUrl.length() > 5) {
+                                fanCelebImageModelEntity.setImageUrl(imageUrl);
+                            } else {
+                                continue;
+                            }
+
+                        } else {
+                            continue;
+                        }
 
                         fanCelebImageModelEntities.add(fanCelebImageModelEntity);
 
@@ -175,9 +199,9 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
 
     private void fetchCelebVideos(String celebImagesUrl, String celebMsisdn) {
         swipeRefreshLayoutCelebImages.setRefreshing(true);
-        fanCelebImageModelEntities.clear();
+        fanCelebVideoModelEntities.clear();
         // String fullUrl = celebImagesUrl + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), celebMsisdn);
-        String fullUrl = celebImagesUrl + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        String fullUrl = celebImagesUrl + "&MSISDN=" + celebMsisdn;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -192,16 +216,31 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
                         JSONObject obj = array.getJSONObject(i);
                         fanCelebVideoModelEntity = new FanCelebVideoModelEntity();
 
-                        fanCelebVideoModelEntity.setVideoUrl(obj.getString("Image_url"));
+                        String isImage = obj.getString("IsImage");
+                        Log.d("ttt", isImage);
+                        if (isImage.matches("2") || isImage.equals("2")) {
+                            fanCelebVideoModelEntity.setSetIsImage(obj.getString("IsImage"));
+                            JSONArray posts = obj.getJSONArray("Post_Urls");
+
+                            String imageUrl = posts.getString(0).trim();
+                            Log.d("videoUrl",imageUrl);
+                            if (imageUrl.length() > 5) {
+                                fanCelebVideoModelEntity.setVideoUrl(imageUrl);
+                            } else {
+                                continue;
+                            }
+
+                        } else {
+                            continue;
+                        }
 
                         fanCelebVideoModelEntities.add(fanCelebVideoModelEntity);
 
                         recyclerViewCelebVideos.setAdapter(fanCelebVideoRecyclerViewAdapter);
                         fanCelebVideoRecyclerViewAdapter.notifyDataSetChanged();
-
                     }
 
-                    Log.d("ttt list", "onResponse: " + fanCelebVideoModelEntities.get(0).getVideoUrl());
+                    //Log.d("ttt list", "onResponse: " + fanCelebVideoModelEntities.get(0).getVideoUrl());
 
                 } catch (JSONException e) {
                     e.printStackTrace();

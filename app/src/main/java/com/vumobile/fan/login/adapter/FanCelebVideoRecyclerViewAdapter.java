@@ -1,14 +1,15 @@
 package com.vumobile.fan.login.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.model.FanCelebVideoModelEntity;
 
@@ -27,11 +28,11 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {// implements View.OnClickListener
-        public ImageView imageViewRecyclerItem;
+        public VideoView videoViewMainPlayer;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageViewRecyclerItem = (ImageView) itemView.findViewById(R.id.imageViewRecyclerItemVThumb);
+            videoViewMainPlayer = (VideoView) itemView.findViewById(R.id.imageViewRecyclerItemVThumb);
             itemView.setOnClickListener(this);
         }
 
@@ -52,7 +53,9 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fan_celeb_image_recycler_item, parent, false);
+                .inflate(R.layout.fan_celeb_video_recycler_item, parent, false);
+
+
 
         return new ViewHolder(itemView);
     }
@@ -60,11 +63,16 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
     // binds the data to the textView in each cell
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         FanCelebVideoModelEntity fanCelebVideoModelEntity = fanCelebVideoModelEntities.get(position);
-        Glide.with(context)
-                .load(fanCelebVideoModelEntity.getVideoUrl())
-                .into(holder.imageViewRecyclerItem);
-//        holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.background));
+
+        Uri uri = Uri.parse(fanCelebVideoModelEntity.getVideoUrl()); //Declare your url here.
+        MediaController mediaController = new MediaController(context);
+        mediaController.setAnchorView(holder.videoViewMainPlayer);
+        holder.videoViewMainPlayer.setMediaController(mediaController);
+        holder.videoViewMainPlayer.setVideoURI(uri);
+        holder.videoViewMainPlayer.requestFocus();
+        holder.videoViewMainPlayer.start();
 
         // holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.unfollow));
         Log.d("adapter ttt", "onBindViewHolder: " + fanCelebVideoModelEntity.getVideoUrl());
