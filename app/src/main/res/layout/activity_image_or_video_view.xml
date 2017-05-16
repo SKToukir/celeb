@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imageViewMainPreview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="Preview Image"
@@ -22,5 +22,20 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imageViewDownloadImageOrVideo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/download_icon" />
+
+    </LinearLayout>
 
 </RelativeLayout>
