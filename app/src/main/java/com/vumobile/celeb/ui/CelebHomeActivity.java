@@ -43,7 +43,7 @@ import io.agora.rtc.Constants;
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest;
+    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage;
     NavigationView navigationView;
     TextView txtProfileName, txtCele;
     EditText etWhatsYourMind;
@@ -152,6 +152,8 @@ public class CelebHomeActivity extends BaseActivity
 
     private void initUI() {
 
+        imgMessage = (ImageView) findViewById(R.id.imgMessage);
+        imgMessage.setOnClickListener(this);
         imgRequest = (ImageView) findViewById(R.id.imgRequest);
         imgRequest.setOnClickListener(this);
         imgImageVideoCeleb = (ImageView) findViewById(R.id.imgImageVideoCeleb);
@@ -255,6 +257,9 @@ public class CelebHomeActivity extends BaseActivity
                 break;
             case R.id.imgRequest:
                 startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));
+                break;
+            case R.id.imgMessage:
+                startActivity(new Intent(getApplicationContext(),MessageActivity.class));
                 break;
         }
     }
