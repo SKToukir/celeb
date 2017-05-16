@@ -9,7 +9,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
+import com.vumobile.fan.login.ImageOrVideoView;
 import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.adapter.FanCelebImageRecyclerViewAdapter;
 import com.vumobile.fan.login.adapter.FanCelebVideoRecyclerViewAdapter;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FanCelebProfileImageVideo extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, FanCelebImageRecyclerViewAdapter.ItemClickListener, FanCelebVideoRecyclerViewAdapter.ItemClickListener {
+public class FanCelebProfileImageVideo extends AppCompatActivity {
 
     private FanCelebImageRecyclerViewAdapter fanCelebImageRecyclerViewAdapter;
     private FanCelebVideoRecyclerViewAdapter fanCelebVideoRecyclerViewAdapter;
@@ -61,13 +61,23 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
         // swipe to refresh
         swipeRefreshLayoutCelebImages = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutCelebImages);
         swipeRefreshLayoutCelebVideos = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutCelebVideos);
-        swipeRefreshLayoutCelebImages.setOnRefreshListener(this);
-        swipeRefreshLayoutCelebVideos.setOnRefreshListener(this);
+        swipeRefreshLayoutCelebImages.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchCelebImages(Api.URL_CELEB_POSTS, msisdn);
+            }
+        });
+        swipeRefreshLayoutCelebVideos.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchCelebVideos(Api.URL_CELEB_POSTS, msisdn);
+            }
+        });
         swipeRefreshLayoutCelebImages.post(() -> {
-            //   fetchCelebImages(Api.URL_GET_CELEB_PROFILE, ); TODO touhid
+            fetchCelebImages(Api.URL_CELEB_POSTS, msisdn);
         });
         swipeRefreshLayoutCelebVideos.post(() -> {
-
+            fetchCelebVideos(Api.URL_CELEB_POSTS, msisdn);
         });
 
         // Data models
@@ -99,39 +109,27 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
         GridLayoutManager gridLayoutManagerV = new GridLayoutManager(this, numberOfColumns);
         recyclerViewCelebImages.setLayoutManager(gridLayoutManager);
         recyclerViewCelebVideos.setLayoutManager(gridLayoutManagerV);
-        fetchCelebVideos(Api.URL_CELEB_POSTS, msisdn);
-        fetchCelebImages(Api.URL_CELEB_POSTS, msisdn);
+
         fanCelebImageRecyclerViewAdapter = new FanCelebImageRecyclerViewAdapter(FanCelebProfileImageVideo.this, fanCelebImageModelEntities);
         fanCelebVideoRecyclerViewAdapter = new FanCelebVideoRecyclerViewAdapter(FanCelebProfileImageVideo.this, fanCelebVideoModelEntities);
-        fanCelebImageRecyclerViewAdapter.setClickListener(this);
-        fanCelebVideoRecyclerViewAdapter.setClickListener(this);
+
+        fanCelebImageRecyclerViewAdapter.setClickListener((view, position) -> {
+            Intent intent = new Intent(this, ImageOrVideoView.class);
+            intent.putExtra("IMG_OR_VID", "1");
+            intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItem).getTag().toString());
+            startActivity(intent);
+        });
+
+        fanCelebVideoRecyclerViewAdapter.setClickListener((view, position) -> {
+            Intent intent = new Intent(this, ImageOrVideoView.class);
+            intent.putExtra("IMG_OR_VID", "2");
+            intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItemVThumb).getTag().toString());
+            startActivity(intent);
+        });
 
 
     } // end of OnCreate
 
-    @Override
-    public void onItemClick(View view, int position) {
-        switch (view.getId()) {
-            case R.id.recyclerViewCelebImages:
-
-                Toast.makeText(this, "I " + position, Toast.LENGTH_SHORT).show();
-
-                break;
-
-            case R.id.recyclerViewCelebVideos:
-
-                Toast.makeText(this, "V " + position, Toast.LENGTH_SHORT).show();
-
-                break;
-
-        }
-    }
-
-    @Override
-    public void onRefresh() {
-        fetchCelebImages(Api.URL_CELEB_POSTS, msisdn);
-        fetchCelebVideos(Api.URL_CELEB_POSTS,msisdn);
-    }
 
     private void fetchCelebImages(String celebImagesUrl, String celebMsisdn) {
         swipeRefreshLayoutCelebImages.setRefreshing(true);
@@ -198,7 +196,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
     }
 
     private void fetchCelebVideos(String celebImagesUrl, String celebMsisdn) {
-        swipeRefreshLayoutCelebImages.setRefreshing(true);
+        swipeRefreshLayoutCelebVideos.setRefreshing(true);
         fanCelebVideoModelEntities.clear();
         // String fullUrl = celebImagesUrl + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), celebMsisdn);
         String fullUrl = celebImagesUrl + "&MSISDN=" + celebMsisdn;
@@ -223,7 +221,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity implements Swip
                             JSONArray posts = obj.getJSONArray("Post_Urls");
 
                             String imageUrl = posts.getString(0).trim();
-                            Log.d("videoUrl",imageUrl);
+                            Log.d("videoUrl", imageUrl);
                             if (imageUrl.length() > 5) {
                                 fanCelebVideoModelEntity.setVideoUrl(imageUrl);
                             } else {

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.vumobile.celeb.R;
@@ -28,11 +27,11 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {// implements View.OnClickListener
-        public VideoView videoViewMainPlayer;
+        public VideoView imageViewRecyclerItemVThumb;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            videoViewMainPlayer = (VideoView) itemView.findViewById(R.id.imageViewRecyclerItemVThumb);
+            imageViewRecyclerItemVThumb = (VideoView) itemView.findViewById(R.id.imageViewRecyclerItemVThumb);
             itemView.setOnClickListener(this);
         }
 
@@ -67,12 +66,16 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
         FanCelebVideoModelEntity fanCelebVideoModelEntity = fanCelebVideoModelEntities.get(position);
 
         Uri uri = Uri.parse(fanCelebVideoModelEntity.getVideoUrl()); //Declare your url here.
-        MediaController mediaController = new MediaController(context);
-        mediaController.setAnchorView(holder.videoViewMainPlayer);
-        holder.videoViewMainPlayer.setMediaController(mediaController);
-        holder.videoViewMainPlayer.setVideoURI(uri);
-        holder.videoViewMainPlayer.requestFocus();
-        holder.videoViewMainPlayer.start();
+//        MediaController mediaController = new MediaController(context);
+//        mediaController.setAnchorView(holder.videoViewMainPlayer);
+//        holder.videoViewMainPlayer.setMediaController(mediaController);
+        holder.imageViewRecyclerItemVThumb.setVideoURI(uri);
+        holder.imageViewRecyclerItemVThumb.seekTo(2000);
+        holder.imageViewRecyclerItemVThumb.pause();
+      //  holder.videoViewMainPlayer.requestFocus();
+       // holder.videoViewMainPlayer.start();
+
+        holder.imageViewRecyclerItemVThumb.setTag(fanCelebVideoModelEntity.getVideoUrl());
 
         // holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.unfollow));
         Log.d("adapter ttt", "onBindViewHolder: " + fanCelebVideoModelEntity.getVideoUrl());
