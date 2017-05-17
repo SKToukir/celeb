@@ -1,71 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MainlayoutCustom"
     android:layout_width="match_parent"
     android:layout_height="260dp"
-    android:orientation="vertical"
     android:background="#000"
-    android:id="@+id/MainlayoutCustom"
-
-    >
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_below="@+id/notifiation_image"
         android:id="@+id/layoutCustom"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="horizontal"
-        android:weightSum="100"
+        android:layout_below="@+id/notifiation_image"
         android:background="#000000"
-        >
+        android:orientation="horizontal"
+        android:weightSum="100">
 
         <ImageView
             android:layout_width="96px"
             android:layout_height="96px"
-            android:background="@mipmap/ic_launcher"
             android:layout_gravity="center"
-            />
+            android:background="@mipmap/ic_launcher" />
 
-        <TextView android:id="@+id/text_view"
-            android:gravity="center"
+        <TextView
+            android:id="@+id/text_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:background="#ff000000"
+            android:gravity="center"
+            android:maxLines="4"
+            android:text=""
             android:textColor="#ffffffff"
             android:textSize="15sp"
-            android:layout_marginLeft="5dp"
-            android:maxLines="4"
-            android:background="#ff000000"
-            android:text=""
             android:textStyle="bold" />
 
-        <TextView android:id="@+id/notificationTime"
+        <TextView
+            android:id="@+id/notificationTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="24"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="5dp"
-            />
+            android:layout_weight="24" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/IconDownload"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layoutCustom"
-        android:background="#FF0000"
+        android:background="@color/myColorTwoHeader"
         android:gravity="center"
-
-        >
+        android:orientation="vertical">
 
         <TextView
-            android:visibility="gone"
+            android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/titleTextView"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="25dp"
             android:textStyle="bold"
-            android:textSize="25dp" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageViewTest"
@@ -80,24 +75,20 @@
         android:id="@+id/NotifibtnDownload"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:text="Download"
-        android:textSize="22sp"
         android:layout_marginTop="215dp"
-        android:gravity="center"
         android:background="#bb000000"
-        android:textStyle="bold"
         android:fontFamily="arial"
-
-        />
-
+        android:gravity="center"
+        android:text="Show"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
 
     <Button
-        android:visibility="gone"
         android:id="@+id/notifiation_image"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
-        />
+        android:visibility="gone" />
 
 </RelativeLayout>

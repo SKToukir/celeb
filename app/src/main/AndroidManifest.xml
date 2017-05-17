@@ -126,7 +126,11 @@
         <activity android:name="com.vumobile.fan.login.ui.FanChatProfileActivity" />
         <activity android:name=".ui.SetScheduleActivity" />
         <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo" />
-        <activity android:name="com.vumobile.fan.login.ImageOrVideoView"></activity>
+        <activity android:name="com.vumobile.fan.login.ImageOrVideoView" />
+        <activity
+            android:name="com.vumobile.fan.login.ui.ChatViewActivity"
+            android:label="@string/title_activity_chat_view"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

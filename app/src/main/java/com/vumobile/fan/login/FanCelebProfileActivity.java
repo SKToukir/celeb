@@ -26,6 +26,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
+import com.vumobile.fan.login.ui.ChatViewActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
@@ -173,10 +174,13 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                             Log.d("FromServer", request_status);
 
 
-                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")){
-                                TastyToast.makeText(getApplicationContext(),"Your request is pending",TastyToast.LENGTH_LONG,TastyToast.INFO);
-                            }else if (request_status.matches("Accepted")){
-                                TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
+                                TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                            } else if (request_status.matches("Accepted")) {
+                                // go to chat activity
+                                Intent intent = new Intent(getApplicationContext(), ChatViewActivity.class);
+                                intent.putExtra("", "");
+                                startActivity(intent);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

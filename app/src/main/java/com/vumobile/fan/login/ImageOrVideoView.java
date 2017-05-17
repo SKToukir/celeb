@@ -31,6 +31,7 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
     private VideoView videoViewMainPlayer;
     ProgressDialog progDailog;
     String imgOrVid, imgOrVidUrl;
+    BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,12 +134,17 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
 
             mgr.enqueue(request);
 
-            BroadcastReceiver receiver = new BroadcastReceiver() {
+            receiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String action = intent.getAction();
                     if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                         Toast.makeText(context, "Download Complete", Toast.LENGTH_SHORT).show();
+                        try {
+                            unregisterReceiver(receiver);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             };
