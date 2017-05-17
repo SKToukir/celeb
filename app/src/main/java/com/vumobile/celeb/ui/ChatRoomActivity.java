@@ -33,7 +33,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private Button btnSend;
     private EditText etChat;
     private String chatText;
-    private String room_name, temp_key, image_url;
+    private String room_name, temp_key, msisdn, profilePic, fbName;
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
@@ -47,10 +47,15 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         // dont create room here .. create room when confirm user for chat
 
         room_name = getIntent().getStringExtra("room");
-        image_url = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
+        msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        profilePic = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
+        fbName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
         //room_name = "88014444444448801666666666";
         //room_name = "Room:5GAMB3EBCM";
         Log.d("room_name", room_name);
+        Log.d("room_name", msisdn);
+        Log.d("room_name", profilePic);
+        Log.d("room_name", fbName);
 
         //createRoomOnFirebase(room_name);
 
@@ -90,8 +95,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         DatabaseReference message_root = root.child(temp_key);
         Map<String, Object> map2 = new HashMap<>();
-        map2.put("name", image_url);
+        map2.put("msisdn", msisdn);
         map2.put("msg", comment);
+        map2.put("imageUrl",profilePic);
+        map2.put("fbName",fbName);
 
         message_root.updateChildren(map2);
 
@@ -155,18 +162,25 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private String chat_msg;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
+    private String chat_msg,imageUrl,chatName;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
         Iterator i = dataSnapshot.getChildren().iterator();
 
         while (i.hasNext()) {
+            //String is = (String) ((DataSnapshot) i.next()).getValue();
+            chatName = (String) ((DataSnapshot) i.next()).getValue();
+            imageUrl = (String) ((DataSnapshot) i.next()).getValue();
             chat_msg = (String) ((DataSnapshot) i.next()).getValue();
-            image_url = (String) ((DataSnapshot) i.next()).getValue();
+            room_name = (String) ((DataSnapshot) i.next()).getValue();
+            Log.d("iscelelele",chat_msg);
+            Log.d("iscelelele",room_name);
+            Log.d("iscelelele",imageUrl);
+            Log.d("iscelelele",chatName);
 
             ChatClass chatClass = new ChatClass();
-            chatClass.setImageUrl(image_url);
+            chatClass.setImageUrl(imageUrl);
             chatClass.setText(chat_msg);
             //commentClass.setTime(getTime());
 
