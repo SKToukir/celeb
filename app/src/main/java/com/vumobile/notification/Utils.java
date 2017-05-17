@@ -8,22 +8,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
-import com.vumobile.fan.login.FanCelebProfileActivity;
+import com.vumobile.fan.login.ViaLive;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import io.agora.rtc.Constants;
 
@@ -31,16 +32,12 @@ import io.agora.rtc.Constants;
  * Created by toukirul on 27/4/2017.
  */
 
-public class Utils extends BaseActivity{
+public class Utils extends BaseActivity {
 
 
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @SuppressWarnings("static-access")
+    //    @RequiresApi(api = Build.VERSION_CODES.N)
+//    @SuppressWarnings("static-access")
     public static void setCustomViewNotification(Context context, String name, String msisdn, String sample_url) {
-
 
 
         //contentDownloadActivity.doAction=1;
@@ -52,7 +49,7 @@ public class Utils extends BaseActivity{
         // Creates an explicit intent for an ResultActivity to receive.
 
         Intent resultIntent;
-        resultIntent = new Intent(context,FanCelebProfileActivity.class);
+        resultIntent = new Intent(context, ViaLive.class); //FanCelebProfileActivity
 
 
         resultIntent.putExtra("fbname", name);
@@ -60,9 +57,9 @@ public class Utils extends BaseActivity{
         resultIntent.putExtra("profilePic", sample_url);
         resultIntent.putExtra(ConstantApp.ACTION_KEY_CROLE, Constants.CLIENT_ROLE_AUDIENCE);
         resultIntent.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, name);
-        resultIntent.putExtra("user","fan");
+        resultIntent.putExtra("user", "fan");
 
-
+        resultIntent.putExtra("CELEB_FB_NAME", name);
 
         Log.d("fbname", name);
 
@@ -74,8 +71,7 @@ public class Utils extends BaseActivity{
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
         // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(FanCelebProfileActivity.class);
-
+        stackBuilder.addParentStack(ViaLive.class);
 
 
         // Adds the Intent that starts the Activity to the top of the stack.
@@ -85,8 +81,7 @@ public class Utils extends BaseActivity{
         // Create remote view and set bigContentView.
         RemoteViews expandedView = new RemoteViews(context.getPackageName(), R.layout.push_activity);
 
-        Intent volume = new Intent(context, FanCelebProfileActivity.class);//NotifActivityHandler
-
+        Intent volume = new Intent(context, ViaLive.class);//NotifActivityHandler // FanCelebProfileActivity
 
         volume.putExtra("DO", "2");
         PendingIntent pVolume = PendingIntent.getActivity(context, 1, resultIntent, 0);
@@ -95,35 +90,56 @@ public class Utils extends BaseActivity{
 
         //expandedView.setTextViewText(R.id.notificationTime, strDate);
 
-        try {
-           // expandedView.setImageViewBitmap(R.id.imageViewTest, getBitmapFromURL(sample_url));
-            expandedView.setImageViewResource(R.id.imageViewTest,R.mipmap.ic_launcher);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = null;
 
-        }catch (Exception e){
+                try {
+                    bitmap = Glide.with(context)
+                            .load(sample_url)
+                            .asBitmap()
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-            e.printStackTrace();
-        }
 
-        Notification notification = new NotificationCompat.Builder(context)
-                .setSmallIcon(getNotificationIcon())
-                //.setLargeIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true)
-                .setContentIntent(resultPendingIntent)
-                .setContentTitle(name+" Is live now")
+                expandedView.setImageViewBitmap(R.id.imageViewTest, bitmap);
 
-                //  .setDeleteIntent(pendintIntent)
-                .build();
 
-        notification.bigContentView = expandedView;
+                // expandedView.setImageViewBitmap(R.id.imageViewTest, getBitmapFromURL(sample_url));
+                //   expandedView.setImageViewResource(R.id.imageViewTest, R.mipmap.ic_launcher);
 
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        mNotificationManager.notify(0, notification);
+
+                Notification notification = new NotificationCompat.Builder(context)
+                        .setSmallIcon(getNotificationIcon())
+                        .setLargeIcon(bitmap)//R.mipmap.ic_launcher
+                        .setAutoCancel(true)
+                        .setContentIntent(resultPendingIntent)
+                        .setContentTitle(name + " Is live now")
+
+                        //  .setDeleteIntent(pendintIntent)
+                        .build();
+
+                notification.bigContentView = expandedView;
+
+                notification.defaults |= Notification.DEFAULT_SOUND;
+                mNotificationManager.notify(0, notification);
+
+
+            }
+        }).start();
+
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @SuppressWarnings("static-access")
-    public static void setCustomViewPostNotification(Context context,String name,String celeb_image_url,String post_url,String comment,String like,String flags_notific,String gender,String msisdn,String celeb_id,String isImage) {
-
+    //    @RequiresApi(api = Build.VERSION_CODES.N)
+    //   @SuppressWarnings("static-access")
+    public static void setCustomViewPostNotification(Context context, String name, String celeb_image_url, String post_url, String comment, String like, String flags_notific, String gender, String msisdn, String celeb_id, String isImage) {
 
 
         //contentDownloadActivity.doAction=1;
@@ -131,25 +147,24 @@ public class Utils extends BaseActivity{
 //        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
 //        String strDate = sdf.format(c.getTime());
 
-       NotificationManager mNotificationManagerPost = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManagerPost = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // Creates an explicit intent for an ResultActivity to receive.
 
         Intent resultIntent;
-        resultIntent = new Intent(context,FanNotificationActivity.class);
+        resultIntent = new Intent(context, FanNotificationActivity.class);
 
 
         resultIntent.putExtra("fbname", name);
         resultIntent.putExtra("msisdn", msisdn);
         resultIntent.putExtra("post_url", post_url);
-        resultIntent.putExtra("celeb_image_url",celeb_image_url);
-        resultIntent.putExtra("comment",comment);
-        resultIntent.putExtra("like",like);
+        resultIntent.putExtra("celeb_image_url", celeb_image_url);
+        resultIntent.putExtra("comment", comment);
+        resultIntent.putExtra("like", like);
 
-        resultIntent.putExtra("flags_notific",flags_notific);
-        resultIntent.putExtra("gender",gender);
-        resultIntent.putExtra("celeb_id",celeb_id);
-        resultIntent.putExtra("isImage",isImage);
-
+        resultIntent.putExtra("flags_notific", flags_notific);
+        resultIntent.putExtra("gender", gender);
+        resultIntent.putExtra("celeb_id", celeb_id);
+        resultIntent.putExtra("isImage", isImage);
 
 
         Log.d("fbname", name);
@@ -163,7 +178,6 @@ public class Utils extends BaseActivity{
 
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(FanNotificationActivity.class);
-
 
 
         // Adds the Intent that starts the Activity to the top of the stack.
@@ -182,35 +196,57 @@ public class Utils extends BaseActivity{
         expandedView.setTextViewText(R.id.text_view, name);
 
         //expandedView.setTextViewText(R.id.notificationTime, strDate);
-        try {
-             //expandedView.setImageViewBitmap(R.id.imageViewTest, remote_picture);
-            //expandedView.setImageViewResource(R.id.imageViewTest,R.mipmap.ic_launcher);
+//        try {
+//            //expandedView.setImageViewBitmap(R.id.imageViewTest, remote_picture);
+//            //expandedView.setImageViewResource(R.id.imageViewTest,R.mipmap.ic_launcher);
+//
+//        } catch (Exception e) {
+//
+//            e.printStackTrace();
+//        }
 
-        }catch (Exception e){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-            e.printStackTrace();
-        }
+                Bitmap bitmap = null;
 
-        Notification notification = new NotificationCompat.Builder(context)
-                .setSmallIcon(getNotificationIcon())
-                //.setLargeIcon(remote_picture)
-                .setAutoCancel(true)
-                .setContentIntent(resultPendingIntent)
-                .setContentTitle(name)
-                .setContentText(comment)
+                try {
+                    bitmap = Glide.with(context)
+                            .load(celeb_image_url)
+                            .asBitmap()
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-                //  .setDeleteIntent(pendintIntent)
-                .build();
 
-        notification.bigContentView = expandedView;
+                expandedView.setImageViewBitmap(R.id.imageViewTest, bitmap);
 
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        mNotificationManagerPost.notify(0, notification);
+                Notification notification = new NotificationCompat.Builder(context)
+                        .setSmallIcon(getNotificationIcon())
+                        .setLargeIcon(bitmap)
+                        .setAutoCancel(true)
+                        .setContentIntent(resultPendingIntent)
+                        .setContentTitle(name)
+                        .setContentText(comment)
+
+                        //  .setDeleteIntent(pendintIntent)
+                        .build();
+
+                notification.bigContentView = expandedView;
+
+                notification.defaults |= Notification.DEFAULT_SOUND;
+                mNotificationManagerPost.notify(0, notification);
+
+            }
+        }).start();
+
+
     }
-
-
-
-
 
 
     private static int getNotificationIcon() {

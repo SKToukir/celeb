@@ -27,6 +27,7 @@ import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.ChatRoomActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
+import com.vumobile.fan.login.ui.ChatViewActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
@@ -168,25 +169,32 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                     public void onResponse(String response) {
                         Log.d("FromServer", response.toString());
 
+
+                        JSONObject obj = null;
                         try {
-                            JSONObject obj = new JSONObject(response);
+                            obj = new JSONObject(response);
+
                             String request_status = obj.getString("result").replaceAll(" ", "_");
                             Log.d("FromServer", request_status);
 
 
-                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")){
-                                TastyToast.makeText(getApplicationContext(),"Your request is pending",TastyToast.LENGTH_LONG,TastyToast.INFO);
-                            }else if (request_status.matches("Accepted")){
+                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
+                                TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                            } else if (request_status.matches("Accepted")) {
 
-                                String fan_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+                                String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
                                 String room_name = msisdn + fan_msisdn;
-                                Log.d("room_name",room_name);
-                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
-                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
-                                intent.putExtra("room",room_name);
-                                startActivity(intent);
+                                Log.d("room_name", room_name);
+//                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
+//                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+//                                intent.putExtra("room", room_name);
+//                                startActivity(intent);
                                 //TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
+
                             }
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
