@@ -55,7 +55,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
                 MessageListClass messageListClass = listClasses.get(i);
                 String name = messageListClass.getName();
+                Log.d("FromServer", name);
                 String chat_room_name = messageListClass.getRoom_number();
+                Log.d("FromServer", chat_room_name);
 
                 Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                 intent.putExtra("room",chat_room_name);
@@ -91,6 +93,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                                 Log.d("FromServer", requestClass.getImageUrl());
                                 requestClass.setRoom_number(obj.getString("RoomNumber"));
                                 Log.d("FromServer", requestClass.getRoom_number());
+
                                 listClasses.add(requestClass);
 
                                 listView.setAdapter(adapter);

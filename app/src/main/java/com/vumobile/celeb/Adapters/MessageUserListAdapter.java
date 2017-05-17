@@ -2,7 +2,6 @@ package com.vumobile.celeb.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,10 +66,10 @@ public class MessageUserListAdapter extends ArrayAdapter<MessageListClass> {
     }
 
 
-
-    @Nullable
-    @Override
-    public MessageListClass getItem(int position) {
-        return super.getItem(getCount() - position - 1);
-    }
+//
+//    @Nullable
+//    @Override
+//    public MessageListClass getItem(int position) {
+//        return super.getItem(getCount() - position - 1);
+//    }
 }

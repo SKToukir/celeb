@@ -25,7 +25,6 @@ import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
-import com.vumobile.celeb.ui.ChatRoomActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.ui.ChatViewActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
@@ -183,7 +182,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                             } else if (request_status.matches("Accepted")) {
 
                                 String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
-                                String room_name = msisdn + fan_msisdn;
+                                String room_name = celeb_msisdn + fan_msisdn;
                                 Log.d("room_name", room_name);
 //                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
 //                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
