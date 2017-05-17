@@ -37,6 +37,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private Toolbar toolbar;
     private ImageView imgBack;
     private Intent intent;
+    private String profilePic, fbName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,14 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
                 MessageListClass messageListClass = listClasses.get(i);
                 String name = messageListClass.getName();
+                Log.d("FromServer", name);
                 String chat_room_name = messageListClass.getRoom_number();
+                Log.d("FromServer", chat_room_name);
 
                 Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
                 intent.putExtra("room",chat_room_name);
+                intent.putExtra("imageUrl",profilePic);
+                intent.putExtra("name",fbName);
                 startActivity(intent);
             }
         });
@@ -91,6 +96,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                                 Log.d("FromServer", requestClass.getImageUrl());
                                 requestClass.setRoom_number(obj.getString("RoomNumber"));
                                 Log.d("FromServer", requestClass.getRoom_number());
+
                                 listClasses.add(requestClass);
 
                                 listView.setAdapter(adapter);
@@ -139,6 +145,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         adapter = new MessageUserListAdapter(getApplicationContext(), R.layout.row_message_fan_list, listClasses);
         listView.setAdapter(adapter);
+
+        profilePic = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
+        fbName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
 
     }
 

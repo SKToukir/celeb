@@ -182,15 +182,23 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                             } else if (request_status.matches("Accepted")) {
 
                                 String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
-                                String room_name = msisdn + fan_msisdn;
+                                String room_name = celeb_msisdn + fan_msisdn;
                                 Log.d("room_name", room_name);
 //                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
                                 Intent intent = new Intent(getApplicationContext(), ChatViewActivity.class);
                                 intent.putExtra("room", room_name);
+
                                 startActivity(intent);
                                 //TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
 
 //                                startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
+
+//                                intent.putExtra("imageUrl",profilePic);
+//                                intent.putExtra("name",fbName);
+//                                startActivity(intent);
+                                TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
+
 
                             }
 
