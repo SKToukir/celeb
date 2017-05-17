@@ -26,7 +26,6 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
-import com.vumobile.fan.login.ui.ChatViewActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
@@ -185,11 +184,12 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 String room_name = celeb_msisdn + fan_msisdn;
                                 Log.d("room_name", room_name);
 //                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
-//                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
-//                                intent.putExtra("room", room_name);
-//                                startActivity(intent);
+                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+                                intent.putExtra("room", room_name);
+                                startActivity(intent);
                                 //TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
-                                startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
+
+//                                startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
                             }
 
