@@ -127,7 +127,8 @@
         <activity android:name=".ui.SetScheduleActivity" />
         <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo" />
         <activity android:name="com.vumobile.fan.login.ImageOrVideoView" />
-        <activity android:name=".ui.MessageActivity"></activity>
+        <activity android:name=".ui.MessageActivity" />
+        <activity android:name=".ui.ChatRoomActivity"></activity>
     </application>
 
 </manifest>

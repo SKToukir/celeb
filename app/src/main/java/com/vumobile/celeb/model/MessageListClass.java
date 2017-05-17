@@ -8,6 +8,15 @@ public class MessageListClass {
 
     private String imageUrl;
     private String name;
+    private String room_number;
+
+    public String getRoom_number() {
+        return room_number;
+    }
+
+    public void setRoom_number(String room_number) {
+        this.room_number = room_number;
+    }
 
     public String getName() {
         return name;

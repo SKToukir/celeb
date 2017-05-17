@@ -190,7 +190,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             Log.d("fbName", "celeb " + fb_name);
             user_name = fb_name;
         } else if (user.equals("fan")) {
-            user_name = Session.retreiveName(getApplicationContext(), Session.USER_NAME);
+            //user_name = Session.retreiveName(getApplicationContext(), Session.USER_NAME);
+            user_name = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
             Log.d("fbName", "fan " + user_name);
         }
 

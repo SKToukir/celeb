@@ -25,6 +25,7 @@ import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
+import com.vumobile.celeb.ui.ChatRoomActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
@@ -176,7 +177,15 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                             if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")){
                                 TastyToast.makeText(getApplicationContext(),"Your request is pending",TastyToast.LENGTH_LONG,TastyToast.INFO);
                             }else if (request_status.matches("Accepted")){
-                                TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+
+                                String fan_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+                                String room_name = msisdn + fan_msisdn;
+                                Log.d("room_name",room_name);
+                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
+                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+                                intent.putExtra("room",room_name);
+                                startActivity(intent);
+                                //TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

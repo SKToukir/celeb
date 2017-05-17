@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import com.android.volley.Request;
@@ -48,6 +49,20 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         retreiveData(Api.URL_GET_SCHEDULES);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                MessageListClass messageListClass = listClasses.get(i);
+                String name = messageListClass.getName();
+                String chat_room_name = messageListClass.getRoom_number();
+
+                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
+                intent.putExtra("room",chat_room_name);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void retreiveData(String urlGetSchedules) {
@@ -74,7 +89,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                                 Log.d("FromServer", requestClass.getName());
                                 requestClass.setImageUrl(obj.getString("Image_url"));
                                 Log.d("FromServer", requestClass.getImageUrl());
-
+                                requestClass.setRoom_number(obj.getString("RoomNumber"));
+                                Log.d("FromServer", requestClass.getRoom_number());
                                 listClasses.add(requestClass);
 
                                 listView.setAdapter(adapter);

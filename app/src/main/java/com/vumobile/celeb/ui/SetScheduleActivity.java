@@ -22,6 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
@@ -49,6 +51,9 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
     public String startTime,endTime;
     private String fanMsisdn;
     private String selectedYear, selectedMonth, selectedDate;
+    private String room_name, temp_key;
+
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
 
     @Override
@@ -160,14 +165,18 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void confirmation(String urlRequestsAccept,String flag) {
 
+
+    private void confirmation(String urlRequestsAccept,String flag) {
+        room_name = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE)+fanMsisdn;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlRequestsAccept,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("FromServer", response.toString());
 
+                        createRoomOnFirebase(room_name);
+                        Log.d("room_name",room_name);
                         TastyToast.makeText(getApplicationContext(),response,TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                     }
                 },
@@ -189,6 +198,7 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
                 params.put("flag", flag);
                 params.put("StartTime", startTime);
                 params.put("EndTime", endTime);
+                params.put("RoomNumber",room_name);
 
                 return params;
             }
@@ -244,6 +254,12 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
 
         return "";
     }
+    private void createRoomOnFirebase(String room_name) {
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(room_name, "");
+        root.updateChildren(map);
+
+    }
 
 }
