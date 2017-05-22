@@ -52,6 +52,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.agora.rtc.Constants;
 
@@ -60,6 +61,7 @@ public class ParentActivity extends BaseActivity
 
     private CelebrityClass celebrityClass;
     private List<CelebrityClass> celebrityClassList = new ArrayList<CelebrityClass>();
+    private List<CelebrityClass> celebrityClassListCopy;
     private CelebrityListAdapter adapter;
     private ListView listCeleb;
     private PendingIntent pendingIntent;
@@ -209,7 +211,6 @@ public class ParentActivity extends BaseActivity
 
     }
 
-
     private void loadCelebrityData(String urlCelebrity) {
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
@@ -237,9 +238,13 @@ public class ParentActivity extends BaseActivity
 
                         celebrityClassList.add(celebrityClass);
 
+
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
+                    celebrityClassListCopy = new ArrayList<>();
+                    celebrityClassListCopy.addAll(celebrityClassList);
+                    Log.d("hellot", "onResponse: " + celebrityClassList.size());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -293,6 +298,9 @@ public class ParentActivity extends BaseActivity
 
                     }
 
+                    celebrityClassListCopy = new ArrayList<>();
+                    celebrityClassListCopy.addAll(celebrityClassList);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -344,6 +352,10 @@ public class ParentActivity extends BaseActivity
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
+
+                    celebrityClassListCopy = new ArrayList<>();
+                    celebrityClassListCopy.addAll(celebrityClassList);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -444,7 +456,7 @@ public class ParentActivity extends BaseActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Toast like print
-            //    Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
 
                 if (!searchView.isIconified()) {
                     searchView.setIconified(true);
@@ -457,6 +469,22 @@ public class ParentActivity extends BaseActivity
             @Override
             public boolean onQueryTextChange(String s) {
                 Toast.makeText(ParentActivity.this, "" + s, Toast.LENGTH_SHORT).show();
+                // Filter
+                s = s.toLowerCase(Locale.getDefault());
+                celebrityClassList.clear();
+                if (s.length() == 0) {
+                    celebrityClassList.addAll(celebrityClassListCopy);
+                } else {
+                    for (int i = 0; i < celebrityClassListCopy.size(); i++) {
+                        if (celebrityClassListCopy.get(i).getCeleb_name().toLowerCase(Locale.getDefault()).contains(s)) {
+                            celebrityClassList.add(celebrityClassListCopy.get(i));
+                        }
+                    }
+                    Log.d("foreach", "onQueryTextChange: " + celebrityClassListCopy.size());
+                }
+
+                adapter.notifyDataSetChanged();
+
                 return false;
             }
         });
@@ -472,7 +500,7 @@ public class ParentActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -544,15 +572,6 @@ public class ParentActivity extends BaseActivity
 
                 break;
 
-
-//            case R.id.btnGoLive:
-//                startActivity(new Intent(ParentActivity.this, MainActivityLive.class));
-//                break;
-//            case R.id.btnFanViewLive:
-//                startActivity(new Intent(ParentActivity.this, MainActivityLive.class));
-//                break;
-//            default:
-//                break;
         }
 
     }

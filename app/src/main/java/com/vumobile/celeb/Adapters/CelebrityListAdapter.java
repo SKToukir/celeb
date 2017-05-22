@@ -198,4 +198,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
     }
 
+
+
+
 }
