@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MessageListClass;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +29,9 @@ public class MessageUserListAdapter extends ArrayAdapter<MessageListClass> {
     private Context mContext;
     private ImageView img;
     private TextView txtName;
+
+    public static String IMAGE_URL="urlimg";
+    public static String NAME = "name";
 
 
     public MessageUserListAdapter(Context context, int resource, List<MessageListClass> items) {
@@ -51,10 +56,15 @@ public class MessageUserListAdapter extends ArrayAdapter<MessageListClass> {
         if (requestClass != null) {
             TextView tt3 = (TextView) v.findViewById(R.id.txtFanMessageName);
             ImageView imgFan = (ImageView) v.findViewById(R.id.imageFan);
+            LinearLayout linearLayoutMessageList = (LinearLayout) v.findViewById(R.id.linearLayoutMessageList);
 
 
             if (tt3 != null) {
                 tt3.setText(requestClass.getName());
+                HashMap<String, String> tagNameAndImage = new HashMap<>();
+                tagNameAndImage.put(NAME, requestClass.getName());
+                tagNameAndImage.put(IMAGE_URL, requestClass.getImageUrl());
+                linearLayoutMessageList.setTag(tagNameAndImage);
             }
 
             if (tt3 != null) {

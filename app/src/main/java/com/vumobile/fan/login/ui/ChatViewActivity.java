@@ -1,17 +1,17 @@
 package com.vumobile.fan.login.ui;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.bumptech.glide.Glide;
 import com.github.bassaer.chatmessageview.models.Message;
 import com.github.bassaer.chatmessageview.models.User;
 import com.github.bassaer.chatmessageview.views.ChatView;
@@ -31,6 +31,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ChatViewActivity extends AppCompatActivity {
 
@@ -44,12 +49,13 @@ public class ChatViewActivity extends AppCompatActivity {
     private Button btnSend;
     private EditText etChat;
     private String chatText;
-    private String room_name, temp_key, image_url;
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
-    User me;
-    User you;
+
+    ArrayList<Message> messages;
+    private String room_name, temp_key, msisdn, profilePic, fbName;
+    private String chatName, chat_msg, isCeleb, imageUrl;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,74 +70,72 @@ public class ChatViewActivity extends AppCompatActivity {
         });
 
 // cra
-//        etChat = (EditText) findViewById(R.id.etChat);
-//        listView = (ListView) findViewById(R.id.listChat);
-//        btnSend = (Button) findViewById(R.id.btnSendChat);
-//        btnSend.setOnClickListener(this);
 
-//        adapter = new ChatAdapter(getApplicationContext(), R.layout.row_chat, chatClassList);
-//        listView.setAdapter(adapter);
+//        ChatProfileModel chatProfileModelMe = (ChatProfileModel) getIntent().getSerializableExtra("PROFILE_INFO_ME");
+//        ChatProfileModel chatProfileModelYou = (ChatProfileModel) getIntent().getSerializableExtra("PROFILE_INFO_YOU");
+//       Bitmap bitmapMe = (Bitmap) this.getIntent().getParcelableExtra("PROFILE_IMG_ME");
+//        Bitmap bitmapYou = (Bitmap) this.getIntent().getParcelableExtra("PROFILE_IMG_YOU");
 
-        // dont create room here .. create room when confirm user for chat
+    //    final User me = new User(0, chatProfileModelMe.getName(), null);
 
-        room_name = getIntent().getStringExtra("room");
-        image_url = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
-        Log.d("room_name", room_name);
 
-        getAllComment(room_name);
+        // don't create room here .. create room when confirm user for chat
+//        room_name = getIntent().getStringExtra("room");
+//        msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+//        profilePic = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
+//        fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
 
+
+    //    getAllComment(room_name, me);
 
 // cra
-
 
         // User id
         int myId = 0;
         //User icon
-        Bitmap myIcon = BitmapFactory.decodeResource(getResources(), R.drawable.face_2);
+        //  Bitmap myIcon = BitmapFactory.decodeResource(getResources(), R.drawable.face_2);
         //User name
         String myName = "Michael";
 
         getSupportActionBar().setTitle(myName);
 
         int yourId = 1;
-        Bitmap yourIcon = BitmapFactory.decodeResource(getResources(), R.drawable.face_1);
+        //   Bitmap yourIcon = BitmapFactory.decodeResource(getResources(), R.drawable.face_1);
         String yourName = "Emily";
-
-        me = new User(myId, myName, myIcon);
-        you = new User(yourId, yourName, yourIcon);
 
 
         // all message in list
-        Message messagea = new Message();
-        messagea.setMessageText("hi");
-        messagea.setUser(me);
-        messagea.setRightMessage(true);
-        messagea.setDateCell(true);
-
-
-        Message message2 = new Message();
-        message2.setMessageText("hello");
-        message2.setUser(you);
-        message2.setDateCell(true);
-
-        Message message3 = new Message();
-        message3.setMessageText("Ki khobor");
-        message3.setUser(me);
-        message3.setRightMessage(true);
-        message3.setDateCell(false);
-
-        Message message4 = new Message();
-        message4.setMessageText("valo");
-        message4.setUser(you);
-        message4.setDateCell(false);
-
-        ArrayList<Message> messages = new ArrayList<>();
-        messages.add(messagea);
-        messages.add(message2);
-        messages.add(message3);
-        messages.add(message4);
-        MessageView messageView = (MessageView) findViewById(R.id.message_view);
-        messageView.init(messages);
+        messages = new ArrayList<>();
+//        Message messagea = new Message();
+//        messagea.setMessageText("hi");
+//        messagea.setUser(me);
+//        messagea.setRightMessage(true);
+//        messagea.setDateCell(true);
+//
+//
+//        Message message2 = new Message();
+//        message2.setMessageText("hello");
+//        message2.setUser(you);
+//        message2.setDateCell(true);
+//
+//        Message message3 = new Message();
+//        message3.setMessageText("Ki khobor");
+//        message3.setUser(me);
+//        message3.setRightMessage(true);
+//        message3.setDateCell(false);
+//
+//        Message message4 = new Message();
+//        message4.setMessageText("valo");
+//        message4.setUser(you);
+//        message4.setDateCell(false);
+//
+//        ArrayList<Message> messages = new ArrayList<>();
+//        messages.add(messagea);
+//        messages.add(message2);
+//        messages.add(message3);
+//        messages.add(message4);
+//        MessageView messageView = (MessageView) findViewById(R.id.message_view);
+//        messageView.init(messages);
 
 
         mChatView = (ChatView) findViewById(R.id.chat_view);
@@ -151,13 +155,14 @@ public class ChatViewActivity extends AppCompatActivity {
         mChatView.setMessageMarginTop(3);
         mChatView.setMessageMarginBottom(3);
 
+
         // Click Send Button
         mChatView.setOnClickSendButtonListener(view -> {
 
 
             // New message
             Message message = new Message.Builder()
-                    .setUser(me)
+//                    .setUser(me2)
                     .setRightMessage(true)
                     .setMessageText(mChatView.getInputText())
                     .hideIcon(true)
@@ -165,15 +170,20 @@ public class ChatViewActivity extends AppCompatActivity {
             //Set to chat view
             mChatView.send(message);
             //Reset edit text
-            mChatView.setInputText("");
+
 
             //------------------------------------------------------
             // firebase post comment
-            postComment(mChatView.getInputText());
+            boolean isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
+
+            if (isCeleb) {
+                postComment(mChatView.getInputText(), "1");
+            } else {
+                postComment(mChatView.getInputText(), "2");
+            }
             //------------------------------------------------------
 
-
-
+            mChatView.setInputText("");
 //            //Receive message
 //            final Message receivedMessage = new Message.Builder()
 //                    .setUser(you)
@@ -196,31 +206,25 @@ public class ChatViewActivity extends AppCompatActivity {
 //            }, sendDelay);
 
 
-
-
-
-
-
-
-
-
-
         });
 
 
     } // end of onCreate
 
 
-    private void postComment(String comment) {
+    private void postComment(String comment, String isCele) {
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         temp_key = root.push().getKey();
         root.updateChildren(map);
 
         DatabaseReference message_root = root.child(temp_key);
         Map<String, Object> map2 = new HashMap<>();
-        map2.put("name", image_url);
+        map2.put("msisdn", msisdn);
         map2.put("msg", comment);
+        map2.put("imageUrl", profilePic);
+        map2.put("fbName", fbName);
+        map2.put("isCeleb", isCele);
 
         message_root.updateChildren(map2);
 
@@ -229,18 +233,30 @@ public class ChatViewActivity extends AppCompatActivity {
     }
 
     // this method is used for only audience
-    public void getAllComment(String test) {
+    public void getAllComment(String test, User me) {
         root = FirebaseDatabase.getInstance().getReference().child(test);
 
         root.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                append_chat_conversation(dataSnapshot);
+                try {
+                    append_chat_conversation(dataSnapshot, me);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                append_chat_conversation(dataSnapshot);
+                try {
+                    append_chat_conversation(dataSnapshot, me);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -260,42 +276,70 @@ public class ChatViewActivity extends AppCompatActivity {
         });
     }
 
-    private String chat_msg;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
 
-    private void append_chat_conversation(DataSnapshot dataSnapshot) {
+    private void append_chat_conversation(DataSnapshot dataSnapshot, User me) throws ExecutionException, InterruptedException {
+
 
         Iterator i = dataSnapshot.getChildren().iterator();
-
+        Message msg = null;
         while (i.hasNext()) {
-
+            chatName = (String) ((DataSnapshot) i.next()).getValue();
+            imageUrl = (String) ((DataSnapshot) i.next()).getValue();
+            isCeleb = (String) ((DataSnapshot) i.next()).getValue();
             chat_msg = (String) ((DataSnapshot) i.next()).getValue();
-            image_url = (String) ((DataSnapshot) i.next()).getValue();
+            room_name = (String) ((DataSnapshot) i.next()).getValue();
 
-            ChatClass chatClass = new ChatClass();
-            chatClass.setImageUrl(image_url);
-            chatClass.setText(chat_msg);
-            //commentClass.setTime(getTime());
+            msg = new Message();
+            msg.setMessageText(chat_msg);
 
-        //    chatClassList.add(chatClass);
+            Bitmap bm = getBitmapFromURL(getApplicationContext(), imageUrl);
 
-            //------------------------------------------------------------
-            //Receive message
-            final Message receivedMessage = new Message.Builder()
-                    .setUser(you)
-                    .setRightMessage(false)
-                    .setMessageText(chat_msg)
-                    .build();
+            if (isCeleb.equals("1")) {
+                final User you = new User(1, chatName, bm);
+                msg.setUser(you);
+            } else {
+                msg.setUser(me);
+                msg.setRightMessage(true);
+            }
 
-            mChatView.receive(receivedMessage);
-            //------------------------------------------------------------
+            msg.setDateCell(false);
+
+            //    mChatView.send(msg);
+
+            messages.add(msg);
+            MessageView messageView = (MessageView) findViewById(R.id.message_view);
+            messageView.init(messages);
 
         }
-//        listView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
 
 
+//    }
 
 
+    }
+
+    Bitmap bitmap = null;
+
+    public Bitmap getBitmapFromURL(Context context, String src) throws InterruptedException, ExecutionException {
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Callable<Bitmap> callable = new Callable<Bitmap>() {
+            @Override
+            public Bitmap call() throws ExecutionException, InterruptedException {
+
+                bitmap = Glide.with(context)
+                        .load(src)
+                        .asBitmap()
+                        .into(30, 30)
+                        .get();
+                return bitmap;
+            }
+        };
+
+        Future<Bitmap> future = executor.submit(callable);
+        // future.get() returns 2 or raises an exception if the thread dies, so safer
+        executor.shutdown();
+        return bitmap;
     }
 
 

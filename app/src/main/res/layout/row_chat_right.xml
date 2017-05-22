@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <com.vumobile.utils.MyTextView
+        android:id="@+id/txtChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corner"
+        android:padding="10dp"
+        android:text="hhhdresreeeesret"
+        android:textSize="15dp" />
+
+    <com.vumobile.celeb.Utils.RoundedImageView
+        android:id="@+id/chatImage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_man" />
+
+</LinearLayout>

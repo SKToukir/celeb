@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,9 +21,11 @@ import com.vumobile.celeb.Adapters.MessageUserListAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MessageListClass;
 import com.vumobile.fan.login.Session;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,9 +64,12 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("FromServer", chat_room_name);
 
                 Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);
-                intent.putExtra("room",chat_room_name);
-                intent.putExtra("imageUrl",profilePic);
-                intent.putExtra("name",fbName);
+                HashMap<String, String> tagNameAndImage = new HashMap<>();
+                tagNameAndImage = (HashMap<String, String>) view.findViewById(R.id.linearLayoutMessageList).getTag();
+
+                intent.putExtra("CELEB_PIC", tagNameAndImage.get(MessageUserListAdapter.IMAGE_URL));
+                intent.putExtra("CELEB_NAME", tagNameAndImage.get(MessageUserListAdapter.NAME));
+                intent.putExtra("room", chat_room_name);
                 startActivity(intent);
             }
         });
@@ -122,10 +128,18 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 /*
                 *  request flag = 1 means it is a chat request
                 *  request flag = 2 means it is a video request
+                *
+                *  flag: 1 is celeb 0 is fan
                 * */
+                String myFlag;
+                if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
+                    myFlag = "1";
+                } else {
+                    myFlag = "0";
+                }
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("flag", "1");
+                params.put("flag", myFlag);
                 params.put("MSISDN", msisdn);
 
                 return params;
@@ -146,8 +160,10 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         adapter = new MessageUserListAdapter(getApplicationContext(), R.layout.row_message_fan_list, listClasses);
         listView.setAdapter(adapter);
 
-        profilePic = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
-        fbName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+
+        profilePic = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
+        fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
+
 
     }
 
@@ -157,9 +173,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
 
             case R.id.backCelebMessage:
-                intent = new Intent(MessageActivity.this, CelebHomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+//                intent = new Intent(MessageActivity.this, CelebHomeActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
                 this.finish();
                 break;
         }

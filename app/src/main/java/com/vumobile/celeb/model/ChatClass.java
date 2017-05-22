@@ -10,14 +10,6 @@ public class ChatClass {
     private String text;
     private String isCeleb;
 
-    public String getIsCeleb() {
-        return isCeleb;
-    }
-
-    public void setIsCeleb(String isCeleb) {
-        this.isCeleb = isCeleb;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -32,5 +24,13 @@ public class ChatClass {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getIsCeleb() {
+        return isCeleb;
+    }
+
+    public void setIsCeleb(String isCeleb) {
+        this.isCeleb = isCeleb;
     }
 }

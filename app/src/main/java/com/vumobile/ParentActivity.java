@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import com.vumobile.celeb.Utils.CelebrityClass;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
+import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
 import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
@@ -419,15 +421,45 @@ public class ParentActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (!searchView.isIconified()) {
+            searchView.onActionViewCollapsed();
         } else {
             super.onBackPressed();
         }
     }
 
+    SearchView searchView = null;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        //    getMenuInflater().inflate(R.menu.parent, menu);
+
         getMenuInflater().inflate(R.menu.parent, menu);
+
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Toast like print
+            //    Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
+
+                if (!searchView.isIconified()) {
+                    searchView.setIconified(true);
+                }
+                myActionMenuItem.collapseActionView();
+                searchView.onActionViewCollapsed();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Toast.makeText(ParentActivity.this, "" + s, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
         return true;
     }
 
@@ -487,7 +519,8 @@ public class ParentActivity extends BaseActivity
                 break;
 
             case R.id.imageViewMessage:
-                Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MessageActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.buttonFilterAll:
