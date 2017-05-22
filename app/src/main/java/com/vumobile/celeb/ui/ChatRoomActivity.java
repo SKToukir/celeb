@@ -82,12 +82,21 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.btnSendChat:
                 chatText = etChat.getText().toString();
-                postComment(chatText);
+
+                boolean isCeleb = Session.isCeleb(getApplicationContext(),Session.IS_CELEB);
+
+                if (isCeleb){
+                    postComment(chatText,"1");
+                }else {
+                    postComment(chatText,"2");
+                }
+
+
                 break;
         }
     }
 
-    private void postComment(String comment) {
+    private void postComment(String comment, String isCele) {
 
         Map<String, Object> map = new HashMap<String, Object>();
         temp_key = root.push().getKey();
@@ -99,6 +108,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         map2.put("msg", comment);
         map2.put("imageUrl",profilePic);
         map2.put("fbName",fbName);
+        map2.put("isCeleb",isCele);
 
         message_root.updateChildren(map2);
 
@@ -162,7 +172,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private String chat_msg,imageUrl,chatName;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
+    private String chat_msg,imageUrl,chatName, isCeleb;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
@@ -172,16 +182,19 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             //String is = (String) ((DataSnapshot) i.next()).getValue();
             chatName = (String) ((DataSnapshot) i.next()).getValue();
             imageUrl = (String) ((DataSnapshot) i.next()).getValue();
+            isCeleb = (String) ((DataSnapshot) i.next()).getValue();
             chat_msg = (String) ((DataSnapshot) i.next()).getValue();
             room_name = (String) ((DataSnapshot) i.next()).getValue();
             Log.d("iscelelele",chat_msg);
             Log.d("iscelelele",room_name);
             Log.d("iscelelele",imageUrl);
             Log.d("iscelelele",chatName);
+            Log.d("iscelelele",isCeleb);
 
             ChatClass chatClass = new ChatClass();
             chatClass.setImageUrl(imageUrl);
             chatClass.setText(chat_msg);
+            chatClass.setIsCeleb(isCeleb);
             //commentClass.setTime(getTime());
 
             chatClassList.add(chatClass);

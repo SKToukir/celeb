@@ -38,6 +38,7 @@ import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
+import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 import com.vumobile.notification.MyReceiver;
@@ -77,7 +78,6 @@ public class ParentActivity extends BaseActivity
         displayFirebaseRegId();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         initUI();
 
         // initialize comment list adapter
@@ -463,6 +463,13 @@ public class ParentActivity extends BaseActivity
 
         } else if (id == R.id.nav_credits) {
 
+        } else if (id == R.id.nav_logout) {
+            Session.clearAllSharedData(getApplicationContext());
+            Intent intent = new Intent(ParentActivity.this, LogInAcitvity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            this.finish();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

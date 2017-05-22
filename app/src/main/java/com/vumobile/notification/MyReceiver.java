@@ -17,7 +17,7 @@ import static android.content.Context.ALARM_SERVICE;
 public class MyReceiver extends BroadcastReceiver
 {
 
-    private PendingIntent pendingIntent;
+        private PendingIntent pendingIntent;
 
     @Override
     public void onReceive(Context context, Intent intent)

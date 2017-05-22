@@ -1,11 +1,17 @@
 package com.vumobile.fan.login;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
 import com.vumobile.ParentActivity;
 import com.vumobile.celeb.R;
+import com.vumobile.celeb.ui.CelebHomeActivity;
 import com.vumobile.celeb.ui.CelebrityProfileActivity;
 
 import org.json.JSONException;
@@ -33,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LogInAcitvity extends AppCompatActivity implements View.OnClickListener {
-
+    private static final int REQUEST_GET_ACCOUNT = 112;
     PendingIntent pendingIntent;
     private static final String TAG = "LogInAcitvity.java";
     private EditText etUserName, etUserPhone, etVerificationCode;
@@ -51,11 +58,105 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_acitvity);
 
-
         initUI();
+        if(android.os.Build.VERSION.SDK_INT > 22){
+            if(isReadStorageAllowed()){
+                isLogin();
+                return;
+            }else{
+                requestStoragePermission();
+            }
 
-        isLogin();
+        }else {
+            isLogin();
 
+        }
+    }
+
+    private boolean isReadStorageAllowed() {
+
+        //Getting the permission status
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
+        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        int result4 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        //If permission is granted returning true
+        if (result == PackageManager.PERMISSION_GRANTED &&
+                result1  == PackageManager.PERMISSION_GRANTED &&
+                result4  == PackageManager.PERMISSION_GRANTED )
+            return true;
+
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private void requestStoragePermission(){
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.GET_ACCOUNTS) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_PHONE_STATE) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)){
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+
+
+        ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.GET_ACCOUNTS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CAMERA},REQUEST_GET_ACCOUNT);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case REQUEST_GET_ACCOUNT:
+                if (grantResults.length > 0) {
+
+                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean cameraAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean BIND_NOTIFICATION_LISTENER_SERVICE = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+
+                    if (locationAccepted && cameraAccepted && BIND_NOTIFICATION_LISTENER_SERVICE  ){
+
+                    }
+                    //Snackbar.make(view, "Permission Granted, Now you can access location data and camera.", Snackbar.LENGTH_LONG).show();
+                    else {
+
+                        //Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(android.Manifest.permission.GET_ACCOUNTS)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{android.Manifest.permission.GET_ACCOUNTS,
+                                                            Manifest.permission.READ_PHONE_STATE,
+                                                                    Manifest.permission.CAMERA},
+                                                            REQUEST_GET_ACCOUNT);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+
+                    }
+                }
+
+
+                break;
+        }
+
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(LogInAcitvity.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 
 
@@ -67,10 +168,17 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         if (Session.isLogin(LogInAcitvity.this, Session.CHECK_LOGIN)) {
 
             if (celebOrNot) {
-                Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                this.finish();
+                if (Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)==false){
+                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+                }else {
+                    Intent intent = new Intent(LogInAcitvity.this, CelebHomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+                }
             } else {
 
                 if (Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)){

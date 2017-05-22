@@ -8,6 +8,15 @@ public class ChatClass {
 
     private String imageUrl;
     private String text;
+    private String isCeleb;
+
+    public String getIsCeleb() {
+        return isCeleb;
+    }
+
+    public void setIsCeleb(String isCeleb) {
+        this.isCeleb = isCeleb;
+    }
 
     public String getImageUrl() {
         return imageUrl;

@@ -2,6 +2,7 @@ package com.vumobile.fan.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -11,6 +12,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Session {
 
+    public static final String CHAT_REQUEST = "chat_request";
+    public static final String VIDEO_CALL_REQUEST = "video_call_request";
     public static String MY_PREFS_NAME = "login_session";
     public static String USER_NAME = "name";
     public static String USER_PHONE = "phone_number";
@@ -31,6 +34,7 @@ public class Session {
         editor.commit();
 
     }
+
 
     public void saveData(Context cntx, String uName, String phoneNumber,boolean isCeleb, boolean checkLogin,String imgUrl){
 
@@ -55,6 +59,28 @@ public class Session {
         SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putBoolean(REGISTERED_CELEB, isReg);
         editor.commit();
+    }
+
+    public void saveVideoCallRequestStatus(Context context, boolean requestStatus){
+        SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putBoolean(VIDEO_CALL_REQUEST, requestStatus);
+        editor.commit();
+    }
+
+    public static boolean isVideoCallrequestAccepted(Context cntx,String requestKey){
+        boolean prefs = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getBoolean(requestKey,false);
+        return prefs;
+    }
+
+    public void saveChatRequestStatus(Context context, boolean requestStatus){
+        SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putBoolean(FB_PROFILE_NAME, requestStatus);
+        editor.commit();
+    }
+
+    public static boolean isChatrequestAccepted(Context cntx,String requestKey){
+        boolean prefs = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getBoolean(requestKey,false);
+        return prefs;
     }
 
     public void saveFbLoginStatus(Context cntx, boolean isReg){
@@ -105,8 +131,10 @@ public class Session {
     }
 
     public static void clearAllSharedData(Context cntx){
-        SharedPreferences preferences = (SharedPreferences) cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        SharedPreferences.Editor editor = preferences.edit();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
+        prefs = cntx.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
+        //SharedPreferences preferences = (SharedPreferences) cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = prefs.edit();
 
         editor.clear();
         editor.commit();
