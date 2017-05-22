@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,18 +26,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener {
 
     private List<ChatClass> chatClassList = new ArrayList<ChatClass>();
     private ChatAdapter adapter;
     private ListView listView;
     private ChatClass chatClass;
-    private Button btnSend;
-    private EditText etChat;
-    private String chatText;
+    private ImageView imageViewChatSend;
+    private EditText editTextChatText;
+    private String chatText, celebName, celebPic;
     private String room_name, temp_key, msisdn, profilePic, fbName;
+    private CircleImageView circleImageViewChatProfilePic;
+    private TextView textViewChatName;
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+
+    private String chatName, chat_msg, isCeleb, imageUrl;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,50 +53,73 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         initUI();
 
+
+
+
         // dont create room here .. create room when confirm user for chat
 
+        celebName = getIntent().getStringExtra("CELEB_NAME");
+        celebPic = getIntent().getStringExtra("CELEB_PIC");
         room_name = getIntent().getStringExtra("room");
-        msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
-        profilePic = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
-        fbName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+        msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        profilePic = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
+        fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         //room_name = "88014444444448801666666666";
         //room_name = "Room:5GAMB3EBCM";
         Log.d("room_name", room_name);
         Log.d("room_name", msisdn);
         Log.d("room_name", profilePic);
         Log.d("room_name", fbName);
+        Log.d("celebPic", celebPic);
 
         //createRoomOnFirebase(room_name);
-
-
-
+        Glide.with(this).load(celebPic).into(circleImageViewChatProfilePic);
+        textViewChatName.setText(celebName);
         getAllComment(room_name);
     }
 
     private void initUI() {
 
-        etChat = (EditText) findViewById(R.id.etChat);
-        listView = (ListView) findViewById(R.id.listChat);
-        btnSend = (Button) findViewById(R.id.btnSendChat);
-        btnSend.setOnClickListener(this);
+        editTextChatText = (EditText) findViewById(R.id.editTextChatText);
+        textViewChatName = (TextView) findViewById(R.id.textViewChatName);
 
-        adapter = new ChatAdapter(getApplicationContext(),R.layout.row_chat,chatClassList);
+        listView = (ListView) findViewById(R.id.listChat);
+        listView.setDivider(null);
+        listView.setDividerHeight(0);
+        imageViewChatSend = (ImageView) findViewById(R.id.imageViewChatSend);
+        circleImageViewChatProfilePic = (CircleImageView) findViewById(R.id.circleImageViewChatProfilePic);
+        imageViewChatSend.setOnClickListener(this);
+
+
+        adapter = new ChatAdapter(getApplicationContext(), R.layout.row_chat, chatClassList);
+
         listView.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
-            case R.id.btnSendChat:
-                chatText = etChat.getText().toString();
+            case R.id.imageViewChatSend:
+                chatText = editTextChatText.getText().toString();
                 postComment(chatText);
+
+                // clear text box
+                editTextChatText.setText("");
+                //  listView.setSelection(adapter.getCount() - 1);
+
                 break;
         }
     }
 
     private void postComment(String comment) {
+
+        if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
+            isCeleb = "1"; // 1 is celeb 2 is fan
+        } else {
+            isCeleb = "2";
+        }
 
         Map<String, Object> map = new HashMap<String, Object>();
         temp_key = root.push().getKey();
@@ -97,8 +129,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         Map<String, Object> map2 = new HashMap<>();
         map2.put("msisdn", msisdn);
         map2.put("msg", comment);
-        map2.put("imageUrl",profilePic);
-        map2.put("fbName",fbName);
+        map2.put("imageUrl", profilePic);
+        map2.put("fbName", fbName);
+        map2.put("isCeleb", isCeleb);
+
 
         message_root.updateChildren(map2);
 
@@ -162,7 +196,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private String chat_msg,imageUrl,chatName;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
@@ -172,16 +205,18 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             //String is = (String) ((DataSnapshot) i.next()).getValue();
             chatName = (String) ((DataSnapshot) i.next()).getValue();
             imageUrl = (String) ((DataSnapshot) i.next()).getValue();
+            isCeleb = (String) ((DataSnapshot) i.next()).getValue();
             chat_msg = (String) ((DataSnapshot) i.next()).getValue();
             room_name = (String) ((DataSnapshot) i.next()).getValue();
-            Log.d("iscelelele",chat_msg);
-            Log.d("iscelelele",room_name);
-            Log.d("iscelelele",imageUrl);
-            Log.d("iscelelele",chatName);
+            Log.d("iscelelele", chat_msg);
+            Log.d("iscelelele", room_name);
+            Log.d("iscelelele", imageUrl);
+            Log.d("iscelelele", chatName);
 
             ChatClass chatClass = new ChatClass();
             chatClass.setImageUrl(imageUrl);
             chatClass.setText(chat_msg);
+            chatClass.setIsCeleb(isCeleb);
             //commentClass.setTime(getTime());
 
             chatClassList.add(chatClass);

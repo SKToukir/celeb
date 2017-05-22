@@ -2,7 +2,6 @@ package com.vumobile.celeb.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,18 +37,21 @@ public class ChatAdapter extends ArrayAdapter<ChatClass> {
 
         View v = convertView;
 
-        if (v == null) {
-            LayoutInflater vi;
-            vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.row_chat, null);
-        }
-
         ChatClass requestClass = getItem(position);
+
+      //  if (v == null) {
+            LayoutInflater vi = LayoutInflater.from(getContext());
+            if (requestClass.getIsCeleb().equals("1")) {
+                v = vi.inflate(R.layout.row_chat, null);
+            } else {
+                v = vi.inflate(R.layout.row_chat_right, null);
+            }
+     //   }
+
 
         if (requestClass != null) {
             TextView tt3 = (TextView) v.findViewById(R.id.txtChat);
             ImageView imgFan = (ImageView) v.findViewById(R.id.chatImage);
-
 
             if (tt3 != null) {
                 tt3.setText(requestClass.getText());
@@ -64,10 +66,9 @@ public class ChatAdapter extends ArrayAdapter<ChatClass> {
     }
 
 
-
-    @Nullable
-    @Override
-    public ChatClass getItem(int position) {
-        return super.getItem(getCount() - position - 1);
-    }
+//    @Nullable
+//    @Override
+//    public ChatClass getItem(int position) {
+//        return super.getItem(getCount() - position - 1);
+//    }
 }

@@ -25,8 +25,9 @@ import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
+import com.vumobile.celeb.ui.ChatRoomActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
-import com.vumobile.fan.login.ui.ChatViewActivity;
+import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 
@@ -102,7 +103,8 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.imageViewMessage:
-                Toast.makeText(this, "sms", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, MessageActivity.class);
+                startActivity(i);
                 break;
 
             case R.id.imageViewHome:
@@ -185,9 +187,10 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 String room_name = celeb_msisdn + fan_msisdn;
                                 Log.d("room_name", room_name);
 //                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
-                                Intent intent = new Intent(getApplicationContext(), ChatViewActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);//ChatViewActivity
+                                intent.putExtra("CELEB_PIC", profilePic);
+                                intent.putExtra("CELEB_NAME", fbName);
                                 intent.putExtra("room", room_name);
-
                                 startActivity(intent);
                                 //TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
 
@@ -196,7 +199,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 //                                intent.putExtra("imageUrl",profilePic);
 //                                intent.putExtra("name",fbName);
 //                                startActivity(intent);
-                                TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                TastyToast.makeText(getApplicationContext(), "Start Chat Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 

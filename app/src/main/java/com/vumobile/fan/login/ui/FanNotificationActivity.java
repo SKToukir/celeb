@@ -1,5 +1,6 @@
 package com.vumobile.fan.login.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
+import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.adapter.FanNotificationAdapter;
 import com.vumobile.fan.login.model.FanNotificationModelEnity;
 
@@ -31,7 +34,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FanNotificationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class FanNotificationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     RecyclerView recyclerViewNotification;
     SwipeRefreshLayout swipeRefreshLayoutNotification;
@@ -39,6 +42,7 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
     List<FanNotificationModelEnity> fanNotificationModelEnities;
     FanNotificationAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+    ImageView imageViewMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,9 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
         swipeRefreshLayoutNotification = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutNotification);
         recyclerViewNotification = (RecyclerView) findViewById(R.id.recyclerViewNotification);
 
+        imageViewMessage = (ImageView) findViewById(R.id.imageViewMessage);
+        imageViewMessage.setOnClickListener(this);
+
         fanNotificationModelEnities = new ArrayList<>();
         mAdapter = new FanNotificationAdapter(FanNotificationActivity.this, fanNotificationModelEnities);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -74,8 +81,6 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
                                                 }
                                             }
         );
-
-
 
 
     } // end of onCreate
@@ -167,4 +172,13 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imageViewMessage:
+                Intent i = new Intent(this, MessageActivity.class);
+                startActivity(i);
+                break;
+        }
+    }
 }
