@@ -29,6 +29,7 @@ import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.ui.ChatViewActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
+import com.vumobile.videocall.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FanCelebProfileActivity extends BaseActivity implements View.OnClickListener {
 
     String msisdn, name, fbName, profilePic;
-
     ImageView imageViewNotification, imageViewMessage, imageViewHome;
     ImageView imageViewVideoCall, imageViewChat, imageViewImageAndVideo, imageViewGift;
 
@@ -110,13 +110,20 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.imageViewVideoCall:
-                Toast.makeText(this, "v call", Toast.LENGTH_SHORT).show();
+
+                String fan_msisdns = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+                // show chat request dialog
+                //chatRequestDialog(msisdn, fan_msisdn, name, "1");
+                requestForVideoCall(msisdn, fan_msisdns, "2");
+
+
                 break;
 
             case R.id.imageViewChat:
                 String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
                 // show chat request dialog
-                chatRequestDialog(msisdn, fan_msisdn, name, "1");
+                //chatRequestDialog(msisdn, fan_msisdn, name, "1");
+                requestForChat(msisdn, fan_msisdn, "1");
                 break;
 
             case R.id.imageViewImageAndVideo:
@@ -179,6 +186,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
                             if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
                                 TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
+
                             } else if (request_status.matches("Accepted")) {
 
                                 String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
@@ -200,6 +208,82 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                /*
+                *  request flag = 1 means it is a chat request
+                *  request flag = 2 means it is a video request
+                * */
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Fan", fan_msisdn);
+                params.put("Celebrity", celeb_msisdn);
+                params.put("RequestType", type);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void requestForVideoCall(String celeb_msisdn, String fan_msisdn, String type) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_CHAT_REQUEST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+
+
+                        JSONObject obj = null;
+                        try {
+                            obj = new JSONObject(response);
+
+                            String request_status = obj.getString("result").replaceAll(" ", "_");
+                            Log.d("FromServer", request_status);
+
+
+                            if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
+                                TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
+
+                            } else if (request_status.matches("Accepted")) {
+
+                                Toast.makeText(getApplicationContext(), fbName, Toast.LENGTH_SHORT).show();
+                                String fan_name = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+                                // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                intent.putExtra("celeb_name",fbName);
+                                intent.putExtra("fan_name",fan_name);
+                                intent.putExtra("profilePic",profilePic);
+                                intent.putExtra("celeb_msisdn",msisdn);
+                                startActivity(intent);
+                                TastyToast.makeText(getApplicationContext(),"Start Video Call Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
+
+
+                            }else {
+                                TastyToast.makeText(getApplicationContext(),request_status.toString(),TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                             }
 
 

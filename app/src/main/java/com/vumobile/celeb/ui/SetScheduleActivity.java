@@ -2,10 +2,10 @@ package com.vumobile.celeb.ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,9 +26,11 @@ import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.sinch.android.rtc.SinchError;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.Session;
+import com.vumobile.videocall.SinchService;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -36,8 +39,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("ALL")
-public class SetScheduleActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity implements View.OnClickListener,SinchService.StartFailedListener {
+    private ProgressDialog mSpinner;
     private DatePicker datePicker;
     private Calendar calendar;
     private TextView dateView;
@@ -61,7 +64,7 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_schedule);
         toolbar = (Toolbar) findViewById(R.id.toolbar_set_schedule);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         fanMsisdn = intent.getStringExtra("msisdn");
@@ -160,7 +163,21 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
                 showDialog(999);
                 break;
             case R.id.btnConfirmTime:
+
+                if (!getSinchServiceInterface().isStarted()) {
+                    SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+                    startService(new Intent(SetScheduleActivity.this, SinchService.class));
+                    getSinchServiceInterface().startClient(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
+                    showSpinner();
+                } else {
+                    //openPlaceCallActivity(celeb_name);
+                    Intent intent = new Intent(SetScheduleActivity.this,SinchService.class);
+                    SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+                    startService(intent);
+                }
+
                 confirmation(Api.URL_REQUESTS_ACCEPT,"1");
+
                 break;
         }
     }
@@ -178,6 +195,9 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
                         createRoomOnFirebase(room_name);
                         Log.d("room_name",room_name);
                         TastyToast.makeText(getApplicationContext(),response,TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                        finish();
+                        //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -262,4 +282,37 @@ public class SetScheduleActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    @Override
+    protected void onServiceConnected() {
+        getSinchServiceInterface().setStartListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onStartFailed(SinchError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+    }
+
+
+    @Override
+    public void onStarted() {
+
+    }
+
+    private void showSpinner() {
+        mSpinner = new ProgressDialog(this);
+        mSpinner.setTitle("Logging in");
+        mSpinner.setMessage("Please wait...");
+        mSpinner.show();
+    }
 }

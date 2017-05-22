@@ -2,8 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vumobile.celeb">
 
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
+    
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,7 +24,6 @@
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 
     <uses-feature android:name="android.hardware.camera" />
-
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
@@ -28,6 +33,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <service android:name="com.vumobile.videocall.SinchService" />
         <activity
             android:name="com.vumobile.fan.login.LogInAcitvity"
             android:label="@string/app_name"
@@ -127,18 +133,37 @@
         <activity android:name=".ui.SetScheduleActivity" />
         <activity android:name="com.vumobile.fan.login.ui.FanCelebProfileImageVideo" />
         <activity android:name="com.vumobile.fan.login.ImageOrVideoView" />
-
         <activity android:name=".ui.MessageActivity" />
-        <activity android:name=".ui.ChatRoomActivity">
-
-        </activity>
-
+        <activity android:name=".ui.ChatRoomActivity" />
+        <activity
+            android:name="com.vumobile.videocall.IncomingCallScreenActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.vumobile.videocall.CallScreenActivity" />
+        <activity android:name="com.vumobile.videocall.LoginActivity" />
+        <activity
+            android:name="com.vumobile.videocall.PlaceCallActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.vumobile.videocall.ViaVideoCall" />
         <activity
             android:name="com.vumobile.fan.login.ui.ChatViewActivity"
             android:label="@string/title_activity_chat_view"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".ui.RegisterForVideoCallActivity"></activity>
 
-        </activity>
+
+
+        <receiver android:name="com.vumobile.videocall.CallReceiver">
+            <intent-filter>
+                <action android:name="YouWillNeverKillMe" />
+
+                <intent-filter>
+                    <action android:name="restartApps" />
+                </intent-filter>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

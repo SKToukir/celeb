@@ -329,6 +329,8 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                                 JSONObject jsonObj = new JSONObject(response);
                                 String successLog = jsonObj.getString("result");
                                 TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                                // user logged in with fb
+                                new Session().saveFbLoginStatus(getApplicationContext(),true);
                                 if (!celebOrNot) {
                                     startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
                                 }

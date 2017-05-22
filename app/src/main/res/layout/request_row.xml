@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="180dp">
 
     <LinearLayout
         android:weightSum="5"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="150dp">
 
         <LinearLayout
             android:gravity="center"
@@ -34,6 +34,7 @@
             android:layout_height="match_parent">
 
             <com.vumobile.utils.MyTextView
+                android:textColor="#fff"
                 android:id="@+id/txtfanName"
                 android:textSize="20dp"
                 android:text="Sheikh Toukir"
@@ -42,6 +43,7 @@
 
 
             <com.vumobile.utils.MyTextView
+                android:textColor="#fff"
                 android:id="@+id/txtfanRequest"
                 android:textSize="20dp"
                 android:text="Want's To Video Chat"
@@ -50,6 +52,7 @@
 
 
             <com.vumobile.utils.MyTextView
+                android:textColor="#fff"
                 android:id="@+id/txtRequestTime"
                 android:text="Time: March 10,9.20 PM"
                 android:layout_width="wrap_content"

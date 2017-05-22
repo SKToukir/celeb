@@ -1,0 +1,106 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dip" android:background="@color/myColorOneBody">
+
+    <include layout="@layout/toolbar_video_call"
+        android:id="@+id/include" />
+
+    <com.vumobile.utils.MyTextView
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="25sp"
+        android:id="@+id/text3"
+        android:text="Start Video call with"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.vumobile.utils.MyTextView
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:textSize="25sp"
+        android:layout_below="@+id/text3"
+        android:id="@+id/txtUserName"
+        android:text="Start Video call with"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Enter your name"
+            android:textAllCaps="true"
+            android:id="@+id/textView" android:layout_gravity="center_horizontal"
+            android:textColor="@color/sinch_purple" android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/loginName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:inputType="textPersonName"
+            android:textSize="32sp"
+            android:padding="10dp"
+            android:textColor="@color/sinch_purple"
+            android:background="@drawable/inputbox">
+
+            <requestFocus/>
+        </EditText>
+
+    </LinearLayout>
+
+    <Button
+        android:background="#fff"
+        android:visibility="gone"
+        android:gravity="center"
+        android:id="@+id/btnSentVideoRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Request"
+        android:minHeight="56dp"
+        android:minWidth="132dp"
+        android:textColor="@color/myColorTwoHeader"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"/>
+
+    <com.vumobile.celeb.Utils.RoundedImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/include"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:id="@+id/imgCalleImage" />
+
+    <Button
+        android:gravity="center"
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Go"
+        android:minHeight="56dp"
+        android:minWidth="132dp"
+        android:textColor="@color/myColorTwoHeader"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/txtUserName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="77dp" />
+</RelativeLayout>

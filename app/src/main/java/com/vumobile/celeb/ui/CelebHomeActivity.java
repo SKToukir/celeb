@@ -1,7 +1,10 @@
 package com.vumobile.celeb.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -30,8 +33,11 @@ import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
+import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
+import com.vumobile.videocall.CallReceiver;
+import com.vumobile.videocall.SinchService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +53,8 @@ public class CelebHomeActivity extends BaseActivity
     NavigationView navigationView;
     TextView txtProfileName, txtCele;
     EditText etWhatsYourMind;
-    String celebName,msisdn,imageUrl,celeb_id,gender;
+    String celebName,msisdn,imageUrl,celeb_id,gender,msisdnMy;
+    PendingIntent pendingIntent;
 
 
     @Override
@@ -56,6 +63,14 @@ public class CelebHomeActivity extends BaseActivity
         setContentView(R.layout.activity_celeb_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        runService();
+
+//        if (!Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)){
+//            startActivity(new Intent(CelebHomeActivity.this,LogInAcitvity.class));
+//        }
+
+        //startService(new Intent(CelebHomeActivity.this,CallReceiver.class));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,19 +94,37 @@ public class CelebHomeActivity extends BaseActivity
         initNavHeaderView();
 
         String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdn);
-            }
-        });thread.start();
+       // getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdn);
 
 
+
+        SinchService.uName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
+        startService(new Intent(CelebHomeActivity.this,SinchService.class));
         // if can not access celeb name from session
         if (Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)== null ||
                 Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)=="null"){
-            txtCele.setText(celebName);
+                txtCele.setText(celebName);
+
+        }
+
+
+
+    }
+
+    private void runService() {
+
+        try {
+
+            Intent serviceIntent = new Intent(CelebHomeActivity.this, SinchService.class);
+            startService(serviceIntent);
+            Intent myIntent = new Intent(CelebHomeActivity.this, CallReceiver.class);
+            pendingIntent = PendingIntent.getBroadcast(CelebHomeActivity.this, 0, myIntent, 0);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60 * 1000, pendingIntent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -120,6 +153,9 @@ public class CelebHomeActivity extends BaseActivity
 
 
                     new Session().saveData(getApplicationContext(),celebName,msisdn,true,true,imageUrl);
+
+                    txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
+                    Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgPic);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -165,11 +201,12 @@ public class CelebHomeActivity extends BaseActivity
         etWhatsYourMind.setOnClickListener(this);
         imgImageVideoCeleb.setOnClickListener(this);
 
+        msisdnMy = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        Log.d("FromServer", msisdnMy);
+        txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgPic);
 
-
-        txtCele.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
-        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(imgPic);
-
+        getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdnMy);
     }
 
     private void initNavHeaderView() {
@@ -225,9 +262,16 @@ public class CelebHomeActivity extends BaseActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            startActivity(new Intent(getApplicationContext(),RegisterForVideoCallActivity.class));
         } else if (id == R.id.nav_schedule) {
             startActivity(new Intent(getApplicationContext(),ScheduleActivity.class));
+        }else if (id == R.id.log_out) {
+            Session.clearAllSharedData(getApplicationContext());
+            Intent intent = new Intent(CelebHomeActivity.this, LogInAcitvity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            this.finish();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -301,4 +345,5 @@ public class CelebHomeActivity extends BaseActivity
         txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
         Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
     }
+
 }

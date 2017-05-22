@@ -46,6 +46,8 @@ public class ChatAdapter extends ArrayAdapter<ChatClass> {
 
         ChatClass requestClass = getItem(position);
 
+        String isCeleb = requestClass.getIsCeleb();
+
         if (requestClass != null) {
             TextView tt3 = (TextView) v.findViewById(R.id.txtChat);
             ImageView imgFan = (ImageView) v.findViewById(R.id.chatImage);
@@ -55,7 +57,7 @@ public class ChatAdapter extends ArrayAdapter<ChatClass> {
                 tt3.setText(requestClass.getText());
             }
 
-            if (tt3 != null) {
+            if (imgFan != null) {
                 Picasso.with(mContext).load(requestClass.getImageUrl()).into(imgFan);
             }
         }
