@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="190dp"
     android:background="@drawable/side_nav_bar"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -17,12 +17,13 @@
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/imageViewCeleb"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="#00000000"
         app:civ_border_color="#ffffff"
+        android:cropToPadding="true"
         app:civ_border_width="2dp" />
 
     <TextView
@@ -34,7 +35,7 @@
         android:text="Android Studio"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
+    <com.vumobile.utils.MyTextView
         android:layout_marginTop="10dp"
         android:textStyle="normal"
         android:textColor="#fff"
@@ -45,5 +46,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Someone Fan" />
+
+    <ImageView
+        android:src="@drawable/followicon"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewPfName"
+        android:layout_toLeftOf="@+id/txtFollowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.vumobile.utils.MyTextView
+        android:layout_marginTop="4dp"
+        android:layout_centerVertical="true"
+        android:textColor="#fff"
+        android:id="@+id/txtFollowers"
+        android:text="123"
+        android:layout_below="@+id/textViewPfName"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

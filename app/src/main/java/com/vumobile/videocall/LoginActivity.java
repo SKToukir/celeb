@@ -115,7 +115,7 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
 
     @Override
     public void onStarted() {
-        openPlaceCallActivity(celeb_name);
+       // openPlaceCallActivity(celeb_name);
     }
 
     public void loginClicked(String user_names) {
@@ -133,10 +133,10 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
             getSinchServiceInterface().startClient(userName);
             showSpinner();
         } else {
-            //openPlaceCallActivity(celeb_name);
             Intent intent = new Intent(LoginActivity.this,SinchService.class);
             SinchService.uName = userName;
             startService(intent);
+            openPlaceCallActivity(celeb_name);
         }
 
 //        if (!getSinchServiceInterface().isStarted()) {

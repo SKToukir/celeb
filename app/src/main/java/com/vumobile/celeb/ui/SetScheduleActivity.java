@@ -195,6 +195,9 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                         createRoomOnFirebase(room_name);
                         Log.d("room_name",room_name);
                         TastyToast.makeText(getApplicationContext(),response,TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                        intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         finish();
                         //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 

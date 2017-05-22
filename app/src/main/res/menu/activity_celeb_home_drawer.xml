@@ -19,7 +19,8 @@
         <item
             android:id="@+id/log_out"
             android:icon="@drawable/logout"
-            android:title="Logout" />
+            android:title="Logout"
+            android:actionLayout="@layout/custom_nav_item"/>
     </group>
 
 </menu>

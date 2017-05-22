@@ -51,10 +51,11 @@ public class CelebHomeActivity extends BaseActivity
 
     private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage;
     NavigationView navigationView;
-    TextView txtProfileName, txtCele;
+    TextView txtProfileName, txtCele, txtFollowers;
     EditText etWhatsYourMind;
-    String celebName,msisdn,imageUrl,celeb_id,gender,msisdnMy;
+    String celebName,msisdn,imageUrl,celeb_id,gender,msisdnMy,totalFollowers;
     PendingIntent pendingIntent;
+    ImageView imgImage;
 
 
     @Override
@@ -150,10 +151,12 @@ public class CelebHomeActivity extends BaseActivity
                     Log.d("FromServer",gender);
                     celeb_id = obj.getString("Celeb_id");
                     Log.d("FromServer",celeb_id);
-
+                    totalFollowers = obj.getString("Follower");
+                    Log.d("FromServer",totalFollowers);
 
                     new Session().saveData(getApplicationContext(),celebName,msisdn,true,true,imageUrl);
 
+                    txtFollowers.setText(obj.getString("Follower"));
                     txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
                     Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgPic);
 
@@ -212,6 +215,7 @@ public class CelebHomeActivity extends BaseActivity
     private void initNavHeaderView() {
 
 
+        txtFollowers = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtFollowers);
         txtProfileName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textViewPfName);
 
         profilePictureView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageViewCeleb);
