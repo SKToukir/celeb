@@ -42,7 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FanCelebProfileActivity extends BaseActivity implements View.OnClickListener {
 
-    String msisdn, name, fbName, profilePic;
+    String msisdn, name, fbName, profilePic, followerCount;
     ImageView imageViewNotification, imageViewMessage, imageViewHome;
     ImageView imageViewVideoCall, imageViewChat, imageViewImageAndVideo, imageViewGift;
 
@@ -81,15 +81,18 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
         CircleImageView imageViewProfilePicFan = (CircleImageView) findViewById(R.id.imageViewProfilePicFan);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
+        TextView textViewFollowerCountProfile = (TextView) findViewById(R.id.textViewFollowerCountProfile);
 
         Intent intent = getIntent();
         msisdn = intent.getStringExtra("msisdn");
         name = intent.getStringExtra("name");
         fbName = intent.getStringExtra("fbname");
         profilePic = intent.getStringExtra("profilePic");
+        followerCount = intent.getStringExtra("FOLLOWER");
 
         Picasso.with(getApplicationContext()).load(profilePic).into(imageViewProfilePicFan);
         textViewName.setText(fbName);
+        textViewFollowerCountProfile.setText(followerCount);
 
 
     } // end of onCreate
