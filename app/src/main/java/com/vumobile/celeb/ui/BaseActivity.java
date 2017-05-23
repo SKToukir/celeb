@@ -1,10 +1,14 @@
 package com.vumobile.celeb.ui;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +28,7 @@ import com.vumobile.celeb.model.EngineConfig;
 import com.vumobile.celeb.model.MyEngineEventHandler;
 import com.vumobile.celeb.model.WorkerThread;
 import com.vumobile.common.Constant;
+import com.vumobile.videocall.SinchService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +38,14 @@ import java.util.Arrays;
 import io.agora.rtc.RtcEngine;
 
 @SuppressWarnings("ALL")
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements ServiceConnection {
     private final static Logger log = LoggerFactory.getLogger(BaseActivity.class);
-
+    private SinchService.SinchServiceInterface mSinchServiceInterface;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getApplicationContext().bindService(new Intent(this, SinchService.class), this,
+                BIND_AUTO_CREATE);
         final View layout = findViewById(Window.ID_ANDROID_CONTENT);
         ViewTreeObserver vto = layout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -53,6 +59,35 @@ public abstract class BaseActivity extends AppCompatActivity {
                 initUIandEvent();
             }
         });
+    }
+
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        if (SinchService.class.getName().equals(componentName.getClassName())) {
+            mSinchServiceInterface = (SinchService.SinchServiceInterface) iBinder;
+            onServiceConnected();
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        if (SinchService.class.getName().equals(componentName.getClassName())) {
+            mSinchServiceInterface = null;
+            onServiceDisconnected();
+        }
+    }
+
+    protected void onServiceConnected() {
+        // for subclasses
+    }
+
+    protected void onServiceDisconnected() {
+        // for subclasses
+    }
+
+    protected SinchService.SinchServiceInterface getSinchServiceInterface() {
+        return mSinchServiceInterface;
     }
 
     protected abstract void initUIandEvent();

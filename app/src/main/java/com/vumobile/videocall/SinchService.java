@@ -23,9 +23,9 @@ import com.vumobile.fan.login.Session;
 
 public class SinchService extends Service {
 
-    private static final String APP_KEY = "a7ca2730-57ee-4301-bd53-a7ff936ed429";
-    private static final String APP_SECRET = "ci65KC3xdk2nLtVFpGRh6Q==";
-    private static final String ENVIRONMENT = "sandbox.sinch.com";
+    private static final String APP_KEY = "35eab160-0123-43d1-85ec-6160cabb4743";
+    private static final String APP_SECRET = "7n0EwcYi4UG/1EsbwdDJtg==";
+    private static final String ENVIRONMENT = "clientapi.sinch.com";
 
     public static final String CALL_ID = "CALL_ID";
     static final String TAG = SinchService.class.getSimpleName();

@@ -15,16 +15,43 @@
         <!--android:layout_height="100dp"-->
         <!--android:src="@drawable/ic_man" />-->
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/imageViewCeleb"
+    <FrameLayout
+        android:id="@+id/frame"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="#00000000"
-        app:civ_border_color="#ffffff"
-        android:cropToPadding="true"
-        app:civ_border_width="2dp" />
+        android:layout_height="100dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical|center_horizontal"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageViewCeleb"
+            android:layout_width="100dp"
+            android:layout_height="90dp" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:background="@drawable/b"
+            android:layout_width="95dp"
+            android:layout_height="95dp" />
+
+    </FrameLayout>
+
+    <!--<de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/imageViewCeleb"-->
+        <!---->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:background="#00000000"-->
+        <!--app:civ_border_color="#ffffff"-->
+        <!--android:cropToPadding="true"-->
+        <!--app:civ_border_width="2dp" />-->
 
     <TextView
 
@@ -40,7 +67,7 @@
         android:textStyle="normal"
         android:textColor="#fff"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/imageViewCeleb"
+        android:layout_below="@+id/frame"
         android:textSize="20sp"
         android:id="@+id/textViewPfName"
         android:layout_width="wrap_content"

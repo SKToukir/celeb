@@ -19,6 +19,14 @@ public class GaleeryActivityCeleb extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_galeery_celeb);
         toolbar = (Toolbar) findViewById(R.id.tool_bar_gallery);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         initUI();
     }

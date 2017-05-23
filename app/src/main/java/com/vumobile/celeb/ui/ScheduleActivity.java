@@ -48,6 +48,14 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_schedule);
         toolbar = (Toolbar) findViewById(R.id.toolbar_schedule);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
 
         initUI();

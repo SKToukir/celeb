@@ -26,6 +26,8 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:inputType="date"
+            android:focusable="false"
             android:clickable="true"
             android:background="#fff"
             android:id="@+id/etDate"

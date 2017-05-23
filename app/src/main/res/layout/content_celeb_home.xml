@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_celeb_home"
     android:layout_width="match_parent"
@@ -25,23 +26,42 @@
         <!--first part-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:orientation="horizontal"
             android:padding="5dp">
 
             <!--<com.vumobile.celeb.Utils.RoundedImageView-->
-                <!--android:id="@+id/celebImage"-->
-                <!--android:layout_width="80dp"-->
-                <!--android:layout_height="80dp"-->
-                <!--android:src="@drawable/ic_man" />-->
+            <!--android:id="@+id/celebImage"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:src="@drawable/ic_man" />-->
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/celebImage"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="#00000000"
-                app:civ_border_color="#ffffff"
-                app:civ_border_width="2dp" />
+
+
+            <FrameLayout
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:padding="4dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/celebImage"
+                    android:layout_width="100dp"
+                    android:layout_height="90dp" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/b"
+                    android:layout_width="95dp"
+                    android:layout_height="95dp" />
+
+            </FrameLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -53,11 +73,11 @@
                     android:id="@+id/txtCelebName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily=""
                     android:text="Someone Celeb"
                     android:textColor="#fff"
-                    android:textSize="20sp"
-                    android:fontFamily=""/>
+                    android:textSize="20sp" />
 
                 <com.vumobile.utils.MyTextView
                     android:id="@+id/txtCelebLocation"
@@ -67,6 +87,27 @@
                     android:text="Mirpur"
                     android:textColor="#fff"
                     android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/follow"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/txtCelebLocation"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/followicon" />
+
+                <com.vumobile.utils.MyTextView
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/txtHomePageFollow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtCelebLocation"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/follow"
+                    android:text="1212"
+                    android:textColor="#fff" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -78,21 +119,16 @@
             android:layout_margin="5dp"
             android:orientation="vertical">
 
-            <EditText
+            <Button
                 android:id="@+id/etWhatsYourMind"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="50dp"
                 android:background="#fff"
-                android:clickable="true"
-                android:editable="false"
                 android:ems="10"
                 android:enabled="true"
-                android:gravity="top"
+                android:gravity="center_vertical"
                 android:hint="Whats on your mind?"
-                android:inputType="textMultiLine"
                 android:isScrollContainer="true"
-                android:maxLines="6"
-                android:minLines="6"
                 android:padding="10dp" />
 
             <Button
@@ -112,121 +148,161 @@
             android:layout_height="wrap_content">
 
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:weightSum="2">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center">
-
-
-
-                    <ImageView
-                        android:id="@+id/imgGoLive"
-                        android:layout_width="140dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/golive" />
-
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/imgImageVideoCeleb"
-                        android:layout_width="150dp"
-                        android:layout_height="120dp"
-                        android:src="@drawable/imageandvideo" />
-
-
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
                 android:weightSum="2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <ImageView
-                        android:id="@+id/imgRequest"
-                        android:layout_width="140dp"
-                        android:layout_height="130dp"
-                        android:src="@drawable/request" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.CardView
+                            app:cardBackgroundColor="@color/myColorOneBody"
+                            android:id="@+id/card_view"
+                            android:layout_width="140dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            card_view:cardCornerRadius="7dp"
+                            card_view:contentPadding="10dp">
+
+
+                            <ImageView
+                                android:id="@+id/imgGoLive"
+                                android:layout_width="140dp"
+                                android:layout_height="120dp"
+                                android:layout_gravity="center"
+                                android:background="@color/myColorOneBody"
+                                android:clickable="true"
+                                android:src="@drawable/golive" />
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.CardView
+                            app:cardBackgroundColor="@color/myColorOneBody"
+                            android:layout_width="140dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            card_view:cardCornerRadius="7dp"
+                            card_view:contentPadding="10dp">
+
+                            <ImageView
+                                android:id="@+id/imgImageVideoCeleb"
+                                android:layout_width="140dp"
+                                android:layout_height="120dp"
+                                android:layout_gravity="center"
+                                android:background="@color/myColorOneBody"
+                                android:src="@drawable/imageandvideo" />
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
-
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <ImageView
-                        android:id="@+id/imgMessage"
-                        android:layout_width="140dp"
-                        android:layout_height="130dp"
-                        android:src="@drawable/massege" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <android.support.v7.widget.CardView
+                            app:cardBackgroundColor="@color/myColorOneBody"
+                            android:layout_width="140dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            card_view:cardCornerRadius="7dp"
+                            card_view:contentPadding="10dp">
+
+                            <ImageView
+                                android:id="@+id/imgRequest"
+                                android:layout_width="140dp"
+                                android:layout_height="120dp"
+                                android:layout_gravity="center"
+                                android:background="@color/myColorOneBody"
+                                android:src="@drawable/request" />
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <android.support.v7.widget.CardView
+                            app:cardBackgroundColor="@color/myColorOneBody"
+                            android:layout_width="140dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            card_view:cardCornerRadius="7dp"
+                            card_view:contentPadding="10dp">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:background="@color/myColorOneBody"
+                                android:id="@+id/imgMessage"
+                                android:layout_width="140dp"
+                                android:layout_height="130dp"
+                                android:src="@drawable/massege" />
+                        </android.support.v7.widget.CardView>
+                    </LinearLayout>
 
                 </LinearLayout>
 
+
             </LinearLayout>
-
-
-
-        </LinearLayout>
 
             <View
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/gradient_back"
                 android:layout_width="300dp"
-                android:layout_height="2dp"/>
-            <View
-                android:layout_centerVertical="true"
+                android:layout_height="2dp"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/gradient_back_scnd"
+                android:layout_centerVertical="true"
+                android:background="@drawable/gradient_back" />
+
+            <View
                 android:layout_width="2dp"
-                android:layout_height="300dp"/>
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/gradient_back_scnd" />
 
         </RelativeLayout>
     </LinearLayout>

@@ -48,6 +48,14 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_message);
         toolbar = (Toolbar) findViewById(R.id.toolbar_message);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         initUI();
 

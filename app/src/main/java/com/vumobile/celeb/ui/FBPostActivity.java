@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.RotateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +33,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
@@ -98,6 +100,15 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_fbpost);
         toolbar = (Toolbar) findViewById(R.id.toolBar_post);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+                onBackPressed(); // Implemented by activity
+            }
+        });
 
         initUI();
 
@@ -168,7 +179,12 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             case R.id.btnPost:
                 celebComment = etComment.getText().toString();
 
-                new UploadFileToServer().execute(filePath,celebComment);
+                if (filePath==null || filePath.equals(null) || filePath.equals("")){
+                    TastyToast.makeText(getApplicationContext(),"Nothing to post",TastyToast.LENGTH_LONG,TastyToast.CONFUSING);
+                }else {
+                    new UploadFileToServer().execute(filePath,celebComment);
+                }
+
 
                 break;
             case R.id.btn_back:
@@ -608,6 +624,14 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             }
         }
         return bitmap;
+    }
+
+    public void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }

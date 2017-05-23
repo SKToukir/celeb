@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
@@ -47,16 +48,16 @@ import io.agora.rtc.Constants;
 
 @SuppressWarnings("ALL")
 public class CelebHomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SinchService.StartFailedListener {
 
     private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage;
     NavigationView navigationView;
-    TextView txtProfileName, txtCele, txtFollowers;
-    EditText etWhatsYourMind;
-    String celebName,msisdn,imageUrl,celeb_id,gender,msisdnMy,totalFollowers;
+    TextView txtProfileName, txtCele, txtFollowers, txtHomePageFollow;
+    Button etWhatsYourMind;
+    String celebName,msisdn,imageUrl,celeb_id,gender,msisdnMy;
+    public static String totalFollowers;
     PendingIntent pendingIntent;
     ImageView imgImage;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +157,8 @@ public class CelebHomeActivity extends BaseActivity
 
                     new Session().saveData(getApplicationContext(),celebName,msisdn,true,true,imageUrl);
 
-                    txtFollowers.setText(obj.getString("Follower"));
+                    txtHomePageFollow.setText(totalFollowers);
+                    txtFollowers.setText(totalFollowers);
                     txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
                     Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgPic);
 
@@ -191,12 +193,13 @@ public class CelebHomeActivity extends BaseActivity
 
     private void initUI() {
 
+        txtHomePageFollow = (TextView) findViewById(R.id.txtHomePageFollow);
         imgMessage = (ImageView) findViewById(R.id.imgMessage);
         imgMessage.setOnClickListener(this);
         imgRequest = (ImageView) findViewById(R.id.imgRequest);
         imgRequest.setOnClickListener(this);
         imgImageVideoCeleb = (ImageView) findViewById(R.id.imgImageVideoCeleb);
-        etWhatsYourMind = (EditText) findViewById(R.id.etWhatsYourMind);
+        etWhatsYourMind = (Button) findViewById(R.id.etWhatsYourMind);
         txtCele = (TextView) findViewById(R.id.txtCelebName);
         imgPic = (ImageView) findViewById(R.id.celebImage);
         imgGoLive = (ImageView) findViewById(R.id.imgGoLive);
@@ -331,6 +334,8 @@ public class CelebHomeActivity extends BaseActivity
 
     @Override
     protected void onResume() {
+        txtHomePageFollow.setText(totalFollowers);
+        txtFollowers.setText(totalFollowers);
         txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
         Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
         new ServerPostRequest().onLive(getApplicationContext(), Session.retreivePhone(getApplicationContext(), Session.USER_PHONE), "0");
@@ -346,8 +351,34 @@ public class CelebHomeActivity extends BaseActivity
     @Override
     protected void onPause() {
         super.onPause();
+        txtHomePageFollow.setText(totalFollowers);
+        txtFollowers.setText(totalFollowers);
         txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
         Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
     }
 
+    @Override
+    public void onStartFailed(SinchError error) {
+
+    }
+
+    @Override
+    protected void onServiceConnected() {
+        getSinchServiceInterface().setStartListener(this);
+    }
+
+    @Override
+    public void onStarted() {
+        if (!getSinchServiceInterface().isStarted()) {
+            SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+            startService(new Intent(CelebHomeActivity.this, SinchService.class));
+            getSinchServiceInterface().startClient(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
+            Log.d("SSSSSSSS","Sinch service started Home");
+        } else {
+            Intent intent = new Intent(CelebHomeActivity.this,SinchService.class);
+            SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+            startService(intent);
+            Log.d("SSSSSSSS","Sinch service started else Home");
+        }
+    }
 }

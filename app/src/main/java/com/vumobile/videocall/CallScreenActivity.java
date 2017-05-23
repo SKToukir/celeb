@@ -4,8 +4,10 @@ package com.vumobile.videocall;
  * Created by toukirul on 18/5/2017.
  */
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,7 +42,7 @@ public class CallScreenActivity extends BaseActivity {
     private AudioPlayer mAudioPlayer;
     private Timer mTimer;
     private UpdateCallDurationTask mDurationTask;
-
+    Vibrator vibs;
     private String mCallId,imageUrl;
     private long mCallStart = 0;
     private boolean mAddedListener = false;
@@ -259,5 +261,17 @@ public class CallScreenActivity extends BaseActivity {
             Log.d(TAG, "Video track added");
             addVideoViews();
         }
+    }
+
+    public void vibrate(int duration)
+    {
+        vibs = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibs.vibrate(duration);
+    }
+
+    public void cancelVibrate()
+    {
+        vibs = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibs.cancel();
     }
 }

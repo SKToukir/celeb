@@ -211,6 +211,8 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 
+                            }else {
+                                TastyToast.makeText(getApplicationContext(), request_status.replaceAll("_"," "), TastyToast.LENGTH_LONG, TastyToast.INFO);
                             }
 
 

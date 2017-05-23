@@ -41,9 +41,8 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
     private Button mLoginButton, btnSentVideoRequest;
     private EditText mLoginName;
     private ProgressDialog mSpinner;
-    private String celeb_name;
     private TextView txtUserName;
-    String user_name, celeb_profilePic, celeb_msisdn;
+    static String user_name, celeb_profilePic, celeb_msisdn, celeb_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +115,17 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
     @Override
     public void onStarted() {
        // openPlaceCallActivity(celeb_name);
+        if (!getSinchServiceInterface().isStarted()) {
+            SinchService.uName = user_name;
+            startService(new Intent(LoginActivity.this, SinchService.class));
+            getSinchServiceInterface().startClient(user_name);
+            Log.d("SSSSSSSS","Sinch service started");
+        } else {
+            Intent intent = new Intent(LoginActivity.this,SinchService.class);
+            SinchService.uName = user_name;
+            startService(intent);
+            Log.d("SSSSSSSS","Sinch service started else");
+        }
     }
 
     public void loginClicked(String user_names) {

@@ -66,6 +66,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
         toolbar = (Toolbar) findViewById(R.id.toolbar_set_schedule);
         //setSupportActionBar(toolbar);
 
+
         Intent intent = getIntent();
         fanMsisdn = intent.getStringExtra("msisdn");
 
@@ -104,9 +105,9 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
         etDate.setOnClickListener(this);
 
         // for hidden keyboard when press edittext
-        etDate.setShowSoftInputOnFocus(false);
-        etToTime.setShowSoftInputOnFocus(false);
-        etFromTime.setShowSoftInputOnFocus(false);
+//        etDate.setShowSoftInputOnFocus(false);
+//        etToTime.setShowSoftInputOnFocus(false);
+//        etFromTime.setShowSoftInputOnFocus(false);
     }
 
     @Override
