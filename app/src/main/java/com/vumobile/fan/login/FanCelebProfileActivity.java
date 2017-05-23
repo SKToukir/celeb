@@ -121,7 +121,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 //chatRequestDialog(msisdn, fan_msisdn, name, "1");
                 requestForVideoCall(msisdn, fan_msisdns, "2");
 
-
                 break;
 
             case R.id.imageViewChat:
@@ -139,7 +138,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
             case R.id.imageViewGift:
                 Toast.makeText(this, "Gift", Toast.LENGTH_SHORT).show();
-
                 break;
         }
 

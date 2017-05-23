@@ -73,7 +73,10 @@ public class ParentActivity extends BaseActivity
     ImageView imageViewNotification, imageViewMessage;
     TextView navUserName;
     ImageView navUserPic;
-
+    // drawer menu
+    ImageView imageViewHome, imageViewMyGallery, imageViewHistory, imageViewTransaction, imageViewCredits, imageViewLogout;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +94,8 @@ public class ParentActivity extends BaseActivity
         Log.d("Session: ", Session.retreiveName(ParentActivity.this, Session.USER_NAME));
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -378,6 +381,22 @@ public class ParentActivity extends BaseActivity
 
     private void initUI() {
 
+        // drawer menu
+        imageViewHome = (ImageView) findViewById(R.id.imageViewHome);
+        imageViewMyGallery = (ImageView) findViewById(R.id.imageViewMyGallery);
+        imageViewHistory = (ImageView) findViewById(R.id.imageViewHistory);
+        imageViewTransaction = (ImageView) findViewById(R.id.imageViewTransaction);
+        imageViewCredits = (ImageView) findViewById(R.id.imageViewCredits);
+        imageViewLogout = (ImageView) findViewById(R.id.imageViewLogout);
+
+        imageViewHome.setOnClickListener(this);
+        imageViewMyGallery.setOnClickListener(this);
+        imageViewHistory.setOnClickListener(this);
+        imageViewTransaction.setOnClickListener(this);
+        imageViewCredits.setOnClickListener(this);
+        imageViewLogout.setOnClickListener(this);
+
+
         listCeleb = (ListView) findViewById(R.id.list_of_celeb);
 
         imageViewNotification = (ImageView) toolbar.findViewById(R.id.imageViewNotification);
@@ -562,6 +581,37 @@ public class ParentActivity extends BaseActivity
             case R.id.buttonFilterLive:
                 loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
                 changeButtonSelectFocus(buttonFilterLive);
+                break;
+
+            // drawer menu items
+            // imageViewHome, imageViewMyGallery, imageViewHistory, imageViewTransaction, imageViewCredits
+            case R.id.imageViewHome:
+                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawers();
+                break;
+
+            case R.id.imageViewMyGallery:
+                Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawers();
+                break;
+
+            case R.id.imageViewHistory:
+                Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawers();
+                break;
+
+            case R.id.imageViewTransaction:
+                Toast.makeText(this, "Transaction", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawers();
+                break;
+
+            case R.id.imageViewCredits:
+                Toast.makeText(this, "Credits", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawers();
+                break;
+            case R.id.imageViewLogout:
+                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
+                drawer.closeDrawers();
                 break;
 
         }
