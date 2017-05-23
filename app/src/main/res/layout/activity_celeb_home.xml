@@ -37,39 +37,52 @@
                 android:layout_centerHorizontal="true"
                 android:id="@+id/nav_home"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
 
             <ImageView
+                android:layout_marginTop="8dp"
                 android:src="@drawable/galleryy"
                 android:layout_below="@+id/nav_home"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/nav_gallery"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
 
             <ImageView
+                android:layout_marginTop="8dp"
                 android:src="@drawable/giftss"
                 android:layout_below="@+id/nav_gallery"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/nav_gifts"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
 
             <ImageView
+                android:layout_marginTop="8dp"
                 android:src="@drawable/schedule"
                 android:layout_below="@+id/nav_gifts"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/nav_schedule"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
 
             <ImageView
+                android:layout_marginTop="8dp"
                 android:src="@drawable/myposts"
                 android:layout_below="@+id/nav_schedule"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/nav_schedul"
+                android:id="@+id/nav_post"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp" />
+            <ImageView
+                android:layout_marginTop="8dp"
+                android:src="@drawable/logout"
+                android:layout_below="@+id/nav_post"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/nav_logout"
+                android:layout_width="200dp"
+                android:layout_height="50dp" />
+
         </RelativeLayout>
 
 

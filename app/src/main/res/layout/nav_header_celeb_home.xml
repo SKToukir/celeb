@@ -75,12 +75,12 @@
         android:text="Someone Fan" />
 
     <ImageView
-        android:src="@drawable/followicon"
-        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/followicon"
         android:layout_below="@+id/textViewPfName"
         android:layout_toLeftOf="@+id/txtFollowers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
 
     <com.vumobile.utils.MyTextView
         android:layout_marginTop="4dp"

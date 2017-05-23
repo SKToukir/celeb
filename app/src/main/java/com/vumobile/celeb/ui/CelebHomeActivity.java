@@ -50,7 +50,8 @@ import io.agora.rtc.Constants;
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SinchService.StartFailedListener {
 
-    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage;
+    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage, nav_home,nav_gallery,
+            nav_gifts,nav_schedule,nav_post,nav_logout;
     NavigationView navigationView;
     TextView txtProfileName, txtCele, txtFollowers, txtHomePageFollow;
     Button etWhatsYourMind;
@@ -58,6 +59,7 @@ public class CelebHomeActivity extends BaseActivity
     public static String totalFollowers;
     PendingIntent pendingIntent;
     ImageView imgImage;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +194,7 @@ public class CelebHomeActivity extends BaseActivity
     }
 
     private void initUI() {
-
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         txtHomePageFollow = (TextView) findViewById(R.id.txtHomePageFollow);
         imgMessage = (ImageView) findViewById(R.id.imgMessage);
         imgMessage.setOnClickListener(this);
@@ -217,6 +219,19 @@ public class CelebHomeActivity extends BaseActivity
 
     private void initNavHeaderView() {
 
+        nav_home = (ImageView) navigationView.findViewById(R.id.nav_home);
+        nav_gallery = (ImageView) navigationView.findViewById(R.id.nav_gallery);
+        nav_gifts = (ImageView) navigationView.findViewById(R.id.nav_gifts);
+        nav_schedule = (ImageView) navigationView.findViewById(R.id.nav_schedule);
+        nav_post = (ImageView) navigationView.findViewById(R.id.nav_post);
+        nav_logout = (ImageView) navigationView.findViewById(R.id.nav_logout);
+
+        nav_home.setOnClickListener(this);
+        nav_gallery.setOnClickListener(this);
+        nav_gifts.setOnClickListener(this);
+        nav_schedule.setOnClickListener(this);
+        nav_post.setOnClickListener(this);
+        nav_logout.setOnClickListener(this);
 
         txtFollowers = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtFollowers);
         txtProfileName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textViewPfName);
@@ -230,7 +245,7 @@ public class CelebHomeActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -312,6 +327,30 @@ public class CelebHomeActivity extends BaseActivity
             case R.id.imgMessage:
                 startActivity(new Intent(getApplicationContext(),MessageActivity.class));
                 break;
+            case R.id.nav_home:
+                drawer.closeDrawers();
+                break;
+            case R.id.nav_gallery:
+                drawer.closeDrawers();
+                startActivity(new Intent(CelebHomeActivity.this,GaleeryActivityCeleb.class));
+                break;
+            case R.id.nav_gifts:
+                Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.nav_schedule:
+                drawer.closeDrawers();
+                startActivity(new Intent(CelebHomeActivity.this,ScheduleActivity.class));
+                break;
+            case R.id.nav_post:
+                drawer.closeDrawers();
+                startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
+                break;
+            case R.id.nav_logout:
+                drawer.closeDrawers();
+                Session.clearAllSharedData(getApplicationContext());
+                finish();
+                break;
+
         }
     }
 
