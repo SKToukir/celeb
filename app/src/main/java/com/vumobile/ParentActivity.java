@@ -84,19 +84,12 @@ public class ParentActivity extends BaseActivity
         setSupportActionBar(toolbar);
         initUI();
 
-        // initialize comment list adapter
+        // Initialize comment list adapter
         adapter = new CelebrityListAdapter(this, R.layout.celeb_list_row, celebrityClassList);
         listCeleb.setAdapter(adapter);
 
         Log.d("Session: ", Session.retreiveName(ParentActivity.this, Session.USER_NAME));
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -126,6 +119,7 @@ public class ParentActivity extends BaseActivity
                 String fbName = celebrityClassList.get(i).getFb_name();
                 String profilePic = celebrityClassList.get(i).getCeleb_image();
                 String isOnline = celebrityClassList.get(i).getIsOnline();
+                String followerCount = celebrityClassList.get(i).getFollowerCount();
 
 
                 if (isOnline.equals("1") || isOnline.matches("1")) {
@@ -141,6 +135,7 @@ public class ParentActivity extends BaseActivity
                     intent.putExtra("msisdn", msisdn);
                     intent.putExtra("fbname", fbName);
                     intent.putExtra("profilePic", profilePic);
+                    intent.putExtra("FOLLOWER", followerCount);
                     startActivity(intent);
                 }
 
@@ -235,6 +230,7 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setFb_name(obj.getString("Name"));
                         celebrityClass.setIsOnline(obj.getString("Live_status"));
                         celebrityClass.setIsfollow(obj.getString("Isfollow"));
+                        celebrityClass.setFollowerCount(obj.getString("Follower"));
 
                         celebrityClassList.add(celebrityClass);
 
@@ -289,6 +285,7 @@ public class ParentActivity extends BaseActivity
                             celebrityClass.setFb_name(obj.getString("Name"));
                             celebrityClass.setIsOnline(obj.getString("Live_status"));
                             celebrityClass.setIsfollow(obj.getString("Isfollow"));
+                            celebrityClass.setFollowerCount(obj.getString("Follower"));
 
                             celebrityClassList.add(celebrityClass);
                         }
@@ -330,7 +327,7 @@ public class ParentActivity extends BaseActivity
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.d("FromServer 12", jsonObject.toString());
+                Log.d("FromServer 13", jsonObject.toString());
 
                 try {
                     JSONArray array = jsonObject.getJSONArray("result");
@@ -346,6 +343,7 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setFb_name(obj.getString("Name"));
                         celebrityClass.setIsOnline(obj.getString("Live_status"));
                         celebrityClass.setIsfollow("1");
+                        celebrityClass.setFollowerCount(obj.getString("Follower"));
 
                         celebrityClassList.add(celebrityClass);
 
@@ -456,7 +454,7 @@ public class ParentActivity extends BaseActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Toast like print
-                //    Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
 
                 if (!searchView.isIconified()) {
                     searchView.setIconified(true);
@@ -468,7 +466,7 @@ public class ParentActivity extends BaseActivity
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Toast.makeText(ParentActivity.this, "" + s, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ParentActivity.this, "" + s, Toast.LENGTH_SHORT).show();
                 // Filter
                 s = s.toLowerCase(Locale.getDefault());
                 celebrityClassList.clear();
@@ -552,24 +550,18 @@ public class ParentActivity extends BaseActivity
                 break;
 
             case R.id.buttonFilterAll:
-
                 loadCelebrityData(Api.URL_ACTIVATE_USERS);
                 changeButtonSelectFocus(buttonFilterAll);
-
                 break;
 
             case R.id.buttonFilterFollowing:
-
                 loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
                 changeButtonSelectFocus(buttonFilterFollowing);
-
                 break;
 
             case R.id.buttonFilterLive:
-
                 loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
                 changeButtonSelectFocus(buttonFilterLive);
-
                 break;
 
         }

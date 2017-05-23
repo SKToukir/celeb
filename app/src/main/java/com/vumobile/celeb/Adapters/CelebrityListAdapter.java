@@ -1,7 +1,6 @@
 package com.vumobile.celeb.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.CelebrityClass;
 import com.vumobile.fan.login.Session;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -36,6 +36,7 @@ import java.util.Map;
 public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
     Context mContext;
+
 
     public CelebrityListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -63,7 +64,11 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
             TextView tt1 = (TextView) v.findViewById(R.id.txtCelebName);
             ImageView tt2 = (ImageView) v.findViewById(R.id.imgCeleb);
             ImageView flw = (ImageView) v.findViewById(R.id.imageViewFollower);
-            TextView tt3 = (TextView) v.findViewById(R.id.txtCelebIsOnline);
+            ImageView imageViewOnlineStatus = (ImageView) v.findViewById(R.id.imageViewOnlineStatus);
+            TextView textViewFollowerCount = (TextView) v.findViewById(R.id.textViewFollowerCount);
+
+            textViewFollowerCount.setText(p.getFollowerCount());
+
             if (tt1 != null) {
                 tt1.setText(p.getCeleb_name());
             }
@@ -72,17 +77,14 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                 Picasso.with(mContext).load(p.getCeleb_image()).into(tt2);
             }
 
-            if (tt3 != null) {
-                String isOnline = p.getIsOnline();
-                if (isOnline.equals("1") || isOnline.matches("1")) {
-                    tt3.setText("Online");
-                    tt3.setTextColor(Color.WHITE);
-                } else {
-                    tt3.setText("Offline");
-                    tt3.setTextColor(Color.BLACK);
-                }
+            String isOnline = p.getIsOnline();
+            if (isOnline.equals("1") || isOnline.matches("1")) {
+                imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicononline));
+            } else {
+                imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicon));
             }
-            // set follow button
+
+            // Set follow button
             if (p.getIsfollow().equals("1")) {
                 flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.unfollow));
             } else {
@@ -96,21 +98,20 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                     String ph = Session.retreivePhone(mContext, Session.USER_PHONE);
                     if (flw.getDrawable().getConstantState().equals
                             (mContext.getResources().getDrawable(R.drawable.follow).getConstantState())) {
-                        makeFollower(ph, p.getCeleb_code());
+                        makeFollower(ph, p.getCeleb_code(), textViewFollowerCount);
                         flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.unfollow));
                     } else {
-                        makeUnFollower(ph, p.getCeleb_code());
+                        makeUnFollower(ph, p.getCeleb_code(), textViewFollowerCount);
                         flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.follow));
                     }
                 }
             });
 
         }
-
         return v;
     }
 
-    private void makeFollower(String fanPhone, String celebPhone) {
+    private void makeFollower(String fanPhone, String celebPhone, TextView textViewFollowerCount) {
         Log.d("phone of both", "makeFollower: fan:" + fanPhone + " Cel:" + celebPhone);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_POST_FOLLOW,
@@ -121,7 +122,11 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String res = jsonObject.getString("result");
-                            TastyToast.makeText(mContext, res, TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                            JSONArray jo = new JSONArray(res);
+                            String s = jo.getString(0);
+                            JSONObject jst = new JSONObject(s);
+                            textViewFollowerCount.setText(jst.getString("Follower"));
+                            TastyToast.makeText(mContext, jst.getString("result"), TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -154,7 +159,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
     }
 
-    private void makeUnFollower(String fanPhone, String celebPhone) {
+    private void makeUnFollower(String fanPhone, String celebPhone, TextView textViewFollowerCount) {
         Log.d("phone of both", "make un Follower: fan:" + fanPhone + " Cel:" + celebPhone);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_POST_UNFOLLOW,
@@ -165,7 +170,11 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String res = jsonObject.getString("result");
-                            TastyToast.makeText(mContext, res, TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+                            JSONArray jo = new JSONArray(res);
+                            String s = jo.getString(0);
+                            JSONObject jst = new JSONObject(s);
+                            textViewFollowerCount.setText(jst.getString("Follower"));
+                            TastyToast.makeText(mContext, jst.getString("result"), TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -197,8 +206,6 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
 
     }
-
-
 
 
 }

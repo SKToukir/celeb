@@ -12,6 +12,7 @@ public class CelebrityClass {
     private String fb_name;
     private String isOnline;
     private String Isfollow;
+    private String followerCount;
 
     public String getIsOnline() {
         return isOnline;
@@ -59,5 +60,13 @@ public class CelebrityClass {
 
     public void setIsfollow(String isfollow) {
         Isfollow = isfollow;
+    }
+
+    public String getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(String followerCount) {
+        this.followerCount = followerCount;
     }
 }
