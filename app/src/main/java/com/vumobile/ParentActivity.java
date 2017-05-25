@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -609,11 +610,28 @@ public class ParentActivity extends BaseActivity
                 Toast.makeText(this, "Credits", Toast.LENGTH_SHORT).show();
                 drawer.closeDrawers();
                 break;
+
             case R.id.imageViewLogout:
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ParentActivity.this);
+                alertDialog.setTitle("Logout Alert");
+                alertDialog.setMessage("Want to logout?");
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.ic_action_alert));
+                alertDialog.setPositiveButton("YES", (dialog, which) -> {
+                    Session.clearAllSharedData(getApplicationContext());
+                    Intent inte = new Intent(ParentActivity.this, LogInAcitvity.class);
+                    inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(inte);
+                    this.finish();
+                    finish();
+                });
+                alertDialog.setNegativeButton("NO", (dialog, which) -> {
+
+                });
+
+                alertDialog.create().show();
+
                 drawer.closeDrawers();
                 break;
-
         }
 
     }

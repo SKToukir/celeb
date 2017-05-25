@@ -10,9 +10,10 @@
         android:id="@+id/txtChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
         android:background="@drawable/round_corner"
         android:padding="10dp"
-        android:text="hhhdresreeeesret"
+        android:text="hhhdresreeesdkrorgldesret"
         android:textSize="15dp" />
 
     <com.vumobile.celeb.Utils.RoundedImageView
