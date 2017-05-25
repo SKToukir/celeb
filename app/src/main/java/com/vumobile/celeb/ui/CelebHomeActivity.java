@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,11 +40,9 @@ import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.videocall.CallReceiver;
 import com.vumobile.videocall.SinchService;
 import com.vumobile.videocall.VideoChatViewActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import io.agora.rtc.Constants;
 
 @SuppressWarnings("ALL")
@@ -348,8 +346,24 @@ public class CelebHomeActivity extends BaseActivity
                 startActivity(new Intent(CelebHomeActivity.this,CelebEditPostActivity.class));
                 break;
             case R.id.nav_logout:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(CelebHomeActivity.this);
+                alertDialog.setTitle("Logout Alert");
+                alertDialog.setMessage("Want to logout?");
+                alertDialog.setIcon(getResources().getDrawable(R.drawable.ic_action_alert));
+                alertDialog.setPositiveButton("YES", (dialog, which) -> {
+                    Session.clearAllSharedData(getApplicationContext());
+                    Intent inte = new Intent(CelebHomeActivity.this, LogInAcitvity.class);
+                    inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(inte);
+                    this.finish();
+                    finish();
+                });
+                alertDialog.setNegativeButton("NO", (dialog, which) -> {
+
+                });
+
+                alertDialog.create().show();
                 drawer.closeDrawers();
-                Session.clearAllSharedData(getApplicationContext());
                 break;
 
         }
@@ -379,6 +393,8 @@ public class CelebHomeActivity extends BaseActivity
         txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
         Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
         new ServerPostRequest().onLive(getApplicationContext(), Session.retreivePhone(getApplicationContext(), Session.USER_PHONE), "0");
+        txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
         super.onResume();
     }
 
@@ -395,6 +411,9 @@ public class CelebHomeActivity extends BaseActivity
         txtFollowers.setText(totalFollowers);
         txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
         Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
+        txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(profilePictureView);
+
     }
 
     @Override

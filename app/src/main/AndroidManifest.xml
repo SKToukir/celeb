@@ -165,11 +165,6 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.RegisterForVideoCallActivity" />
         <activity android:name="com.vumobile.videocall.VideoChatViewActivity" />
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity android:name=".ui.RegisterForVideoCallActivity">
-
-        </activity>
 
 
         <!--<receiver-->

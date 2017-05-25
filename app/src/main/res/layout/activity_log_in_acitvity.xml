@@ -205,14 +205,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:background="@color/myColorOneBody"
+                android:background="#fff"
                 android:elevation="5dp"
                 android:onClick="btnResendPinSms"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
                 android:text="Resend SMS"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/myColorOneBody"
                 android:textSize="18sp"
                 android:visibility="visible" />
 

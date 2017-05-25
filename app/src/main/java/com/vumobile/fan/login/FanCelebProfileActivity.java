@@ -213,7 +213,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
 
                             }else {
-                                TastyToast.makeText(getApplicationContext(), request_status.replaceAll("_"," "), TastyToast.LENGTH_LONG, TastyToast.INFO);
+                                TastyToast.makeText(getApplicationContext(), "Your request is successfully sent to celeb!\nWait for confirmation", TastyToast.LENGTH_LONG, TastyToast.INFO);
                             }
 
 
@@ -289,7 +289,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
 
                             }else {
-                                TastyToast.makeText(getApplicationContext(),request_status.toString(),TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                TastyToast.makeText(getApplicationContext(),"Your request is successfully sent to celeb!\nWait for confirmation",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
                             }
 
 
