@@ -54,6 +54,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Gallery");
         toolbar.setNavigationOnClickListener(v -> {
             onBackPressed(); // Implemented by activity
         });

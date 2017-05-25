@@ -21,7 +21,7 @@
         android:layout_toRightOf="@+id/chatImage"
         android:background="@drawable/round_corner_gray"
         android:padding="10dp"
-        android:text="kjhkjashdkjashdkajsdhaksdj"
+        android:text="kjhkjashdkjashdkajdfsdhaksdj"
         android:textColor="#3b3b3b"
         android:textSize="15dp" />
 
