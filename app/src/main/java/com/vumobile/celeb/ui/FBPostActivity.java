@@ -17,7 +17,6 @@ import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -526,7 +525,6 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         @Override
         protected void onPostExecute(String result) {
             Log.e("FromServer", "Response from server: " + result);
-
             // showing the server response in an alert dialog
             showAlert(result);
 
@@ -551,9 +549,9 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Response from Servers")
                 .setCancelable(false)
-                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        //finish();
+                        finish();
                         progressBar.setVisibility(View.GONE);
                         txtPercentage.setVisibility(View.GONE);
                     }
@@ -562,16 +560,6 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         alert.show();
     }
 
-
-    private void rotate(float degree) {
-        final RotateAnimation rotateAnim = new RotateAnimation(0.0f, degree,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-
-        rotateAnim.setDuration(0);
-        rotateAnim.setFillAfter(true);
-        imgPreview.startAnimation(rotateAnim);
-    }
 
     private void sharePhoto(Bitmap img, String cmnt) {
         //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);

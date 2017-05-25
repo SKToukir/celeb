@@ -20,6 +20,7 @@
         android:layout_height="match_parent">
 
         <com.vumobile.utils.MyTextView
+            android:textColor="#fff"
             android:text="Set Schedule Time"
             android:textSize="25sp"
             android:layout_width="wrap_content"
@@ -37,6 +38,8 @@
 
         <EditText
             android:clickable="true"
+            android:focusable="false"
+            android:inputType="time"
             android:layout_marginTop="5dp"
             android:background="#fff"
             android:id="@+id/etTime"
@@ -47,6 +50,7 @@
 
 
         <com.vumobile.utils.MyTextView
+            android:textColor="#fff"
             android:text="To"
             android:textSize="30sp"
             android:layout_width="wrap_content"
@@ -54,6 +58,8 @@
 
         <EditText
             android:clickable="true"
+            android:focusable="false"
+            android:inputType="time"
             android:layout_marginTop="5dp"
             android:background="#fff"
             android:id="@+id/etToTime"

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_celeb_edit_post"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myColorOneBody"
+    tools:context="com.vumobile.celeb.ui.CelebEditPostActivity">
+
+    <include
+        android:id="@+id/toolbar_posts"
+        layout="@layout/tool_bar_post"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefreshLayoutCelebPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_posts">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerCelebEditPost"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/swipeRefreshLayoutCelebPost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

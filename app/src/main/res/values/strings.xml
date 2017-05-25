@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <resources>
+
+    <string name="agora_app_id">adb338f8a76440a5bfee58aa41cacef1</string>
+
     <string name="app_name">Celeb App</string>
 
     <string name="label_settings">Settings</string>

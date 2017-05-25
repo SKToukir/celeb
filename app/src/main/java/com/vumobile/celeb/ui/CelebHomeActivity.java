@@ -39,6 +39,7 @@ import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.videocall.CallReceiver;
 import com.vumobile.videocall.SinchService;
+import com.vumobile.videocall.VideoChatViewActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -332,9 +333,10 @@ public class CelebHomeActivity extends BaseActivity
                 break;
             case R.id.nav_gallery:
                 drawer.closeDrawers();
-                startActivity(new Intent(CelebHomeActivity.this,GaleeryActivityCeleb.class));
+                startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
                 break;
             case R.id.nav_gifts:
+                startActivity(new Intent(getApplicationContext(), VideoChatViewActivity.class));
                 Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_schedule:
@@ -343,12 +345,11 @@ public class CelebHomeActivity extends BaseActivity
                 break;
             case R.id.nav_post:
                 drawer.closeDrawers();
-                startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
+                startActivity(new Intent(CelebHomeActivity.this,CelebEditPostActivity.class));
                 break;
             case R.id.nav_logout:
                 drawer.closeDrawers();
                 Session.clearAllSharedData(getApplicationContext());
-                finish();
                 break;
 
         }
