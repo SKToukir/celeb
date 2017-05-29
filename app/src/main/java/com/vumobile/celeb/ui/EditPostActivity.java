@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,6 +36,7 @@ import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
 import com.vumobile.celeb.Utils.ScalingUtilities;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -46,6 +48,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -411,7 +414,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                 File sourceFile = new File(filePath);
 
                 // Adding file data to http body
-                Log.d("data",postId+" "+comment+" "+isImage+" "+filePath+" "+change);
+                Log.d("data", postId + " " + comment + " " + isImage + " " + filePath + " " + change);
 
                 entity.addPart("image", new FileBody(sourceFile));
                 entity.addPart("IsImage", new StringBody(isImage));

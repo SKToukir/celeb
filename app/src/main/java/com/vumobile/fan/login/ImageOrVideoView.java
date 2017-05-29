@@ -92,12 +92,7 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
 
         }
 
-//        Drawable drawable = getResources().getDrawable(R.drawable.sample_zoom_image);
-//
-//        image.setImageDrawable(drawable);
-//
-//        photoViewAttacher = new PhotoViewAttacher(imageView);
-
+        photoViewAttacher = new PhotoViewAttacher(imageViewMainPreview);
         photoViewAttacher.update();
 
 
