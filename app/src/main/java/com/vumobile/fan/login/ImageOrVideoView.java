@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,6 +24,8 @@ import com.vumobile.celeb.R;
 
 import java.io.File;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 public class ImageOrVideoView extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageViewMainPreview, imageViewDownloadImageOrVideo;
@@ -32,6 +33,9 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
     ProgressDialog progDailog;
     String imgOrVid, imgOrVidUrl;
     BroadcastReceiver receiver;
+
+    // pinch to zoom
+    PhotoViewAttacher photoViewAttacher ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,10 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
 
         imgOrVid = getIntent().getStringExtra("IMG_OR_VID");
         imgOrVidUrl = getIntent().getStringExtra("IMG_OR_VID_URL");
+
+        if (!imgOrVidUrl.toLowerCase().startsWith("http://")) {
+            imageViewDownloadImageOrVideo.setVisibility(View.GONE);
+        }
 
         if (imgOrVid.equals("1")) {
 
@@ -84,10 +92,18 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
 
         }
 
-        Log.d("vvvv", "onCreate: " + imgOrVidUrl);
+//        Drawable drawable = getResources().getDrawable(R.drawable.sample_zoom_image);
+//
+//        image.setImageDrawable(drawable);
+//
+//        photoViewAttacher = new PhotoViewAttacher(imageView);
+
+        photoViewAttacher.update();
 
 
     } // end of onCreate
+
+
 
     @Override
     public void onClick(View v) {

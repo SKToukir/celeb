@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    android:padding="5dp">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="125dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="#00000000"
+        card_view:cardCornerRadius="4dp">
+
+        <ImageView
+            android:id="@+id/imageViewRecyclerItemVThumb"
+            android:layout_width="127dp"
+            android:layout_height="112dp"
+            android:layout_gravity="center"/>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

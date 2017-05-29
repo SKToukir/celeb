@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +48,10 @@ import com.vumobile.fan.login.FanCelebProfileActivity;
 import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
+import com.vumobile.fan.login.ui.fragment.Credits;
+import com.vumobile.fan.login.ui.fragment.History;
+import com.vumobile.fan.login.ui.fragment.MyGallery;
+import com.vumobile.fan.login.ui.fragment.Transaction;
 import com.vumobile.notification.MyReceiver;
 import com.vumobile.notification.NetworkedService;
 
@@ -78,6 +86,8 @@ public class ParentActivity extends BaseActivity
     ImageView imageViewHome, imageViewMyGallery, imageViewHistory, imageViewTransaction, imageViewCredits, imageViewLogout;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
+
+    LinearLayout linearLayoutMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -432,6 +442,8 @@ public class ParentActivity extends BaseActivity
                                 }
         );
 
+        linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);
+
 
     }
 
@@ -587,27 +599,78 @@ public class ParentActivity extends BaseActivity
             // drawer menu items
             // imageViewHome, imageViewMyGallery, imageViewHistory, imageViewTransaction, imageViewCredits
             case R.id.imageViewHome:
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getSupportFragmentManager();
+                int count = fm.getBackStackEntryCount();
+                for(int i = 0; i < count; ++i) {
+                    fm.popBackStackImmediate();
+                }
+
                 drawer.closeDrawers();
                 break;
 
             case R.id.imageViewMyGallery:
-                Toast.makeText(this, "Gallery", Toast.LENGTH_SHORT).show();
+                // Create new fragment and transaction
+                Fragment newFragment = new MyGallery();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack if needed
+                transaction.replace(R.id.fragment_container_main, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+
                 drawer.closeDrawers();
                 break;
 
             case R.id.imageViewHistory:
-                Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
+                // Create new fragment and transaction
+                Fragment fragmentHistory = new History();
+                FragmentTransaction transactionHistory = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack if needed
+                transactionHistory.replace(R.id.fragment_container_main, fragmentHistory);
+                transactionHistory.addToBackStack(null);
+
+                // Commit the transaction
+                transactionHistory.commit();
+
+
                 drawer.closeDrawers();
                 break;
 
             case R.id.imageViewTransaction:
-                Toast.makeText(this, "Transaction", Toast.LENGTH_SHORT).show();
+                // Create new fragment and transaction
+                Fragment fragmentTransaction = new Transaction();
+                FragmentTransaction transactionTrans = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack if needed
+                transactionTrans.replace(R.id.fragment_container_main, fragmentTransaction);
+                transactionTrans.addToBackStack(null);
+
+                // Commit the transaction
+                transactionTrans.commit();
+
+
                 drawer.closeDrawers();
                 break;
 
             case R.id.imageViewCredits:
-                Toast.makeText(this, "Credits", Toast.LENGTH_SHORT).show();
+                // Create new fragment and transaction
+                Fragment fragmentCredit = new Credits();
+                FragmentTransaction transactionCre = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack if needed
+                transactionCre.replace(R.id.fragment_container_main, fragmentCredit);
+                transactionCre.addToBackStack(null);
+
+                // Commit the transaction
+                transactionCre.commit();
+
                 drawer.closeDrawers();
                 break;
 

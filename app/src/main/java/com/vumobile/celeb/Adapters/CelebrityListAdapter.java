@@ -86,9 +86,9 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
             // Set follow button
             if (p.getIsfollow().equals("1")) {
-                flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.unfollow));
+                flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_unfollow));
             } else {
-                flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.follow));
+                flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_follow_plus));
             }
 
             flw.setOnClickListener(new View.OnClickListener() {
@@ -97,12 +97,12 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                     CelebrityClass p = getItem(position);
                     String ph = Session.retreivePhone(mContext, Session.USER_PHONE);
                     if (flw.getDrawable().getConstantState().equals
-                            (mContext.getResources().getDrawable(R.drawable.follow).getConstantState())) {
+                            (mContext.getResources().getDrawable(R.drawable.ic_action_follow_plus).getConstantState())) {
                         makeFollower(ph, p.getCeleb_code(), textViewFollowerCount);
-                        flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.unfollow));
+                        flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_unfollow));
                     } else {
                         makeUnFollower(ph, p.getCeleb_code(), textViewFollowerCount);
-                        flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.follow));
+                        flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_follow_plus));
                     }
                 }
             });
