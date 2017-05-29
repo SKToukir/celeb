@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit_post"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myColorOneBody"
+    tools:context="com.vumobile.celeb.ui.EditPostActivity">
+
+    <include
+        android:id="@+id/toolbar_edit_posts"
+        layout="@layout/tool_bar_post" />
+
+    <Button
+        android:id="@+id/btnPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar_edit_posts"
+        android:layout_margin="5dp"
+        android:background="@color/myColorTwoHeader"
+        android:text="Post"
+        android:textColor="#fff" />
+
+    <EditText
+        android:id="@+id/etEditPost"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btnPost"
+        android:layout_margin="5dp"
+        android:background="#fff" />
+
+    <RelativeLayout
+        android:id="@+id/imgVdoLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEditPost">
+
+        <Button
+            android:id="@+id/btn_close_edit"
+            android:layout_margin="5dp"
+            android:background="@drawable/btn_close"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <ImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="5dp"
+            android:visibility="visible" />
+
+        <VideoView
+            android:id="@+id/vdoViewEdit"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="5dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnChoose"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/imgVdoLayout"
+        android:background="@drawable/photovbutton" />
+
+    <TextView
+        android:visibility="gone"
+        android:text="100%"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btnChoose"
+        android:id="@+id/txtPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/prog"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnChoose"
+        android:layout_toRightOf="@+id/txtPercentage"
+        android:layout_width="250dp"
+        android:layout_height="2dp" />
+
+</RelativeLayout>

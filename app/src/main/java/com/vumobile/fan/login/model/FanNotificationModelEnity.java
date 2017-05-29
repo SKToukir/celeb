@@ -6,18 +6,28 @@ package com.vumobile.fan.login.model;
 
 public class FanNotificationModelEnity {
 
-    String id,
-            name,
-            MSISDN,
-            Celeb_id,
-            gender,
-            IsImage, // 1 is image 2 is video
-            Flags_Notificaton, // 1 is live, 2 is post
-            Image_url, // profile image url
-            post,
-            likeCount,
-            TimeStamp,
-            Post_Urls; // image or video url
+    String id;
+    String name;
+    String MSISDN;
+    String Celeb_id;
+    String gender;
+    String IsImage; // 1 is image 2 is video
+    String Flags_Notificaton; // 1 is live, 2 is post
+    String Image_url; // profile image url
+    String post;
+    String likeCount;
+    String TimeStamp;
+    String Post_Urls;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    String url; // image or video url
 
     public String getId() {
         return id;

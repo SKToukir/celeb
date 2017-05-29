@@ -36,7 +36,7 @@ import com.bumptech.glide.Glide;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MyBounceInterpolator;
-import com.vumobile.celeb.ui.FBPostActivity;
+import com.vumobile.celeb.ui.EditPostActivity;
 import com.vumobile.fan.login.ImageOrVideoView;
 import com.vumobile.fan.login.ViaLive;
 import com.vumobile.fan.login.model.FanNotificationModelEnity;
@@ -135,9 +135,12 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, FBPostActivity.class);
+                Intent intent = new Intent(mContext, EditPostActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //intent.putExtra()
+                intent.putExtra("id",fanNotificationModelEnity.getId());
+                intent.putExtra("isImage",fanNotificationModelEnity.getIsImage());
+                intent.putExtra("post",fanNotificationModelEnity.getPost());
+                intent.putExtra("post_urls",fanNotificationModelEnity.getUrl());
                 mContext.startActivity(intent);
                 Toast.makeText(mContext,"Edit post",Toast.LENGTH_LONG).show();
             }
@@ -150,6 +153,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
                     holder.editDeleteLayout.setVisibility(View.GONE);
                 }
 
+                deleteItem(fanNotificationModelEnity.getId());
                 fanNotificationModelEnities.remove(position);
                 notifyDataSetChanged();
 
@@ -261,6 +265,36 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         });
 
 
+    }
+
+    private void deleteItem(String id) {
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_DELETE_POST+id,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String log = object.getString("result");
+                            Log.d("sucessresult",log);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(stringRequest);
     }
 
 
