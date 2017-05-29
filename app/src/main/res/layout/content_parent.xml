@@ -16,72 +16,87 @@
         android:layout_height="56dp" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutFilter"
+        android:id="@+id/linearLayoutMain"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/view"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="3dp">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonFilterAll"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayoutFilter"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <Button
+                android:id="@+id/buttonFilterAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@color/myColorTwoHeader"
+                android:padding="0dp"
+                android:text="Celebrity List"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/myColorOneBody" />
+
+            <Button
+                android:id="@+id/buttonFilterFollowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@color/white"
+                android:padding="0dp"
+                android:text="Following"
+                android:textAllCaps="false"
+                android:textColor="@color/myColorOneBody" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/myColorOneBody" />
+
+            <Button
+                android:id="@+id/buttonFilterLive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@color/white"
+                android:padding="0dp"
+                android:text="Live"
+                android:textAllCaps="false"
+                android:textColor="@color/myColorOneBody" />
+
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@color/myColorTwoHeader"
-            android:padding="0dp"
-            android:text="Celebrity List"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:layout_below="@+id/linearLayoutFilter">
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/myColorOneBody" />
+            <ListView
+                android:id="@+id/list_of_celeb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/buttonFilterFollowing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@color/white"
-            android:padding="0dp"
-            android:text="Following"
-            android:textAllCaps="false"
-            android:textColor="@color/myColorOneBody" />
+            </ListView>
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/myColorOneBody" />
-
-        <Button
-            android:id="@+id/buttonFilterLive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:background="@color/white"
-            android:padding="0dp"
-            android:text="Live"
-            android:textAllCaps="false"
-            android:textColor="@color/myColorOneBody" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_refresh_layout"
+    <!--framelayout height is match parent so activity layout will not be visible while fragment is visible-->
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutFilter">
-
-        <ListView
-            android:id="@+id/list_of_celeb"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </ListView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view" />
 
 </RelativeLayout>

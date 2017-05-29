@@ -17,19 +17,32 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_margin="5dp"
             android:layout_weight=".7">
 
-            <com.vumobile.celeb.Utils.RoundedImageView
-                android:id="@+id/imgCeleb"
+            <FrameLayout
+                android:id="@+id/frame"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:foreground="@drawable/circular_image"
-                android:src="@drawable/ic_man" />
+                android:descendantFocusability="blocksDescendants">
+
+                <com.vumobile.celeb.Utils.RoundedImageView
+                    android:id="@+id/imgCeleb"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_gravity="center"
+                    android:foreground="@drawable/circular_image"
+                    android:src="@drawable/ic_man" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/b"
+                    android:scaleType="fitXY" />
+
+            </FrameLayout>
 
         </RelativeLayout>
 
@@ -93,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="center"
-                    android:src="@drawable/follow" />
+                    android:src="@drawable/ic_action_follow_plus" />
 
             </LinearLayout>
 
