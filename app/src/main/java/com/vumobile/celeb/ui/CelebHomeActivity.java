@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,9 +41,11 @@ import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.videocall.CallReceiver;
 import com.vumobile.videocall.SinchService;
 import com.vumobile.videocall.VideoChatViewActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import io.agora.rtc.Constants;
 
 @SuppressWarnings("ALL")

@@ -11,7 +11,19 @@
         android:padding="2dp"
         android:src="@drawable/ic_man" />
 
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/imgChat"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/chatImage"
+        android:padding="10dp" />
+
     <com.vumobile.utils.MyTextView
+        android:visibility="visible"
         android:id="@+id/txtChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

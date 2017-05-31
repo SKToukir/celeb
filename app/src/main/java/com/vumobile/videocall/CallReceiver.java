@@ -21,6 +21,7 @@ public class CallReceiver extends BroadcastReceiver {
 
         Log.i("Appp", "called receiver method");
         try{
+
             //Utils.generateNotification(context);
             // Utils.sendNotification(context,"Amar","Sticker");
             if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {

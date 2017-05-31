@@ -629,6 +629,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -645,5 +646,4 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         }
 
     }
-
 }

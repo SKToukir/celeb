@@ -164,7 +164,6 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                 showDialog(999);
                 break;
             case R.id.btnConfirmTime:
-
                 if (!getSinchServiceInterface().isStarted()) {
                     SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
                     startService(new Intent(SetScheduleActivity.this, SinchService.class));
@@ -186,6 +185,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
 
     private void confirmation(String urlRequestsAccept,String flag) {
+
         room_name = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE)+fanMsisdn;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlRequestsAccept,
                 new Response.Listener<String>() {
@@ -200,7 +200,6 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-                        //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 
                     }
                 },

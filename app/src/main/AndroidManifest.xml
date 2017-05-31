@@ -187,9 +187,14 @@
             </intent-filter>
         </receiver>
 
+
         <activity android:name=".ui.CelebEditPostActivity" />
         <activity android:name=".ui.EditPostActivity" />
         <activity android:name=".ui.EditImageActivity"></activity>
+
+
+        <service android:name="com.vumobile.utils.ChatService"/>
+
     </application>
 
 </manifest>

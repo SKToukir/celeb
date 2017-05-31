@@ -2,6 +2,8 @@ package com.vumobile;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.CelebrityListAdapter;
 import com.vumobile.celeb.R;
@@ -54,6 +57,7 @@ import com.vumobile.fan.login.ui.fragment.MyGallery;
 import com.vumobile.fan.login.ui.fragment.Transaction;
 import com.vumobile.notification.MyReceiver;
 import com.vumobile.notification.NetworkedService;
+import com.vumobile.service.MyFirebaseInstanceIDService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +78,7 @@ public class ParentActivity extends BaseActivity
     private CelebrityListAdapter adapter;
     private ListView listCeleb;
     private PendingIntent pendingIntent;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -93,7 +98,8 @@ public class ParentActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
-        displayFirebaseRegId();
+        startService(new Intent(ParentActivity.this, MyFirebaseInstanceIDService.class));
+        notificationRegister();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initUI();
@@ -167,6 +173,39 @@ public class ParentActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // retreive device token for push notification
+    private void notificationRegister() {
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Api.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Api.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Api.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+                    String time = intent.getStringExtra("time_stamp");
+                    String imageUrl = intent.getStringExtra("image_url");
+
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                }
+            }
+        };
+
+        displayFirebaseRegId();
+
     }
 
     @Override
