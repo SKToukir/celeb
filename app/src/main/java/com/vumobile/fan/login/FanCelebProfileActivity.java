@@ -1,9 +1,11 @@
 package com.vumobile.fan.login;
 
 import android.app.AlertDialog;
+import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +32,7 @@ import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
+import com.vumobile.fan.login.ui.fragment.Gifts;
 import com.vumobile.videocall.LoginActivity;
 
 import org.json.JSONException;
@@ -78,6 +81,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         imageViewChat.setOnClickListener(this);
         imageViewImageAndVideo.setOnClickListener(this);
         imageViewGift.setOnClickListener(this);
+
 
         CircleImageView imageViewProfilePicFan = (CircleImageView) findViewById(R.id.imageViewProfilePicFan);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
@@ -137,7 +141,14 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 break;
 
             case R.id.imageViewGift:
-                Toast.makeText(this, "Gift", Toast.LENGTH_SHORT).show();
+                // get fragment manager
+                FragmentManager fm = getSupportFragmentManager();
+                // add
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit);
+                ft.add(R.id.frameLayoutGifts, new Gifts());
+                ft.addToBackStack(null);
+                ft.commit();
                 break;
         }
 
@@ -178,14 +189,12 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                     public void onResponse(String response) {
                         Log.d("FromServer", response.toString());
 
-
                         JSONObject obj = null;
                         try {
                             obj = new JSONObject(response);
 
                             String request_status = obj.getString("result").replaceAll(" ", "_");
                             Log.d("FromServer", request_status);
-
 
                             if (request_status.matches("Request_Pending") || request_status.equals("Request_Pending")) {
                                 TastyToast.makeText(getApplicationContext(), "Your request is pending", TastyToast.LENGTH_LONG, TastyToast.INFO);
@@ -196,7 +205,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 String room_name = celeb_msisdn + fan_msisdn;
                                 Log.d("room_name", room_name);
 //                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
-                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class);//ChatViewActivity
+                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class); //ChatViewActivity
                                 intent.putExtra("CELEB_PIC", profilePic);
                                 intent.putExtra("CELEB_NAME", fbName);
                                 intent.putExtra("room", room_name);
@@ -212,15 +221,13 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 
-                            }else {
+                            } else {
                                 TastyToast.makeText(getApplicationContext(), "Your request is successfully sent to celeb!\nWait for confirmation", TastyToast.LENGTH_LONG, TastyToast.INFO);
                             }
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
 
                     }
                 },
@@ -239,7 +246,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 *  request flag = 2 means it is a video request
                 * */
 
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Fan", fan_msisdn);
                 params.put("Celebrity", celeb_msisdn);
                 params.put("RequestType", type);
@@ -276,20 +283,20 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                             } else if (request_status.matches("Accepted")) {
 
                                 Toast.makeText(getApplicationContext(), fbName, Toast.LENGTH_SHORT).show();
-                                String fan_name = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+                                String fan_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
                                 // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                intent.putExtra("celeb_name",fbName);
-                                intent.putExtra("fan_name",fan_name);
-                                intent.putExtra("profilePic",profilePic);
-                                intent.putExtra("celeb_msisdn",msisdn);
+                                intent.putExtra("celeb_name", fbName);
+                                intent.putExtra("fan_name", fan_name);
+                                intent.putExtra("profilePic", profilePic);
+                                intent.putExtra("celeb_msisdn", msisdn);
                                 startActivity(intent);
-                                TastyToast.makeText(getApplicationContext(),"Start Video Call Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                                TastyToast.makeText(getApplicationContext(), "Start Video Call Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 
-                            }else {
-                                TastyToast.makeText(getApplicationContext(),"Your request is successfully sent to celeb!\nWait for confirmation",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                            } else {
+                                TastyToast.makeText(getApplicationContext(), "Your request is successfully sent to celeb!\nWait for confirmation", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                             }
 
 

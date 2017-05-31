@@ -104,7 +104,6 @@ public class ParentActivity extends BaseActivity
 
         Log.d("Session: ", Session.retreiveName(ParentActivity.this, Session.USER_NAME));
 
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -113,7 +112,6 @@ public class ParentActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         loadFanProfileData(Api.URL_GET_CELEB_PROFILE);
         View hView = navigationView.getHeaderView(0);

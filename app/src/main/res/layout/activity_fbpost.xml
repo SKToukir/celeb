@@ -9,258 +9,254 @@
 
     <include
         android:id="@+id/toolBar_post"
-        layout="@layout/tool_bar_post"/>
+        layout="@layout/tool_bar_post" />
 
     <ScrollView
-        android:layout_below="@+id/toolBar_post"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolBar_post">
 
-    <LinearLayout
+        <LinearLayout
 
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:layout_below="@+id/toolBar_post"
-        android:id="@+id/linearLayout"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
-            android:id="@+id/frame"
-            android:layout_centerHorizontal="true"
-            android:descendantFocusability="blocksDescendants"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_width="100dp"
-            android:layout_height="100dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:padding="4dp"
-                android:scaleType="centerCrop"
-                android:layout_gravity="center_vertical|center_horizontal"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/imgCelebImage"
-                android:layout_width="100dp"
-                android:layout_height="90dp" />
-
-            <ImageView
-                android:layout_gravity="center"
-                android:scaleType="fitXY"
-                android:background="@drawable/b"
-                android:layout_width="95dp"
-                android:layout_height="95dp" />
-
-        </FrameLayout>
-        <!--<com.vumobile.celeb.Utils.RoundedImageView-->
-            <!--android:id="@+id/imgCelebImage"-->
-            <!--android:src="@drawable/ic_man"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"/>-->
-
-        <TextView
-            android:textColor="#fff"
-            android:id="@+id/txtCelebName"
-            android:layout_marginLeft="20dp"
-            android:textSize="25sp"
-            android:layout_gravity="center"
-            android:text="Celeb Name"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="141dp">
-
-        <Button
-            android:textColor="#fff"
-            android:layout_gravity="right"
-            android:id="@+id/btnPost"
-            android:layout_marginRight="10dp"
-            android:background="#d950a6"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/linearLayout"
-            android:text="POST"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <EditText
-            android:layout_margin="10dp"
-            android:layout_below="@+id/btnPost"
-            android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/etWhatsYourMind"
-            android:editable="true"
-            android:enabled="true"
-            android:minLines="6"
-            android:maxLines="6"
-            android:isScrollContainer="true"
-            android:hint="Whats on your mind?"
-            android:background="#fff"
-            android:gravity="top"
-            android:padding="10dp" />
-
-
-
-        <!-- Videoview to preview recorded video -->
-
-
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/imgVdoLayout"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/imgVdo"
-                android:orientation="vertical"
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
-                <ImageView
-                    android:scaleType="fitXY"
-                    android:id="@+id/imgPreview"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolBar_post"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
 
-                <VideoView
+                <FrameLayout
+                    android:id="@+id/frame"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:id="@+id/videoPreview"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
 
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/imgCelebImage"
+                        android:layout_width="100dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="95dp"
+                        android:layout_height="95dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/b"
+                        android:scaleType="fitXY" />
+
+                </FrameLayout>
+                <!--<com.vumobile.celeb.Utils.RoundedImageView-->
+                <!--android:id="@+id/imgCelebImage"-->
+                <!--android:src="@drawable/ic_man"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="100dp"/>-->
+
+                <TextView
+                    android:id="@+id/txtCelebName"
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:text="Celeb Name"
+                    android:textColor="#fff"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="141dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/linearLayout"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:background="#d950a6"
+                    android:text="POST"
+                    android:textColor="#fff" />
+
+
+                <EditText
+                    android:id="@+id/etWhatsYourMind"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_below="@+id/btnPost"
+                    android:layout_margin="10dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:ems="10"
+                    android:enabled="true"
+                    android:gravity="top"
+                    android:hint="Whats on your mind?"
+                    android:inputType="textMultiLine"
+                    android:isScrollContainer="true"
+                    android:maxLines="6"
+                    android:minLines="6"
+                    android:padding="10dp" />
+
+
+                <!-- Videoview to preview recorded video -->
 
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_close"
-                android:layout_margin="5dp"
-                android:background="@drawable/btn_close"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
 
-            <Button
-                android:id="@+id/btn_edit"
-                android:layout_margin="5dp"
-                android:background="@drawable/editimage"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-
-
-
-            <com.vumobile.utils.MyTextView
-                android:layout_marginTop="5dp"
-                android:layout_alignParentRight="true"
-                android:id="@+id/myText"
-                android:textSize="20sp"
-                android:textColor="#fff"
-                android:text="Add More"
-                android:layout_marginBottom="5dp"
-                android:layout_below="@+id/imgVdo"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:layout_marginTop="5dp"
-                android:id="@+id/imageIcon"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@+id/myText"
-                android:src="@drawable/iamgeicon"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
-            <ImageView
-                android:layout_marginTop="5dp"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@+id/imageIcon"
-                android:src="@drawable/videoicon"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
 
-            <ProgressBar
-                android:layout_below="@+id/myText"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="200dp"
-                android:layout_height="10dp"
-                android:layout_marginBottom="5dp"
-                android:visibility="gone"/>
+                <RelativeLayout
+                    android:id="@+id/imgVdoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:visibility="gone">
 
-            <TextView
-                android:layout_below="@+id/progressBar"
-                android:visibility="gone"
-                android:text="100%"
-                android:layout_gravity="center"
-                android:id="@+id/txtPercentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:id="@+id/imgVdo"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:orientation="vertical">
 
+                        <ImageView
+                            android:id="@+id/imgPreview"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:scaleType="fitXY" />
 
-        </RelativeLayout>
-
-       <LinearLayout
-           android:id="@+id/selectImageVideoLayout"
-           android:orientation="vertical"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
-
-           <Button
-               android:layout_marginLeft="10dp"
-               android:background="@drawable/photovbutton"
-               android:layout_width="160dp"
-               android:layout_height="50dp"
-               android:layout_below="@+id/btnGoLive"
-               android:layout_alignLeft="@+id/btnGoLive"
-               android:layout_alignStart="@+id/btnGoLive"
-               android:layout_marginTop="19dp"
-               android:id="@+id/btnGetPhotoVideo" />
-
-           <Button
-               android:layout_marginTop="5dp"
-               android:layout_marginLeft="10dp"
-               android:background="@drawable/glivebutton"
-               android:layout_width="160dp"
-               android:layout_height="50dp"
-               android:layout_below="@+id/etWhatsYourMind"
-               android:layout_alignLeft="@+id/etWhatsYourMind"
-               android:layout_alignStart="@+id/etWhatsYourMind"
-               android:id="@+id/btnGoLive" />
-
-       </LinearLayout>
-
-    </LinearLayout>
+                        <VideoView
+                            android:id="@+id/videoPreview"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY" />
 
 
-    </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_close"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/btn_close" />
+
+                    <Button
+                        android:id="@+id/btn_edit"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/editimage" />
+
+
+                    <com.vumobile.utils.MyTextView
+                        android:id="@+id/myText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/imgVdo"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Add More"
+                        android:textColor="#fff"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/imageIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_toLeftOf="@+id/myText"
+                        android:src="@drawable/iamgeicon" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_toLeftOf="@+id/imageIcon"
+                        android:src="@drawable/videoicon" />
+
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="200dp"
+                        android:layout_height="10dp"
+                        android:layout_below="@+id/myText"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txtPercentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/progressBar"
+                        android:layout_gravity="center"
+                        android:text="100%"
+                        android:visibility="gone" />
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/selectImageVideoLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btnGetPhotoVideo"
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:layout_alignLeft="@+id/btnGoLive"
+                        android:layout_alignStart="@+id/btnGoLive"
+                        android:layout_below="@+id/btnGoLive"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="19dp"
+                        android:background="@drawable/photovbutton" />
+
+                    <Button
+                        android:id="@+id/btnGoLive"
+                        android:layout_width="160dp"
+                        android:layout_height="50dp"
+                        android:layout_alignLeft="@+id/etWhatsYourMind"
+                        android:layout_alignStart="@+id/etWhatsYourMind"
+                        android:layout_below="@+id/etWhatsYourMind"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/glivebutton" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

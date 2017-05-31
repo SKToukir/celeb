@@ -99,7 +99,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:adjustViewBounds="true"
-                android:maxHeight="200dp"
                 android:minHeight="200dp"
                 android:minWidth="400dp"
                 android:padding="5dp"

@@ -167,15 +167,13 @@
         <activity android:name=".ui.RegisterForVideoCallActivity" />
         <activity android:name="com.vumobile.videocall.VideoChatViewActivity" />
 
-
-        <!--<receiver-->
-        <!--android:name="com.vumobile.utils.NetworkStateChangeReceiver"-->
-        <!--android:exported="false">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
-
+        <!-- <receiver -->
+        <!-- android:name="com.vumobile.utils.NetworkStateChangeReceiver" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
 
         <receiver android:name="com.vumobile.videocall.CallReceiver">
             <intent-filter>
@@ -189,8 +187,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.CelebEditPostActivity"></activity>
-        <activity android:name=".ui.EditPostActivity"/>
+        <activity android:name=".ui.CelebEditPostActivity" />
+        <activity android:name=".ui.EditPostActivity" />
+        <activity android:name=".ui.EditImageActivity"></activity>
     </application>
 
 </manifest>

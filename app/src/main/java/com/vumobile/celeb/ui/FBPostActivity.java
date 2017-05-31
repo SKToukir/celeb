@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -40,6 +41,7 @@ import com.vumobile.celeb.Utils.ScalingUtilities;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.fan.login.Session;
+import com.vumobile.utils.CropImageSerializable;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -51,6 +53,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -86,7 +89,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private Intent intent;
     public String celebComment;
     private EditText etComment;
-    private String name, msisdn, celebID,gender,flags_notification,image_url;
+    private String name, msisdn, celebID, gender, flags_notification, image_url;
     Uri uri;
 
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -115,8 +118,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         celebID = intent.getStringExtra("celeb_id");
         gender = intent.getStringExtra("gender");
         image_url = intent.getStringExtra("image_url");
-        name = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
-        msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
+        msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
 
     }
@@ -178,10 +181,10 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             case R.id.btnPost:
                 celebComment = etComment.getText().toString();
 
-                if (filePath==null || filePath.equals(null) || filePath.equals("")){
-                    TastyToast.makeText(getApplicationContext(),"Nothing to post",TastyToast.LENGTH_LONG,TastyToast.CONFUSING);
-                }else {
-                    new UploadFileToServer().execute(filePath,celebComment);
+                if (filePath == null || filePath.equals(null) || filePath.equals("")) {
+                    TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
+                } else {
+                    new UploadFileToServer().execute(filePath, celebComment);
                 }
 
 
@@ -205,6 +208,17 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 selectImageVideoLayout.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_edit:
+                BitmapDrawable drawable = (BitmapDrawable) imgPreview.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray1 = stream.toByteArray();
+
+                CropImageSerializable cropImageSerializable = new CropImageSerializable();
+                cropImageSerializable.setByteArray(byteArray1);
+
+                Intent i = new Intent(getApplicationContext(), EditImageActivity.class);
+                startActivity(i);
                 break;
         }
     }
@@ -444,11 +458,11 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             String fPath = params[0];
             String comment = params[1];
 
-            return uploadFile(fPath,comment);
+            return uploadFile(fPath, comment);
         }
 
         @SuppressWarnings("deprecation")
-        private String uploadFile(String fPath,String cmnt) {
+        private String uploadFile(String fPath, String cmnt) {
             String responseString = null;
 
 
@@ -469,7 +483,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 File sourceFile = new File(fPath);
 
                 // Adding file data to http body
-                Log.d("data",name+" "+msisdn+" "+celebID+" "+gender+" "+IsImage(isImage)+" "+image_url+" "+flags_notification+" "+cmnt);
+                Log.d("data", name + " " + msisdn + " " + celebID + " " + gender + " " + IsImage(isImage) + " " + image_url + " " + flags_notification + " " + cmnt);
 
                 entity.addPart("image", new FileBody(sourceFile));
                 // Extra parameters if you want to pass to server
@@ -484,8 +498,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 // and here all notification is post
                 entity.addPart("Flags_Notificaton", new StringBody("2"));
                 entity.addPart("post", new StringBody(cmnt));
-               // entity.addPart("Name",new StringBody("my name"));
-                Log.d("Image",sourceFile.toString());
+                // entity.addPart("Name",new StringBody("my name"));
+                Log.d("Image", sourceFile.toString());
 //                entity.addPart("Name",new StringBody(name));
 //                entity.addPart("MSISDN",new StringBody(msisdn));
 //                entity.addPart("Celeb_id",new StringBody(celebID));
@@ -535,9 +549,9 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
     private String IsImage(boolean isImage) {
 
-        if (isImage){
+        if (isImage) {
             return "1";
-        }else {
+        } else {
             return "2";
         }
     }
@@ -582,12 +596,10 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     }
 
     public static Bitmap retriveVideoFrameFromVideo(String videoPath)
-            throws Throwable
-    {
+            throws Throwable {
         Bitmap bitmap = null;
         MediaMetadataRetriever mediaMetadataRetriever = null;
-        try
-        {
+        try {
             mediaMetadataRetriever = new MediaMetadataRetriever();
             if (Build.VERSION.SDK_INT >= 14)
                 mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
@@ -595,31 +607,43 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 mediaMetadataRetriever.setDataSource(videoPath);
             //   mediaMetadataRetriever.setDataSource(videoPath);
             bitmap = mediaMetadataRetriever.getFrameAtTime();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Throwable(
                     "Exception in retriveVideoFrameFromVideo(String videoPath)"
                             + e.getMessage());
 
-        }
-        finally
-        {
-            if (mediaMetadataRetriever != null)
-            {
+        } finally {
+            if (mediaMetadataRetriever != null) {
                 mediaMetadataRetriever.release();
             }
         }
         return bitmap;
     }
 
-    public void hideKeyboard(){
+    public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        CropImageSerializable cropImageSerializable = new CropImageSerializable();
+        byte[] byteArray = cropImageSerializable.getByteArray();
+        if (byteArray != null) {
+            Bitmap bmp = null;
+            if (byteArray != null) {
+                bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            }
+            imgPreview.setImageBitmap(bmp);
+            cropImageSerializable.setByteArray(null);
+        }
+
     }
 
 }
