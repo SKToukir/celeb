@@ -124,9 +124,7 @@ public class ParentActivity extends BaseActivity
         navUserName = (TextView) hView.findViewById(R.id.textView);
         navUserPic = (ImageView) hView.findViewById(R.id.imageView);
 
-
         //  loadCelebrityData(Api.URL_ACTIVATE_USERS);
-
 
         listCeleb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -138,7 +136,6 @@ public class ParentActivity extends BaseActivity
                 String profilePic = celebrityClassList.get(i).getCeleb_image();
                 String isOnline = celebrityClassList.get(i).getIsOnline();
                 String followerCount = celebrityClassList.get(i).getFollowerCount();
-
 
                 if (isOnline.equals("1") || isOnline.matches("1")) {
                     String room = fbName;
