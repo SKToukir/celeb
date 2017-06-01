@@ -9,21 +9,22 @@ public class GiftItemModel {
     String GraphicsCode, ContentTitle, ContentType, PhysicalFileName, PreviewURL, ChargeType, Like, ProductID, PreviewUrlTransperrent;
 
     public GiftItemModel(String graphicsCode, String contentTitle, String contentType, String physicalFileName, String previewURL, String chargeType, String like, String productID, String previewUrlTransperrent) {
-        GraphicsCode = graphicsCode;
-        ContentTitle = contentTitle;
-        ContentType = contentType;
-        PhysicalFileName = physicalFileName;
-        PreviewURL = previewURL;
-        ChargeType = chargeType;
-        Like = like;
-        ProductID = productID;
-        PreviewUrlTransperrent = previewUrlTransperrent;
+        this.GraphicsCode = graphicsCode;
+        this.ContentTitle = contentTitle;
+        this.ContentType = contentType;
+        this.PhysicalFileName = physicalFileName;
+        this.PreviewURL = previewURL;
+        this.ChargeType = chargeType;
+        this.Like = like;
+        this.ProductID = productID;
+        this.PreviewUrlTransperrent = previewUrlTransperrent;
     }
 
-    public GiftItemModel(String contentTitle, String graphicsCode, String previewURL) {
-        ContentTitle = contentTitle;
-        GraphicsCode = graphicsCode;
-        PreviewURL = previewURL;
+    public GiftItemModel(String contentTitle, String graphicsCode, String previewURL, String ChargeType) {
+        this.ContentTitle = contentTitle;
+        this.GraphicsCode = graphicsCode;
+        this.PreviewURL = previewURL;
+        this.ChargeType = ChargeType;
     }
 
     public String getGraphicsCode() {
@@ -100,6 +101,6 @@ public class GiftItemModel {
 
     @Override
     public String toString() {
-        return "" + GraphicsCode + ContentTitle + PreviewURL;
+        return "" + GraphicsCode + ContentTitle + PreviewURL + ChargeType;
     }
 }

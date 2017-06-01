@@ -71,7 +71,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageViewChatSend, imageViewChatAdd, imageViewChatCamera, imageViewChatGift;
     private EditText editTextChatText;
     private String chatText, celebName, celebPic;
-    private String room_name, temp_key, msisdn, profilePic, fbName;
+    private static String room_name, temp_key, msisdn, profilePic, fbName;
     private CircleImageView circleImageViewChatProfilePic;
     private TextView textViewChatName;
     public static final int IMAGE_PICKER_SELECT = 1;
@@ -80,13 +80,14 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private boolean isImage = false;
     private FragmentTransaction ft;
     private Matcher m;
+    FragmentManager fm;
 
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://vuceleb.appspot.com/");
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+    private static DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
-    private String chatName, chat_msg, isCeleb, imageUrl;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
+    private static String chatName, chat_msg, isCeleb, imageUrl;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
 
 
     @Override
@@ -125,10 +126,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 Pattern p = Pattern.compile(URL_REGEX);
                 m = p.matcher(chat);
 
-                if (m.find()){
+                if (m.find()) {
                     Intent intent = new Intent(ChatRoomActivity.this, ImageOrVideoView.class);
-                    intent.putExtra("IMG_OR_VID","1");
-                    intent.putExtra("IMG_OR_VID_URL",chat);
+                    intent.putExtra("IMG_OR_VID", "1");
+                    intent.putExtra("IMG_OR_VID_URL", chat);
                     startActivity(intent);
                 }
             }
@@ -157,6 +158,9 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         adapter = new ChatAdapter(getApplicationContext(), R.layout.row_chat, chatClassList);
         listView.setAdapter(adapter);
+
+        // get fragment manager
+        fm = getSupportFragmentManager();
     }
 
     @Override
@@ -166,7 +170,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.imageViewChatSend:
                 chatText = editTextChatText.getText().toString();
-                postComment(chatText);
+                postComment(getApplicationContext(), chatText);
                 // clear text box
                 editTextChatText.setText("");
                 //  listView.setSelection(adapter.getCount() - 1);
@@ -179,16 +183,18 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 break;
             case R.id.imageViewChatGift:
-                // get fragment manager
+                // frameLayoutChatGift.setVisibility(View.VISIBLE);
+                ft = fm.beginTransaction();
+                Log.d("ftft 1 ", "onClick: " + fm.getBackStackEntryCount());
+                if (fm.getBackStackEntryCount() == 0) {
 
-                    frameLayoutChatGift.setVisibility(View.VISIBLE);
-                    FragmentManager fm = getSupportFragmentManager();
                     // add
-                    ft = fm.beginTransaction();
                     ft.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit);
                     ft.add(R.id.frameLayoutChatGift, new Gifts());
-                    ft.addToBackStack(null);
+                    ft.addToBackStack("ttt");
                     ft.commit();
+                    Log.d("ftft 2 ", "onClick: " + fm.getBackStackEntryCount());
+                }
 
                 break;
         }
@@ -210,14 +216,14 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         } else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap b = (Bitmap) data.getExtras().get("data");
-            uri = ImageProcessingClass.getImageUri(getApplicationContext(),b);
+            uri = ImageProcessingClass.getImageUri(getApplicationContext(), b);
             postImage(uri);
         }
     }
 
     private void postImage(Uri uri) {
         isImage = true;
-        StorageReference childRef = storageRef.child("image.png");
+        StorageReference childRef = storageRef.child(getRealPathFromURI(getApplicationContext(), uri));
         //uploading the image
         UploadTask uploadTask = childRef.putFile(uri);
 
@@ -226,7 +232,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri u = taskSnapshot.getMetadata().getDownloadUrl();
                 Log.d("FileUploadLog", taskSnapshot.toString() + " " + u.toString());
-                postComment(u.toString());
+                postComment(getApplicationContext(), u.toString());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -252,9 +258,9 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void postComment(String comment) {
+    public static void postComment(Context context, String comment) {
 
-        if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
+        if (Session.isCeleb(context, Session.IS_CELEB)) {
             isCeleb = "1"; // 1 is celeb 2 is fan
         } else {
             isCeleb = "2";
@@ -272,6 +278,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         map2.put("fbName", fbName);
         map2.put("isCeleb", isCeleb);
 
+        Log.d("cmt", "postComment: " + comment);
 
         message_root.updateChildren(map2);
 

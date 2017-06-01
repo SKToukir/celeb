@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.vumobile.celeb.R;
+import com.vumobile.celeb.ui.ChatRoomActivity;
 import com.vumobile.fan.login.adapter.GiftRecyclerViewAdapter;
 import com.vumobile.fan.login.model.GiftItemModel;
 import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
@@ -77,7 +78,16 @@ public class Gifts extends Fragment {
         giftRecyclerViewAdapter = new GiftRecyclerViewAdapter(getActivity(), giftItemModels);
 
         giftRecyclerViewAdapter.setClickListener((view, position) -> {
-            Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + view.findViewById(R.id.textViewPrice).getTag(), Toast.LENGTH_SHORT).show();
+            // view.findViewById(R.id.textViewPrice).getTag()
+            if (getActivity().getLocalClassName().contains("FanCelebProfileActivity")) {
+                Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
+            } else if (getActivity().getLocalClassName().contains("ChatRoomActivity")) {
+                Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                ChatRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+                Log.d(TAG, "onCreateView: " + "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+                getActivity().onBackPressed();
+            }
         });
 
         return rootView;
@@ -101,7 +111,8 @@ public class Gifts extends Fragment {
                         giftItemModel = new GiftItemModel(
                                 jo.getString("GraphicsCode"),
                                 jo.getString("ContentTitle"),
-                                jo.getString("PreviewURL")
+                                jo.getString("PreviewURL"),
+                                jo.getString("ChargeType")
                         );
                         Log.d(TAG, "getResponse: " + giftItemModel.toString());
 

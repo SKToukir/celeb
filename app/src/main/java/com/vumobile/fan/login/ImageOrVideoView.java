@@ -35,7 +35,7 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
     BroadcastReceiver receiver;
 
     // pinch to zoom
-    PhotoViewAttacher photoViewAttacher ;
+    PhotoViewAttacher photoViewAttacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
         imgOrVid = getIntent().getStringExtra("IMG_OR_VID");
         imgOrVidUrl = getIntent().getStringExtra("IMG_OR_VID_URL");
 
-        if (!imgOrVidUrl.toLowerCase().startsWith("http://") || !imgOrVidUrl.toLowerCase().startsWith("https://")) {
+        if (!imgOrVidUrl.toLowerCase().startsWith("http")) {
             imageViewDownloadImageOrVideo.setVisibility(View.GONE);
         }
 
@@ -99,7 +99,6 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
     } // end of onCreate
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -121,6 +120,9 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
             // whatever is appropriate in this case
             throw new IllegalArgumentException("Word has less than 10 characters!");
         }
+        if (!fileName.contains(".")) {
+            fileName = fileName + ".jpg";
+        }
 
         File direct = new File(Environment.getExternalStorageDirectory() + "/CelebApp");
         File dFile = new File(Environment.getExternalStorageDirectory() + "/CelebApp/" + fileName);
@@ -139,7 +141,7 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
             request.setAllowedNetworkTypes(
                     DownloadManager.Request.NETWORK_WIFI
                             | DownloadManager.Request.NETWORK_MOBILE)
-                    .setAllowedOverRoaming(false).setTitle("Demo")
+                    .setAllowedOverRoaming(false).setTitle(fileName)
                     .setDescription("Something useful. No, really.")
                     .setDestinationInExternalPublicDir("/CelebApp", fileName);
 

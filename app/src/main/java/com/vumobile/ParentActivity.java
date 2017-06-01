@@ -231,19 +231,19 @@ public class ParentActivity extends BaseActivity
 
     private void storeRegId(String regId) {
 
-        HashMap<String,String> params = new HashMap<>();
-        params.put("MSISDN",Session.retreivePhone(getApplicationContext(),Session.USER_PHONE));
-        params.put("RegId",regId);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+        params.put("RegId", regId);
 
         MyVolleyRequest.setRegId(getApplicationContext(), Request.Method.POST, Api.URL_SET_REG_ID, params, new AllVolleyInterfaces.ResponseString() {
             @Override
             public void getResponse(String responseResult) {
-                Log.d("FromServerrrrrr"," "+responseResult);
+                Log.d("FromServerrrrrr", " " + responseResult + "");
             }
 
             @Override
             public void getResponseErr(String responseResultErr) {
-                Log.d("FromServer",responseResultErr);
+                Log.d("FromServer", responseResultErr + "");
             }
         });
     }
@@ -660,7 +660,7 @@ public class ParentActivity extends BaseActivity
             case R.id.imageViewHome:
                 FragmentManager fm = getSupportFragmentManager();
                 int count = fm.getBackStackEntryCount();
-                for(int i = 0; i < count; ++i) {
+                for (int i = 0; i < count; ++i) {
                     fm.popBackStackImmediate();
                 }
 

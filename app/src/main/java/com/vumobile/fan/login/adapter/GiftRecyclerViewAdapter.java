@@ -70,13 +70,14 @@ public class GiftRecyclerViewAdapter extends RecyclerView.Adapter<GiftRecyclerVi
         String contentTitle = giftItemModel.getContentTitle();
         String contentUrl = giftItemModel.getPreviewURL();
 
-        holder.textViewPrice.setTag(giftItemModel.getContentTitle());
+        holder.textViewPrice.setText("Price: " + giftItemModel.getChargeType());
+        holder.textViewPrice.setTag(giftItemModel.getPreviewURL());
 
         Glide.with(context)
                 .load("http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + contentUrl)
                 .into(holder.imageViewGiftItem);
 
-        Log.d("adapter ttt", "onBindViewHolder: " + giftItemModel.getPreviewURL());
+        Log.d("adapter ttt", "onBindViewHolder: " + giftItemModel.toString());
     }
 
     // total number of cells
