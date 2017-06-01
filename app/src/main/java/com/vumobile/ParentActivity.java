@@ -50,6 +50,8 @@ import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
 import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
+import com.vumobile.fan.login.serverrequest.MyVolleyRequest;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 import com.vumobile.fan.login.ui.fragment.Credits;
 import com.vumobile.fan.login.ui.fragment.History;
@@ -64,6 +66,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -102,6 +105,7 @@ public class ParentActivity extends BaseActivity
         notificationRegister();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         initUI();
 
         // Initialize comment list adapter
@@ -219,8 +223,29 @@ public class ParentActivity extends BaseActivity
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Api.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
 
+        storeRegId(regId);
+
         Log.e("TAG", "Firebase reg id: " + regId);
         Log.e("taggg", "Firebase:" + regId);
+    }
+
+    private void storeRegId(String regId) {
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("MSISDN",Session.retreivePhone(getApplicationContext(),Session.USER_PHONE));
+        params.put("RegId",regId);
+
+        MyVolleyRequest.setRegId(getApplicationContext(), Request.Method.POST, Api.URL_SET_REG_ID, params, new AllVolleyInterfaces.ResponseString() {
+            @Override
+            public void getResponse(String responseResult) {
+                Log.d("FromServerrrrrr"," "+responseResult);
+            }
+
+            @Override
+            public void getResponseErr(String responseResultErr) {
+                Log.d("FromServer",responseResultErr);
+            }
+        });
     }
 
     private void loadFanProfileData(String urlFanProfile) {

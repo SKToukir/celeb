@@ -57,7 +57,7 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
         imgOrVid = getIntent().getStringExtra("IMG_OR_VID");
         imgOrVidUrl = getIntent().getStringExtra("IMG_OR_VID_URL");
 
-        if (!imgOrVidUrl.toLowerCase().startsWith("http://")) {
+        if (!imgOrVidUrl.toLowerCase().startsWith("http://") || !imgOrVidUrl.toLowerCase().startsWith("https://")) {
             imageViewDownloadImageOrVideo.setVisibility(View.GONE);
         }
 

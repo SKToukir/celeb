@@ -14,10 +14,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,7 +41,9 @@ import com.vumobile.celeb.Adapters.ChatAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ChatClass;
 import com.vumobile.celeb.model.ImageProcessingClass;
+import com.vumobile.fan.login.ImageOrVideoView;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.ui.fragment.Gifts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,17 +54,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
+    private FrameLayout frameLayoutChatGift;
     private static final int CAMERA_REQUEST = 1888;
     private List<ChatClass> chatClassList = new ArrayList<ChatClass>();
     private ChatAdapter adapter;
     private ListView listView;
     private ChatClass chatClass;
-    private ImageView imageViewChatSend, imageViewChatAdd, imageViewChatCamera;
+    private ImageView imageViewChatSend, imageViewChatAdd, imageViewChatCamera, imageViewChatGift;
     private EditText editTextChatText;
     private String chatText, celebName, celebPic;
     private String room_name, temp_key, msisdn, profilePic, fbName;
@@ -68,6 +78,8 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private Uri uri;
     private String filePath = null;
     private boolean isImage = false;
+    private FragmentTransaction ft;
+    private Matcher m;
 
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -105,13 +117,32 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         Glide.with(this).load(celebPic).into(circleImageViewChatProfilePic);
         textViewChatName.setText(celebName);
         getAllComment(room_name);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String chat = chatClassList.get(i).getText();
+                Pattern p = Pattern.compile(URL_REGEX);
+                m = p.matcher(chat);
+
+                if (m.find()){
+                    Intent intent = new Intent(ChatRoomActivity.this, ImageOrVideoView.class);
+                    intent.putExtra("IMG_OR_VID","1");
+                    intent.putExtra("IMG_OR_VID_URL",chat);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void initUI() {
 
+        frameLayoutChatGift = (FrameLayout) findViewById(R.id.frameLayoutChatGift);
         editTextChatText = (EditText) findViewById(R.id.editTextChatText);
         textViewChatName = (TextView) findViewById(R.id.textViewChatName);
 
+        imageViewChatGift = (ImageView) findViewById(R.id.imageViewChatGift);
+        imageViewChatGift.setOnClickListener(this);
         listView = (ListView) findViewById(R.id.listChat);
         listView.setDivider(null);
         listView.setDividerHeight(0);
@@ -125,7 +156,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
 
         adapter = new ChatAdapter(getApplicationContext(), R.layout.row_chat, chatClassList);
-
         listView.setAdapter(adapter);
     }
 
@@ -148,13 +178,26 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 break;
+            case R.id.imageViewChatGift:
+                // get fragment manager
+
+                    frameLayoutChatGift.setVisibility(View.VISIBLE);
+                    FragmentManager fm = getSupportFragmentManager();
+                    // add
+                    ft = fm.beginTransaction();
+                    ft.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit);
+                    ft.add(R.id.frameLayoutChatGift, new Gifts());
+                    ft.addToBackStack(null);
+                    ft.commit();
+
+                break;
         }
     }
 
     // pic image from gallery
     private void choose_from_gallery() {
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/png");
+        pickIntent.setType("image/*");
         startActivityForResult(pickIntent, IMAGE_PICKER_SELECT);
     }
 
