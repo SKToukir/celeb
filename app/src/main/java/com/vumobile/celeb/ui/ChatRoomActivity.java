@@ -217,7 +217,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
     private void postImage(Uri uri) {
         isImage = true;
-        StorageReference childRef = storageRef.child("image.png");
+        StorageReference childRef = storageRef.child(getRealPathFromURI(getApplicationContext(),uri));
         //uploading the image
         UploadTask uploadTask = childRef.putFile(uri);
 
