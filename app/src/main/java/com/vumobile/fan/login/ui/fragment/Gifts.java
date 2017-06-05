@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.ui.ChatRoomActivity;
+import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.fan.login.adapter.GiftRecyclerViewAdapter;
 import com.vumobile.fan.login.model.GiftItemModel;
 import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
@@ -85,6 +86,11 @@ public class Gifts extends Fragment {
             } else if (getActivity().getLocalClassName().contains("ChatRoomActivity")) {
                 Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
                 ChatRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+                Log.d(TAG, "onCreateView: " + "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+                getActivity().onBackPressed();
+            }else if (getActivity().getLocalClassName().contains("LiveRoomActivity")) {
+                Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                LiveRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
                 Log.d(TAG, "onCreateView: " + "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
                 getActivity().onBackPressed();
             }

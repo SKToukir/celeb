@@ -12,7 +12,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp">
 
-        <ImageView
+        <com.vumobile.celeb.Utils.RoundedImageView
             android:id="@+id/cmntRowImage"
             android:layout_marginRight="15dp"
             android:layout_marginTop="8dp"
@@ -45,6 +45,14 @@
         android:text="User Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:visibility="gone"
+        android:layout_toRightOf="@+id/line1"
+        android:layout_below="@+id/txtCommentUserName"
+        android:layout_marginTop="5dp"
+        android:id="@+id/imgUserComment"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 
     <TextView
         android:textSize="13sp"

@@ -6,10 +6,19 @@
     android:keepScreenOn="true"
     tools:context=".ui.LiveRoomActivity">
 
+
+
     <com.vumobile.celeb.ui.GridVideoViewContainer
         android:id="@+id/grid_video_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.cipherthinkers.shapeflyer.ShapeFlyer
+        android:id="@+id/floating_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:enable_alpha="true"
+        app:enable_scale="true" />
 
     <!--<com.github.glomadrian.grav.GravView-->
         <!--android:id="@+id/grav"-->
@@ -222,9 +231,10 @@
 
             <!--comment list layout-->
             <LinearLayout
+                android:background="@drawable/live_comment_background_gradient"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4">
+                android:layout_weight=".9">
 
                 <!--comment list-->
                 <ListView
@@ -232,39 +242,51 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"></ListView>
 
+
+
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:gravity="center"
+                android:layout_weight="0.1"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <!--write comment and send layout-->
                 <LinearLayout
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
 
                     <EditText
+                        android:padding="5dp"
+                        android:layout_weight=".7"
+                        android:background="@drawable/edit_text_background"
                         android:imeOptions="actionDone"
                         android:singleLine="true"
                         android:id="@+id/etComment"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:hint="Comment"
-                        android:textColor="#fff"
-                        android:textColorHint="#fff" />
+                        android:textColor="#949393"
+                        android:textColorHint="#949393" />
 
                     <Button
+                        android:layout_weight=".1"
                         android:layout_marginLeft="5dp"
                         android:id="@+id/btnSendComment"
-                        android:layout_width="25dp"
+                        android:layout_width="0dp"
                         android:layout_height="25dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:background="@drawable/ic_send" />
 
                     <ImageView
+                        android:layout_weight=".1"
                         android:clickable="true"
                         android:id="@+id/btnLike"
                         android:layout_marginLeft="15dp"
@@ -272,24 +294,32 @@
                         android:layout_centerHorizontal="true"
                         android:layout_toRightOf="@+id/btnSendComment"
                         android:src="@drawable/ic_like"
-                        android:layout_width="40dp"
+                        android:layout_width="0dp"
                         android:layout_height="40dp" />
 
                     <ImageView
+                        android:layout_weight=".1"
                         android:id="@+id/btnGift"
                         android:layout_marginLeft="15dp"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
                         android:layout_toRightOf="@+id/btnSendComment"
                         android:src="@drawable/ic_gift"
-                        android:layout_width="40dp"
+                        android:layout_width="0dp"
                         android:layout_height="40dp" />
 
                 </LinearLayout>
 
-            </HorizontalScrollView>
+            </RelativeLayout>
 
         </LinearLayout>
+
         <!--Comment layout section end-->
+        <FrameLayout
+            android:id="@+id/frameLayoutCommentGift"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
+
 </FrameLayout>

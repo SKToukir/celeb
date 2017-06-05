@@ -141,7 +141,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         frameLayoutChatGift = (FrameLayout) findViewById(R.id.frameLayoutChatGift);
         editTextChatText = (EditText) findViewById(R.id.editTextChatText);
         textViewChatName = (TextView) findViewById(R.id.textViewChatName);
-
         imageViewChatGift = (ImageView) findViewById(R.id.imageViewChatGift);
         imageViewChatGift.setOnClickListener(this);
         listView = (ListView) findViewById(R.id.listChat);

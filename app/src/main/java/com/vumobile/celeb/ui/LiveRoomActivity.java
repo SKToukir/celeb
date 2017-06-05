@@ -1,6 +1,7 @@
 package com.vumobile.celeb.ui;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,8 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -34,22 +38,28 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cipherthinkers.shapeflyer.ShapeFlyer;
+import com.cipherthinkers.shapeflyer.flyschool.FPoint;
+import com.cipherthinkers.shapeflyer.flyschool.FlyBluePrint;
+import com.cipherthinkers.shapeflyer.flyschool.FlyPath;
+import com.cipherthinkers.shapeflyer.flyschool.PATHS;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.vumobile.celeb.Adapters.CommentListAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.CommentClass;
 import com.vumobile.celeb.Utils.Methods;
-import com.vumobile.celeb.Utils.NetworkState;
 import com.vumobile.celeb.model.AGEventHandler;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.MyBounceInterpolator;
 import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.celeb.model.VideoStatusData;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.ui.fragment.Gifts;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +75,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.RtcEngine;
@@ -73,6 +84,13 @@ import io.agora.rtc.video.VideoCanvas;
 @SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
+    static String likeRoomName;
+    private ShapeFlyer mShapeFlyer;
+    private FrameLayout frameLayoutCommentGift;
+    static String imageUrl;
+    private FragmentTransaction ft;
+    private Matcher m;
+    private FragmentManager fm;
     public static String signal = "";
     public static String linkRate = "";
     InputMethodManager imm;
@@ -80,30 +98,20 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     private ImageView btnLike;
     private TextView txtLikes;
     private ImageView btnGift;
-
-    String temp_key, chat_user_name, user_name, id, op;
+    static String temp_key, temp_key_like, chat_user_name, user_name, id, op;
     String roomName;
     private static String video_id;
-
     private final static Logger log = LoggerFactory.getLogger(LiveRoomActivity.class);
-
     private GridVideoViewContainer mGridVideoViewContainer;
-
     private RelativeLayout mSmallVideoViewDock;
-
     private Button btnSendComment;
-
     private List<CommentClass> commentClassList = new ArrayList<>();
-
     private ListView listOfComment;
-
     private EditText etComment;
-
     CommentListAdapter adapter;
     private String msisdn;
-
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-
+    private static DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+    private static DatabaseReference root_like;
     private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
 
     @Override
@@ -112,17 +120,59 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         setContentView(R.layout.activity_live_room);
 
         initUI();
-
         // initialize comment list adapter
         adapter = new CommentListAdapter(this, R.layout.custom_comment_list, commentClassList);
         listOfComment.setAdapter(adapter);
 
+        getRandomFlyer();
 
+    }
+
+    private void getRandomFlyer() {
+        mShapeFlyer.addPath(PATHS.S_INVERTED_TOP_LEFT);
+        mShapeFlyer.addPath(PATHS.S_BOTTOM_LEFT);
+        mShapeFlyer.addPath(PATHS.S_INVERTED_BOTTOM_RIGHT);
+        mShapeFlyer.addPath(PATHS.S_TOP_RIGHT);
+        mShapeFlyer.addPath(PATHS.LINE_DIAGONAL_BOTTOM_LEFT);
+        mShapeFlyer.addPath(PATHS.LINE_DIAGONAL_BOTTOM_RIGHT);
+        mShapeFlyer.addPath(PATHS.LINE_DIAGONAL_TOP_LEFT);
+        mShapeFlyer.addPath(PATHS.LINE_DIAGONAL_TOP_RIGHT);
+        mShapeFlyer.addPath(PATHS.LINE_MIDDLE_TOP);
+        mShapeFlyer.addPath(PATHS.LINE_MIDDLE_BOTTOM);
+        mShapeFlyer.addPath(PATHS.LINE_MIDDLE_LEFT);
+        mShapeFlyer.addPath(PATHS.LINE_MIDDLE_RIGHT);
+        mShapeFlyer.addPath(new FlyBluePrint(new FPoint(0, 0),
+                FlyPath.getMultipleLinePath(
+                        new FPoint(0.1f, 0f),
+                        new FPoint(0.1f, 0.1f),
+                        new FPoint(0.2f, 0.1f),
+                        new FPoint(0.2f, 0.2f),
+                        new FPoint(0.3f, 0.2f),
+                        new FPoint(0.3f, 0.3f),
+                        new FPoint(0.4f, 0.3f),
+                        new FPoint(0.4f, 0.4f),
+                        new FPoint(0.5f, 0.4f),
+                        new FPoint(0.5f, 0.5f),
+                        new FPoint(0.6f, 0.5f),
+                        new FPoint(0.6f, 0.6f),
+                        new FPoint(0.7f, 0.6f),
+                        new FPoint(0.7f, 0.7f),
+                        new FPoint(0.8f, 0.7f),
+                        new FPoint(0.8f, 0.8f),
+                        new FPoint(0.9f, 0.8f),
+                        new FPoint(0.9f, 0.9f),
+                        new FPoint(1f, 1f)
+                )));
     }
 
 
     private void initUI() {
 
+        mShapeFlyer = (ShapeFlyer) findViewById(R.id.floating_container);
+        mShapeFlyer.setOnClickListener(this);
+        imageUrl = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
+        frameLayoutCommentGift = (FrameLayout) findViewById(R.id.frameLayoutCommentGift);
+        fm = getSupportFragmentManager();
         btnGift = (ImageView) findViewById(R.id.btnGift);
         btnGift.setOnClickListener(this);
         btnLike = (ImageView) findViewById(R.id.btnLike);
@@ -144,10 +194,9 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         // hide like button for celebrity
         // celebruty can not give like
         if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
-            btnLike.setVisibility(View.GONE);
-            btnGift.setVisibility(View.GONE);
+            btnLike.setVisibility(View.INVISIBLE);
+            btnGift.setVisibility(View.INVISIBLE);
         }
-
     }
 
     @Override
@@ -191,7 +240,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             user_name = fb_name;
         } else if (user.equals("fan")) {
             //user_name = Session.retreiveName(getApplicationContext(), Session.USER_NAME);
-            user_name = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+            user_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
             Log.d("fbName", "fan " + user_name);
         }
 
@@ -247,6 +296,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
         } else {
             getVid(roomName);
+
             audienceUI(button1, button2, button3);
             Log.d("whoi", "Audience");
 
@@ -264,6 +314,21 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(video_id, "");
         root.updateChildren(map);
+
+        getAllLikeCeleb(video_id+"like");
+
+    }
+
+    private void createRoomOnFirebaseForLike(String video_id) {
+
+        likeRoomName = video_id + "like";
+        root_like = FirebaseDatabase.getInstance().getReference().getRoot().child(likeRoomName);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(likeRoomName, "");
+        root.updateChildren(map);
+
+
+        getAllLike();
 
     }
 
@@ -358,11 +423,11 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             prefIndex = ConstantApp.DEFAULT_PROFILE_IDX;
         }
 
-        int status = new NetworkState(getApplicationContext()).haveNetworkConnection();
+        //int status = new NetworkState(getApplicationContext()).haveNetworkConnection();
 
         // if connected wifi
-        if (status == 1) {
-            Log.d("Connected:",linkRate);
+        if (1 == 1) {
+            Log.d("Connected:", linkRate);
             int vProfile = Constants.VIDEO_PROFILE_180P_4;
             // default smothness 1.0f and lightness 0.65f
             // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
@@ -414,24 +479,22 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 //                worker().configEngine(cRole, vProfile);
 
 
-        // if conneted apn
+            // if conneted apn
+        } else if (0 == 0)
+
+        {
+            Log.d("Connected:", "apn");
+            // previous code
+            //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
+            // my code
+            int vProfile = Constants.VIDEO_PROFILE_180P_4;
+            // default smothness 1.0f and lightness 0.65f
+            // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
+            worker().setPreParameters(0.5f, 0.50f);
+            worker().configEngine(cRole, vProfile);
+        }
+
     }
-
-    else if(status==0)
-
-    {
-        Log.d("Connected:", "apn");
-        // previous code
-        //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
-        // my code
-        int vProfile = Constants.VIDEO_PROFILE_180P_4;
-        // default smothness 1.0f and lightness 0.65f
-        // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
-        worker().setPreParameters(0.5f, 0.50f);
-        worker().configEngine(cRole, vProfile);
-    }
-
-}
 
     @Override
     protected void deInitUIandEvent() {
@@ -748,17 +811,17 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         switch (view.getId()) {
 
             case R.id.btnSendComment:
-
                 String comment = etComment.getText().toString();
                 // add comment to the comment list here
-                postComment(comment);
+                postComment(getApplicationContext(), comment);
                 // hide keyboard
+                hideKeyboard();
                 //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 etComment.setText("");
                 break;
             case R.id.btnLike:
                 final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
-
+                mShapeFlyer.startAnimation(R.drawable.like);
                 // Use bounce interpolator with amplitude 0.2 and frequency 20
                 MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
                 myAnim.setInterpolator(interpolator);
@@ -767,12 +830,25 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 //                final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
 //                btnLike.startAnimation(myAnim);
                 i++;
-                txtLikes.setText(String.valueOf(i));
-                txtLikes.startAnimation(myAnim);
+                postLike(1);
+                getAllLike();
+
                 break;
 
             case R.id.btnGift:
                 // TODO
+                ft = fm.beginTransaction();
+                Log.d("ftft 1 ", "onClick: " + fm.getBackStackEntryCount());
+                if (fm.getBackStackEntryCount() == 0) {
+
+                    // add
+                    ft.setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit);
+                    ft.add(R.id.frameLayoutCommentGift, new Gifts());
+                    ft.addToBackStack("ttt");
+                    ft.commit();
+                    Log.d("ftft 2 ", "onClick: " + fm.getBackStackEntryCount());
+                }
+
                 break;
             default:
                 break;
@@ -780,7 +856,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     }
 
-    private void postComment(String comment) {
+    public static void postComment(Context context, String comment) {
 
         Map<String, Object> map = new HashMap<String, Object>();
         temp_key = root.push().getKey();
@@ -790,8 +866,25 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         Map<String, Object> map2 = new HashMap<>();
         map2.put("name", user_name);
         map2.put("msg", comment);
+        map2.put("imageUrl", imageUrl);
 
         message_root.updateChildren(map2);
+
+//        listOfComment.setSelection(adapter.getCount() - 1);
+
+    }
+
+    public static void postLike(int i) {
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        temp_key = root_like.push().getKey();
+        root_like.updateChildren(map);
+
+        DatabaseReference message_root = root_like.child(temp_key);
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("name", user_name);
+        map3.put("count", i);
+        message_root.updateChildren(map3);
 
 //        listOfComment.setSelection(adapter.getCount() - 1);
 
@@ -803,6 +896,35 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         String date = df.format(Calendar.getInstance().getTime());
 
         return date;
+    }
+
+    public void getAllLike() {
+        root_like = FirebaseDatabase.getInstance().getReference().child(likeRoomName);
+
+        root_like.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                append_like(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getAllLikeCeleb(String roomNam) {
+        root_like = FirebaseDatabase.getInstance().getReference().child(roomNam);
+        root_like.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                append_like(dataSnapshot);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     // this method will b removed..this method is used for only celebrity
@@ -873,19 +995,21 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         });
     }
 
-    private String chat_msg;
+    private String chat_msg, imageUrlProfile;
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
         Iterator i = dataSnapshot.getChildren().iterator();
 
         while (i.hasNext()) {
+            imageUrlProfile = (String) ((DataSnapshot) i.next()).getValue();
             chat_msg = (String) ((DataSnapshot) i.next()).getValue();
             chat_user_name = (String) ((DataSnapshot) i.next()).getValue();
 
             CommentClass commentClass = new CommentClass();
             commentClass.setUserName(chat_user_name);
             commentClass.setuComment(chat_msg);
+            commentClass.setImage(imageUrlProfile);
             //commentClass.setTime(getTime());
 
             commentClassList.add(commentClass);
@@ -894,6 +1018,16 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         adapter.notifyDataSetChanged();
 
 
+    }
+
+    private void append_like(DataSnapshot dataSnapshot) {
+
+        if (dataSnapshot.getChildrenCount()>0){
+            mShapeFlyer.startAnimation(R.drawable.like);
+        }
+
+        txtLikes.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+        Log.d("countttttttttttttttttttttt", String.valueOf(dataSnapshot.getChildrenCount()));
     }
 
     // get random id which is the channel name on firebase
@@ -911,6 +1045,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                             JSONArray array = response.getJSONArray("server_response");
                             JSONObject object = array.getJSONObject(0);
                             id = object.getString("vid");
+                            createRoomOnFirebaseForLike(id);
                             Log.d("logs", id + " " + op);
                             op = id;
                             getAllComment(id);
@@ -933,8 +1068,15 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        Log.d("ftft 00", "onBackPressed: " + fm.getBackStackEntryCount());
+        if (fm.getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+            Log.d("ftft 66", "onBackPressed: ");
+        } else {
+            showAlert();
+            Log.d("ftft 77", "onBackPressed: ");
+        }
 
-        showAlert();
 
     }
 
@@ -965,4 +1107,14 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         alertDialog.show();
 
     }
+
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
 }

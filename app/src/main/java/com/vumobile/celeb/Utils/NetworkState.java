@@ -27,7 +27,6 @@ public class NetworkState {
         this.context = context;
     }
 
-    @SuppressWarnings("MissingPermission")
     public int haveNetworkConnection() {
 
         boolean haveConnectedWifi = false;
@@ -65,7 +64,6 @@ public class NetworkState {
         return 01;
     }
 
-    @SuppressWarnings("MissingPermission")
     public void getWifiSignal() {
 
         ReactiveWifi.observeWifiSignalLevel(context)
@@ -83,7 +81,6 @@ public class NetworkState {
                 });
     }
 
-    @SuppressWarnings("MissingPermission")
     public void getLinkRate(){
         ReactiveWifi.observeWifiAccessPointChanges(context)
                 .subscribeOn(Schedulers.io())
