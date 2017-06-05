@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ import com.vumobile.fan.login.ui.fragment.Transaction;
 import com.vumobile.notification.MyReceiver;
 import com.vumobile.notification.NetworkedService;
 import com.vumobile.service.MyFirebaseInstanceIDService;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,6 +94,7 @@ public class ParentActivity extends BaseActivity
     ImageView navUserPic;
     // drawer menu
     ImageView imageViewHome, imageViewMyGallery, imageViewHistory, imageViewTransaction, imageViewCredits, imageViewLogout;
+    static RelativeLayout content_parent;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
 
@@ -174,9 +177,15 @@ public class ParentActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    // retreive device token for push notification
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
+        new MyInternetCheckReceiver(linearLayoutMain);
+
+
+    } // end of onCreate
+
+    // retrieve device token for push notification
     private void notificationRegister() {
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -197,7 +206,6 @@ public class ParentActivity extends BaseActivity
                     String message = intent.getStringExtra("message");
                     String time = intent.getStringExtra("time_stamp");
                     String imageUrl = intent.getStringExtra("image_url");
-
 
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
@@ -452,6 +460,8 @@ public class ParentActivity extends BaseActivity
     private void initUI() {
 
         // drawer menu
+        content_parent = (RelativeLayout) findViewById(R.id.content_parent);
+
         imageViewHome = (ImageView) findViewById(R.id.imageViewHome);
         imageViewMyGallery = (ImageView) findViewById(R.id.imageViewMyGallery);
         imageViewHistory = (ImageView) findViewById(R.id.imageViewHistory);
@@ -774,5 +784,10 @@ public class ParentActivity extends BaseActivity
         button.setTag("SELECT_ITEM");
     }
 
-
+    @Override
+    protected void onResume() {
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
+        super.onResume();
+    }
 }

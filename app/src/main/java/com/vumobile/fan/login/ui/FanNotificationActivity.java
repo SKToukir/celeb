@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +27,7 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.adapter.FanNotificationAdapter;
 import com.vumobile.fan.login.model.FanNotificationModelEnity;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +45,7 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
     FanNotificationAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     ImageView imageViewMessage;
+    LinearLayout content_fan_notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
                 onBackPressed(); // Implemented by activity
             }
         });
+
+        content_fan_notification = (LinearLayout)findViewById(R.id.content_fan_notification);
 
         swipeRefreshLayoutNotification = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutNotification);
         recyclerViewNotification = (RecyclerView) findViewById(R.id.recyclerViewNotification);
@@ -82,6 +87,10 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
                                             }
         );
 
+
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, content_fan_notification);
+        new MyInternetCheckReceiver(content_fan_notification);
 
     } // end of onCreate
 

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ import com.vumobile.celeb.Adapters.ChatAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ChatClass;
 import com.vumobile.fan.login.Session;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
-
+    LinearLayout content_chat_view;
     ArrayList<Message> messages;
     private String room_name, temp_key, msisdn, profilePic, fbName;
     private String chatName, chat_msg, isCeleb, imageUrl;//, image_url = "https://graph.facebook.com/1931218820457638/picture?width=500&height=500";
@@ -68,6 +70,8 @@ public class ChatViewActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> {
             onBackPressed(); // Implemented by activity
         });
+
+        content_chat_view = (LinearLayout)findViewById(R.id.content_chat_view);
 
 // cra
 
@@ -106,36 +110,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
         // all message in list
         messages = new ArrayList<>();
-//        Message messagea = new Message();
-//        messagea.setMessageText("hi");
-//        messagea.setUser(me);
-//        messagea.setRightMessage(true);
-//        messagea.setDateCell(true);
-//
-//
-//        Message message2 = new Message();
-//        message2.setMessageText("hello");
-//        message2.setUser(you);
-//        message2.setDateCell(true);
-//
-//        Message message3 = new Message();
-//        message3.setMessageText("Ki khobor");
-//        message3.setUser(me);
-//        message3.setRightMessage(true);
-//        message3.setDateCell(false);
-//
-//        Message message4 = new Message();
-//        message4.setMessageText("valo");
-//        message4.setUser(you);
-//        message4.setDateCell(false);
-//
-//        ArrayList<Message> messages = new ArrayList<>();
-//        messages.add(messagea);
-//        messages.add(message2);
-//        messages.add(message3);
-//        messages.add(message4);
-//        MessageView messageView = (MessageView) findViewById(R.id.message_view);
-//        messageView.init(messages);
+
 
 
         mChatView = (ChatView) findViewById(R.id.chat_view);
@@ -207,6 +182,10 @@ public class ChatViewActivity extends AppCompatActivity {
 
 
         });
+
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, content_chat_view);
+        new MyInternetCheckReceiver(content_chat_view);
 
 
     } // end of onCreate

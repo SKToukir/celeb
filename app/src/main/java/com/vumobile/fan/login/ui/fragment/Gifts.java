@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.ui.ChatRoomActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
@@ -63,13 +64,11 @@ public class Gifts extends Fragment {
             fetchGiftImages();
         });
 
-
         // Data models
         giftItemModels = new ArrayList<>();
 
         recyclerViewGift = (RecyclerView) rootView.findViewById(R.id.recyclerViewGift);
         recyclerViewGift.setItemAnimator(new DefaultItemAnimator());
-
 
         // Set up the RecyclerView for image
         int numberOfColumns = 3;
@@ -104,7 +103,7 @@ public class Gifts extends Fragment {
         swipeRefreshLayoutGift.setRefreshing(true);
         giftItemModels.clear();
 
-        String url = "http://wap.shabox.mobi/sticker_app_server/default.aspx?&contentCode=NEW_CONTENT";
+        String url = Api.URL_GIFT;
         MyVolleyRequest.getAllGifts(getActivity().getApplicationContext(), Request.Method.GET, url, new AllVolleyInterfaces.ResponseString() {
             @Override
             public void getResponse(String responseResult) {
@@ -128,7 +127,7 @@ public class Gifts extends Fragment {
                     }
 
                 } catch (JSONException e) {
-
+                    e.printStackTrace();
                 }
 
             }

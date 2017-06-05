@@ -16,11 +16,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.vumobile.celeb.R;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import java.io.File;
 
@@ -33,6 +35,8 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
     ProgressDialog progDailog;
     String imgOrVid, imgOrVidUrl;
     BroadcastReceiver receiver;
+
+    RelativeLayout activity_image_or_video_view;
 
     // pinch to zoom
     PhotoViewAttacher photoViewAttacher;
@@ -50,6 +54,8 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
         imageViewDownloadImageOrVideo = (ImageView) findViewById(R.id.imageViewDownloadImageOrVideo);
         imageViewDownloadImageOrVideo.setOnClickListener(this);
         videoViewMainPlayer = (VideoView) findViewById(R.id.videoViewMainPlayer);
+
+        activity_image_or_video_view = (RelativeLayout) findViewById(R.id.activity_image_or_video_view);
 
         imageViewMainPreview.setVisibility(View.GONE);
         videoViewMainPlayer.setVisibility(View.GONE);
@@ -95,6 +101,9 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
         photoViewAttacher = new PhotoViewAttacher(imageViewMainPreview);
         photoViewAttacher.update();
 
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_image_or_video_view);
+        new MyInternetCheckReceiver(activity_image_or_video_view);
 
     } // end of onCreate
 
