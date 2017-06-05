@@ -187,6 +187,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.vumobile.utils.MyInternetCheckReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
 
         <activity android:name=".ui.CelebEditPostActivity" />
         <activity android:name=".ui.EditPostActivity" />

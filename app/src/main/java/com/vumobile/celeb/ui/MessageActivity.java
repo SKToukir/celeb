@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +22,7 @@ import com.vumobile.celeb.Adapters.MessageUserListAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MessageListClass;
 import com.vumobile.fan.login.Session;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +43,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView imgBack;
     private Intent intent;
     private String profilePic, fbName;
+    private RelativeLayout activity_message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +85,11 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-    }
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_message);
+        new MyInternetCheckReceiver(activity_message);
+
+    } // end of onCreate
 
     private void retreiveData(String urlGetSchedules) {
 
@@ -172,7 +179,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         profilePic = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
         fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
 
-
+        activity_message = (RelativeLayout)findViewById(R.id.activity_message);
     }
 
     @Override

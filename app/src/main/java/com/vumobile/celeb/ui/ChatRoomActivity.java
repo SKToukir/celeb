@@ -155,7 +155,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         circleImageViewChatProfilePic = (CircleImageView) findViewById(R.id.circleImageViewChatProfilePic);
         imageViewChatSend.setOnClickListener(this);
 
-
         adapter = new ChatAdapter(getApplicationContext(), R.layout.row_chat, chatClassList);
         listView.setAdapter(adapter);
 
@@ -243,7 +242,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     }
 
     // this method call for get video file uri
-    public String getRealPathFromURI(Context context, Uri contentUri) {
+    public String getRealPathFromURI(Context context, Uri contentUri){
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
@@ -510,4 +509,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         return inSampleSize;
     }
+
+
 }

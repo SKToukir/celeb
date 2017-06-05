@@ -32,6 +32,7 @@ import com.vumobile.ParentActivity;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.ui.CelebHomeActivity;
 import com.vumobile.celeb.ui.CelebrityProfileActivity;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     private boolean isCeleb;
     public static String whichButtonClicked;
 
-    private LinearLayout linearLayoutLoginMain, linearLayoutOtpVerification;
+    private LinearLayout activity_log_in_acitvity, linearLayoutLoginMain, linearLayoutOtpVerification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +60,22 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_log_in_acitvity);
 
         initUI();
-        if(android.os.Build.VERSION.SDK_INT > 22){
-            if(isReadStorageAllowed()){
+        if (android.os.Build.VERSION.SDK_INT > 22) {
+            if (isReadStorageAllowed()) {
                 isLogin();
                 return;
-            }else{
+            } else {
                 requestStoragePermission();
             }
-
-        }else {
+        } else {
             isLogin();
-
         }
-    }
+
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_log_in_acitvity);
+        new MyInternetCheckReceiver(activity_log_in_acitvity);
+
+    } // end of onCreate
 
     private boolean isReadStorageAllowed() {
 
@@ -81,29 +85,30 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         int result4 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         //If permission is granted returning true
         if (result == PackageManager.PERMISSION_GRANTED &&
-                result1  == PackageManager.PERMISSION_GRANTED &&
-                result4  == PackageManager.PERMISSION_GRANTED )
+                result1 == PackageManager.PERMISSION_GRANTED &&
+                result4 == PackageManager.PERMISSION_GRANTED)
             return true;
 
         //If permission is not granted returning false
         return false;
     }
 
-    private void requestStoragePermission(){
+    private void requestStoragePermission() {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.GET_ACCOUNTS) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_PHONE_STATE) &&
-                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)){
+                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)) {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
         }
 
 
-        ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.GET_ACCOUNTS,
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.GET_ACCOUNTS,
                 Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.CAMERA},REQUEST_GET_ACCOUNT);
+                Manifest.permission.CAMERA}, REQUEST_GET_ACCOUNT);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -115,10 +120,10 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                     boolean cameraAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean BIND_NOTIFICATION_LISTENER_SERVICE = grantResults[2] == PackageManager.PERMISSION_GRANTED;
 
-                    if (locationAccepted && cameraAccepted && BIND_NOTIFICATION_LISTENER_SERVICE  ){
+                    if (locationAccepted && cameraAccepted && BIND_NOTIFICATION_LISTENER_SERVICE) {
 
                     }
-                    //Snackbar.make(view, "Permission Granted, Now you can access location data and camera.", Snackbar.LENGTH_LONG).show();
+                    // Snackbar.make(view, "Permission Granted, Now you can access location data and camera.", Snackbar.LENGTH_LONG).show();
                     else {
 
                         //Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
@@ -131,7 +136,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                                             public void onClick(DialogInterface dialog, int which) {
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                                     requestPermissions(new String[]{android.Manifest.permission.GET_ACCOUNTS,
-                                                            Manifest.permission.READ_PHONE_STATE,
+                                                                    Manifest.permission.READ_PHONE_STATE,
                                                                     Manifest.permission.CAMERA},
                                                             REQUEST_GET_ACCOUNT);
                                                 }
@@ -160,7 +165,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
     private void isLogin() {
 
         boolean celebOrNot = new Session().isCeleb(LogInAcitvity.this, Session.IS_CELEB);
@@ -168,12 +172,12 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         if (Session.isLogin(LogInAcitvity.this, Session.CHECK_LOGIN)) {
 
             if (celebOrNot) {
-                if (Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)==false){
+                if (Session.isFbLogIn(getApplicationContext(), Session.FB_LOGIN_STATUS) == false) {
                     Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
-                }else {
+                } else {
                     Intent intent = new Intent(LogInAcitvity.this, CelebHomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -181,12 +185,12 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 }
             } else {
 
-                if (Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)){
+                if (Session.isFbLogIn(getApplicationContext(), Session.FB_LOGIN_STATUS)) {
                     Intent intent = new Intent(LogInAcitvity.this, ParentActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
-                }else {
+                } else {
                     Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -213,6 +217,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         txtBecomeCeleb.setOnClickListener(this);
 
+        activity_log_in_acitvity = (LinearLayout) findViewById(R.id.activity_log_in_acitvity);
         linearLayoutLoginMain = (LinearLayout) findViewById(R.id.linearLayoutLoginMain);
         linearLayoutOtpVerification = (LinearLayout) findViewById(R.id.linearLayoutOtpVerification);
 

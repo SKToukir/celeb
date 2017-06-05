@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import com.vumobile.celeb.ui.MessageActivity;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 import com.vumobile.fan.login.ui.fragment.Gifts;
+import com.vumobile.utils.MyInternetCheckReceiver;
 import com.vumobile.videocall.LoginActivity;
 
 import org.json.JSONException;
@@ -48,6 +50,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
     String msisdn, name, fbName, profilePic, followerCount;
     ImageView imageViewNotification, imageViewMessage, imageViewHome;
     ImageView imageViewVideoCall, imageViewChat, imageViewImageAndVideo, imageViewGift;
+    LinearLayout activity_fan_celeb_profile;
 
 
     @Override
@@ -82,6 +85,8 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         imageViewImageAndVideo.setOnClickListener(this);
         imageViewGift.setOnClickListener(this);
 
+        activity_fan_celeb_profile = (LinearLayout)findViewById(R.id.activity_fan_celeb_profile);
+
 
         CircleImageView imageViewProfilePicFan = (CircleImageView) findViewById(R.id.imageViewProfilePicFan);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
@@ -98,6 +103,9 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         textViewName.setText(fbName);
         textViewFollowerCountProfile.setText(followerCount);
 
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_fan_celeb_profile);
+        new MyInternetCheckReceiver(activity_fan_celeb_profile);
 
     } // end of onCreate
 

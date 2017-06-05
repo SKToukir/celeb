@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,6 +25,7 @@ import com.vumobile.fan.login.adapter.FanCelebImageRecyclerViewAdapter;
 import com.vumobile.fan.login.adapter.FanCelebVideoRecyclerViewAdapter;
 import com.vumobile.fan.login.model.FanCelebImageModelEntity;
 import com.vumobile.fan.login.model.FanCelebVideoModelEntity;
+import com.vumobile.utils.MyInternetCheckReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +46,8 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
     private RecyclerView recyclerViewCelebImages, recyclerViewCelebVideos;
     private SwipeRefreshLayout swipeRefreshLayoutCelebImages, swipeRefreshLayoutCelebVideos;
     private String msisdn;
+
+    LinearLayout activity_fan_gallery;
 
 
     @Override
@@ -92,6 +96,8 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
         recyclerViewCelebImages.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCelebVideos.setItemAnimator(new DefaultItemAnimator());
 
+        activity_fan_gallery = (LinearLayout)findViewById(R.id.activity_fan_gallery);
+
         // msisdn form previous activity
         boolean isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
 
@@ -127,6 +133,10 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
             intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItemVThumb).getTag().toString());
             startActivity(intent);
         });
+
+        // show snackbar while no internet
+        MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_fan_gallery);
+        new MyInternetCheckReceiver(activity_fan_gallery);
 
 
     } // end of OnCreate
