@@ -209,9 +209,13 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Change", urlEditPost);
+                Log.d("whatthehell",urlEditPost);
                 params.put("post", comment);
+                Log.d("whatthehell",comment);
                 params.put("postId", postId);
+                Log.d("whatthehell",postId);
                 params.put("IsImage", isimage);
+                Log.d("whatthehell",isimage);
 
                 return params;
             }

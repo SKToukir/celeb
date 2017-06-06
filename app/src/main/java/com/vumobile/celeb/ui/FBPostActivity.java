@@ -285,6 +285,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             imgPreview.setImageBitmap(bitmap);
             //rotate(rotateDegree);
         } else {
+            btn_edit.setVisibility(View.GONE);
             imgPreview.setVisibility(View.GONE);
             vdoPreview.setVisibility(View.VISIBLE);
             vdoPreview.setVideoPath(s);

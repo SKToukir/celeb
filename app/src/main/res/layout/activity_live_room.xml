@@ -247,6 +247,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:background="@color/myColorOneBody"
                 android:gravity="center"
                 android:layout_weight="0.1"
                 android:layout_alignParentBottom="true"
