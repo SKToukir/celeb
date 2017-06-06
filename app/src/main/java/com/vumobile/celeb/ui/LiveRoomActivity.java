@@ -84,7 +84,7 @@ import io.agora.rtc.video.VideoCanvas;
 @SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
-    static String likeRoomName;
+    static String likeRoomName, viewRoomName;
     private ShapeFlyer mShapeFlyer;
     private FrameLayout frameLayoutCommentGift;
     static String imageUrl;
@@ -96,9 +96,9 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     InputMethodManager imm;
     private int i = 5;
     private ImageView btnLike;
-    private TextView txtLikes;
+    private TextView txtLikes, txtViews;
     private ImageView btnGift;
-    static String temp_key, temp_key_like, chat_user_name, user_name, id, op;
+    static String temp_key, temp_key_view, temp_key_like, chat_user_name, user_name, id, op;
     String roomName;
     private static String video_id;
     private final static Logger log = LoggerFactory.getLogger(LiveRoomActivity.class);
@@ -112,6 +112,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     private String msisdn;
     private static DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private static DatabaseReference root_like;
+    private static DatabaseReference root_view;
     private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
 
     @Override
@@ -179,6 +180,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         btnLike.setOnClickListener(this);
         txtLikes = (TextView) findViewById(R.id.txtLikes);
         txtLikes.setOnClickListener(this);
+        txtViews = (TextView) findViewById(R.id.txtViews);
         listOfComment = (ListView) findViewById(R.id.listComment);
         etComment = (EditText) findViewById(R.id.etComment);
         // used this method for showing edittext view when keyboard shows
@@ -315,7 +317,9 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         map.put(video_id, "");
         root.updateChildren(map);
 
-        getAllLikeCeleb(video_id+"like");
+        getAllLikeCeleb(video_id + "like");
+
+        getAllViewCeleb(video_id + "view");
 
     }
 
@@ -330,6 +334,51 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
         getAllLike();
 
+    }
+
+    private void createRoomOnFirebaseForView(String video_id) {
+
+        viewRoomName = video_id + "view";
+        root_view = FirebaseDatabase.getInstance().getReference().getRoot().child(viewRoomName);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(viewRoomName, "");
+        root.updateChildren(map);
+
+        postView(1);
+
+        getAllView();
+    }
+
+    private void getAllView() {
+        root_view = FirebaseDatabase.getInstance().getReference().child(viewRoomName);
+
+        root_view.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                txtViews.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getAllViewCeleb(String s) {
+        root_view = FirebaseDatabase.getInstance().getReference().child(s);
+
+        root_view.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                txtViews.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void saveLiveData(String vid, String celeb_name) {
@@ -890,6 +939,22 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     }
 
+    public static void postView(int i) {
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        temp_key = root_view.push().getKey();
+        root_view.updateChildren(map);
+
+        DatabaseReference message_root = root_view.child(temp_key);
+        Map<String, Object> map4 = new HashMap<>();
+        map4.put("name", user_name);
+        map4.put("count", i);
+        message_root.updateChildren(map4);
+
+//        listOfComment.setSelection(adapter.getCount() - 1);
+
+    }
+
 
     public String getTime() {
         DateFormat df = new SimpleDateFormat("d MMM yyyy, HH:mm");
@@ -921,6 +986,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             public void onDataChange(DataSnapshot dataSnapshot) {
                 append_like(dataSnapshot);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -1022,7 +1088,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     private void append_like(DataSnapshot dataSnapshot) {
 
-        if (dataSnapshot.getChildrenCount()>0){
+        if (dataSnapshot.getChildrenCount() > 0) {
             mShapeFlyer.startAnimation(R.drawable.like);
         }
 
@@ -1046,8 +1112,10 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                             JSONObject object = array.getJSONObject(0);
                             id = object.getString("vid");
                             createRoomOnFirebaseForLike(id);
+                            createRoomOnFirebaseForView(id);
                             Log.d("logs", id + " " + op);
                             op = id;
+
                             getAllComment(id);
 
                         } catch (JSONException e) {
