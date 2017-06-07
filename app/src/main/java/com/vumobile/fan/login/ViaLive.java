@@ -2,10 +2,11 @@ package com.vumobile.fan.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.vumobile.ParentActivity;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
-import com.vumobile.celeb.ui.LiveRoomActivity;
 
 import io.agora.rtc.Constants;
 
@@ -43,9 +44,10 @@ public class ViaLive extends BaseActivity {
         //roomname@ which room user wants to join
         //String room = msisdn;
         String room = celebFbName;
-        Intent i = new Intent(getApplicationContext(), LiveRoomActivity.class);
+        Intent i = new Intent(getApplicationContext(), ParentActivity.class);
         i.putExtra(ConstantApp.ACTION_KEY_CROLE, cRole);
         i.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, room);
+        Log.d("livetest", "forwardToLiveRoom: " + cRole + "||" + room);
         i.putExtra("user", "fan");
         startActivity(i);
         finish();
