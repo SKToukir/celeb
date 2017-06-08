@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.vumobile.celeb.AGApplication;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
@@ -39,6 +40,7 @@ public class Utils extends BaseActivity {
 //    @SuppressWarnings("static-access")
     public static void setCustomViewNotification(Context context, String name, String msisdn, String sample_url) {
 
+        ((AGApplication) context).initWorkerThread();
 
         //contentDownloadActivity.doAction=1;
 //        Calendar c = Calendar.getInstance();
