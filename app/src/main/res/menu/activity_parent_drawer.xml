@@ -13,21 +13,22 @@
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_menu_history"
-            android:title="History" />
+            android:title="History"
+            android:visible="true" />
         <item
             android:id="@+id/nav_transaction"
             android:icon="@drawable/ic_menu_transaction"
-            android:title="Transaction" />
+            android:title="Transaction"
+            android:visible="true" />
         <item
             android:id="@+id/nav_credits"
             android:icon="@drawable/ic_menu_credits"
-            android:title="Credits" />
+            android:title="Credits"
+            android:visible="true" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout" />
     </group>
-
-
 
 </menu>

@@ -118,6 +118,9 @@ public class Api {
 
     // notif like url
     public static final String URL_NOTIFICATION_LIKE_SET_GET = "http://wap.shabox.mobi/testwebapi/Notification/like?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; // post
+    // notif count url to show badge
+    public static final String URL_NOTIFICATION_COUNTER = "http://wap.shabox.mobi/testwebapi/Notification/NotificationCount?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; // post // &MSISDN=8801682657985
+    public static final String NOTIF_MSISDN = "MSISDN";
 
     // GIFT URL
     public static final String URL_GIFT = "http://wap.shabox.mobi/sticker_app_server/default.aspx?&contentCode=NEW_CONTENT"; // GET

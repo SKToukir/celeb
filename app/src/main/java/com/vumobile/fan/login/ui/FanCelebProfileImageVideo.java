@@ -111,7 +111,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
         }
 
         // Set up the RecyclerView for image
-        int numberOfColumns = 2;
+        int numberOfColumns = 3;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, numberOfColumns);
         GridLayoutManager gridLayoutManagerV = new GridLayoutManager(this, numberOfColumns);
         recyclerViewCelebImages.setLayoutManager(gridLayoutManager);
