@@ -181,7 +181,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             case R.id.btnPost:
                 celebComment = etComment.getText().toString();
 
-                if (filePath == null || filePath.equals(null) || filePath.equals("")) {
+                if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
                     TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
                 } else {
                     new UploadFileToServer().execute(filePath, celebComment);
