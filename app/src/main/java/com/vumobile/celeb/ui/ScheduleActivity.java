@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
 
+    static String USER_TYPE;
     private Toolbar toolbar;
     private ImageView back;
     private Intent intent;
@@ -88,26 +89,26 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
                             JSONArray array = object.getJSONArray("result");
 
+                            for (int i = 0; i < array.length(); i++) {
 
-
-                                JSONObject obj = array.getJSONObject(0);
+                                JSONObject obj = array.getJSONObject(i);
                                 requestClass = new CelebScheduleClass();
                                 requestClass.setName(obj.getString("Name"));
                                 Log.d("FromServer", requestClass.getName());
                                 requestClass.setImageUrl(obj.getString("Image_url"));
                                 Log.d("FromServer", requestClass.getImageUrl());
                                 requestClass.setStart_time(obj.getString("StartTime"));
-                            Log.d("FromServer", requestClass.getStart_time());
+                                Log.d("FromServer", requestClass.getStart_time());
                                 requestClass.setEnd_time(obj.getString("EndTime"));
-                            Log.d("FromServer", requestClass.getEnd_time());
+                                Log.d("FromServer", requestClass.getEnd_time());
 
                                 listOfSchedule.add(requestClass);
 
                                 scheduleList.setAdapter(adapter);
-                                Log.d("adapter", "onResponse: "+adapter.getCount());
+                                Log.d("adapter", "onResponse: " + adapter.getCount());
                                 adapter.notifyDataSetChanged();
 
-
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -131,7 +132,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 * */
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("flag", "1");
+                params.put("flag", USER_TYPE);
                 params.put("MSISDN", msisdn);
 
                 return params;

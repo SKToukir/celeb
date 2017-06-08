@@ -342,6 +342,7 @@ public class CelebHomeActivity extends BaseActivity
                 break;
             case R.id.nav_schedule:
                 drawer.closeDrawers();
+                ScheduleActivity.USER_TYPE = "1";
                 startActivity(new Intent(CelebHomeActivity.this,ScheduleActivity.class));
                 break;
             case R.id.nav_post:
