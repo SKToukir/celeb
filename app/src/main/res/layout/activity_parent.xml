@@ -26,6 +26,7 @@
 
         <!-- app:menu="@menu/activity_parent_drawer" -->
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,6 +49,14 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:src="@drawable/galleryy" />
+
+            <ImageView
+                android:id="@+id/imageViewSchedule"
+                android:layout_width="198dp"
+                android:layout_height="53dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:src="@drawable/schedule" />
 
             <ImageView
                 android:id="@+id/imageViewHistory"
@@ -84,5 +93,6 @@
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>
+
 
 </android.support.v4.widget.DrawerLayout>

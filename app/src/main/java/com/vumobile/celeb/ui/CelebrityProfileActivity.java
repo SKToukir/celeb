@@ -307,7 +307,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                     params.put("RegId", regId);
 //                params.put("Flag", String.valueOf(celebOrNot));
 
-
                     return params;
                 }
 
@@ -319,7 +318,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         } else {
 
             // send data to celebrity table
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_SAVE_CELEB_DATA,
                     new Response.Listener<String>() {
                         @Override

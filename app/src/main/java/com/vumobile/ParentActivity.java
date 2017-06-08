@@ -48,6 +48,7 @@ import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.ui.BaseActivity;
 import com.vumobile.celeb.ui.LiveRoomActivity;
 import com.vumobile.celeb.ui.MessageActivity;
+import com.vumobile.celeb.ui.ScheduleActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
 import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
@@ -77,6 +78,8 @@ import io.agora.rtc.Constants;
 public class ParentActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String MY_COUNTER_NOTIF_PREFERENCE = "counter_pref_name";
+    private static final String MY_COUNTER_NOTIF_KEY = "counter_pref_key";
     private CelebrityClass celebrityClass;
     private List<CelebrityClass> celebrityClassList = new ArrayList<CelebrityClass>();
     private List<CelebrityClass> celebrityClassListCopy;
@@ -90,10 +93,10 @@ public class ParentActivity extends BaseActivity
     Button buttonFilterAll, buttonFilterFollowing, buttonFilterLive;
     Toolbar toolbar;
     ImageView imageViewNotification, imageViewMessage;
-    TextView navUserName;
+    TextView navUserName, textViewNotificationBadge;
     ImageView navUserPic;
     // drawer menu
-    ImageView imageViewHome, imageViewMyGallery, imageViewHistory, imageViewTransaction, imageViewCredits, imageViewLogout;
+    ImageView imageViewHome, imageViewMyGallery, imageViewSchedule, imageViewHistory, imageViewTransaction, imageViewCredits, imageViewLogout;
     static RelativeLayout content_parent;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
@@ -462,8 +465,11 @@ public class ParentActivity extends BaseActivity
         // drawer menu
         content_parent = (RelativeLayout) findViewById(R.id.content_parent);
 
+        textViewNotificationBadge = (TextView) findViewById(R.id.textViewNotificationBadge);
+
         imageViewHome = (ImageView) findViewById(R.id.imageViewHome);
         imageViewMyGallery = (ImageView) findViewById(R.id.imageViewMyGallery);
+        imageViewSchedule = (ImageView) findViewById(R.id.imageViewSchedule);
         imageViewHistory = (ImageView) findViewById(R.id.imageViewHistory);
         imageViewTransaction = (ImageView) findViewById(R.id.imageViewTransaction);
         imageViewCredits = (ImageView) findViewById(R.id.imageViewCredits);
@@ -471,6 +477,7 @@ public class ParentActivity extends BaseActivity
 
         imageViewHome.setOnClickListener(this);
         imageViewMyGallery.setOnClickListener(this);
+        imageViewSchedule.setOnClickListener(this);
         imageViewHistory.setOnClickListener(this);
         imageViewTransaction.setOnClickListener(this);
         imageViewCredits.setOnClickListener(this);
@@ -693,6 +700,13 @@ public class ParentActivity extends BaseActivity
                 drawer.closeDrawers();
                 break;
 
+            case R.id.imageViewSchedule:
+                ScheduleActivity.USER_TYPE = "0";
+                startActivity(new Intent(this, ScheduleActivity.class));
+
+                drawer.closeDrawers();
+                break;
+
             case R.id.imageViewHistory:
                 // Create new fragment and transaction
                 Fragment fragmentHistory = new History();
@@ -786,6 +800,41 @@ public class ParentActivity extends BaseActivity
 
     @Override
     protected void onResume() {
+        // show notification badge
+        String finalUrl = Api.URL_NOTIFICATION_COUNTER + "&" + Api.NOTIF_MSISDN + "=" + Session.retreivePhone(this, Session.USER_PHONE);
+
+        MyVolleyRequest.getAllGenericDataString(getApplicationContext(), Request.Method.GET, finalUrl, new AllVolleyInterfaces.ResponseString() {
+            @Override
+            public void getResponse(String responseResult) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseResult);
+                    Log.d("notifc", "getResponse: " + jsonObject.getString("result"));
+                    SharedPreferences sharedpreferences = getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt(MY_COUNTER_NOTIF_PREFERENCE, Integer.parseInt(jsonObject.getString("result")));
+                    editor.apply();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void getResponseErr(String responseResultErr) {
+                Log.d("notifc err", "getResponse: " + responseResultErr);
+            }
+        });
+
+        try {
+            int countNotif = getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE).getInt(MY_COUNTER_NOTIF_KEY, 0);
+            Log.d("notifc", "sp: " + countNotif);
+            if (countNotif > 0) {
+                textViewNotificationBadge.setVisibility(View.VISIBLE);
+                textViewNotificationBadge.setText(countNotif);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         super.onResume();

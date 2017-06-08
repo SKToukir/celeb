@@ -38,6 +38,19 @@ public class MyVolleyRequest {
 
         Volley.newRequestQueue(context).add(stringRequest);
     }
+    public static void getAllGenericDataString(Context context, int method, String url, AllVolleyInterfaces.ResponseString responseString) {
+        StringRequest stringRequest = new StringRequest(method, url,
+                response -> {
+                    Log.d("FromServer AllGeneric", response.toString());
+                    responseString.getResponse(response);
+                },
+                error -> {
+                    error.printStackTrace();
+                    responseString.getResponseErr(error.getMessage());
+                });
+
+        Volley.newRequestQueue(context).add(stringRequest);
+    }
 
     public static void setRegId(Context context, int method, String url, HashMap<String,String> params, AllVolleyInterfaces.ResponseString responseString) {
 

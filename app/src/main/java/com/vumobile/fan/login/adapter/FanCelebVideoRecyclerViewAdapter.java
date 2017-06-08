@@ -69,6 +69,10 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 //        MediaController mediaController = new MediaController(context);
 //        mediaController.setAnchorView(holder.videoViewMainPlayer);
 //        holder.videoViewMainPlayer.setMediaController(mediaController);
+//        Glide.with(context)
+//                .load(fanCelebVideoModelEntity.getVideoUrl())
+//                .thumbnail(0.5f)
+//                .into(holder.imageViewRecyclerItemVThumb);
         holder.imageViewRecyclerItemVThumb.setVideoURI(uri);
         holder.imageViewRecyclerItemVThumb.seekTo(3000);
         holder.imageViewRecyclerItemVThumb.pause();
