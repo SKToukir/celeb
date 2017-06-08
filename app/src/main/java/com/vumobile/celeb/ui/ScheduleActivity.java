@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
 
-    static String USER_TYPE;
+    public static String USER_TYPE;
     private Toolbar toolbar;
     private ImageView back;
     private Intent intent;

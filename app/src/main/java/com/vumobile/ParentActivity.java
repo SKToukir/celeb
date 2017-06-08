@@ -78,8 +78,7 @@ import io.agora.rtc.Constants;
 public class ParentActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String MY_COUNTER_NOTIF_PREFERENCE = "counter_pref_name";
-    private static final String MY_COUNTER_NOTIF_KEY = "counter_pref_key";
+
     private CelebrityClass celebrityClass;
     private List<CelebrityClass> celebrityClassList = new ArrayList<CelebrityClass>();
     private List<CelebrityClass> celebrityClassListCopy;
@@ -650,6 +649,8 @@ public class ParentActivity extends BaseActivity
 
             case R.id.imageViewNotification:
                 startActivity(new Intent(getApplicationContext(), FanNotificationActivity.class));
+                // clear notification counter
+                Session.clearNotifShowCounter(getApplicationContext());
                 break;
 
             case R.id.imageViewMessage:
@@ -800,36 +801,16 @@ public class ParentActivity extends BaseActivity
 
     @Override
     protected void onResume() {
-        // show notification badge
-        String finalUrl = Api.URL_NOTIFICATION_COUNTER + "&" + Api.NOTIF_MSISDN + "=" + Session.retreivePhone(this, Session.USER_PHONE);
-
-        MyVolleyRequest.getAllGenericDataString(getApplicationContext(), Request.Method.GET, finalUrl, new AllVolleyInterfaces.ResponseString() {
-            @Override
-            public void getResponse(String responseResult) {
-                try {
-                    JSONObject jsonObject = new JSONObject(responseResult);
-                    Log.d("notifc", "getResponse: " + jsonObject.getString("result"));
-                    SharedPreferences sharedpreferences = getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putInt(MY_COUNTER_NOTIF_PREFERENCE, Integer.parseInt(jsonObject.getString("result")));
-                    editor.apply();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void getResponseErr(String responseResultErr) {
-                Log.d("notifc err", "getResponse: " + responseResultErr);
-            }
-        });
-
         try {
-            int countNotif = getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE).getInt(MY_COUNTER_NOTIF_KEY, 0);
+            int countNotif = Session.fetchNotifShowCounter(getApplicationContext());
             Log.d("notifc", "sp: " + countNotif);
             if (countNotif > 0) {
                 textViewNotificationBadge.setVisibility(View.VISIBLE);
-                textViewNotificationBadge.setText(countNotif);
+                textViewNotificationBadge.setText(String.valueOf(countNotif));
+                Log.d("notifc", "sp2: " + countNotif);
+            } else {
+                textViewNotificationBadge.setVisibility(View.INVISIBLE);
+                textViewNotificationBadge.setText("0");
             }
         } catch (Exception e) {
             e.printStackTrace();

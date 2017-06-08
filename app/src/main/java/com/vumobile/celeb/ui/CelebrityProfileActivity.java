@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,7 +39,6 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
 import com.vumobile.ParentActivity;
@@ -138,7 +136,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                     String imageUrl = intent.getStringExtra("image_url");
 
 
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+                //    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -173,7 +171,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
             public void onSuccess(LoginResult loginResult) {
                 //txtStatus.setText(loginResult.getAccessToken().getToken());
                 Log.d("permission", loginResult.getAccessToken().getToken());
-                Log.d("status", loginResult.toString());
+                Log.d("statussss", loginResult.toString());
                 txtConfirmationMessage.setVisibility(View.VISIBLE);
                 callGraphApi(loginResult.getAccessToken());
 
@@ -273,11 +271,11 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                             try {
                                 JSONObject jsonObj = new JSONObject(response);
                                 String successLog = jsonObj.getString("result");
-                                TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-                                startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
-
+                             //   TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 // user logged in with fb
                                 new Session().saveFbLoginStatus(getApplicationContext(),true);
+                                startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
+                                finish();
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -288,7 +286,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.d("FromServer", "" + error.getMessage());
-                            TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                        //    TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
 
                         }
                     }) {
@@ -326,11 +324,12 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                             try {
                                 JSONObject jsonObj = new JSONObject(response);
                                 String successLog = jsonObj.getString("result");
-                                TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                            //    TastyToast.makeText(getApplicationContext(), successLog, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 // user logged in with fb
                                 new Session().saveFbLoginStatus(getApplicationContext(),true);
                                 if (!celebOrNot) {
                                     startActivity(new Intent(CelebrityProfileActivity.this, ParentActivity.class));
+                                    finish();
                                 }
 
                             } catch (Exception e) {
@@ -342,8 +341,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.d("FromServer", "" + error.getMessage());
-                            TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
-
+                   //         TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                         }
                     }) {
                 @Override
@@ -357,10 +355,8 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                     params.put("Image_url", profile_url);
                     params.put("Fb_login_status", "1");
                     params.put("RegId", regId);
-
                     return params;
                 }
-
             };
 
             RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -371,7 +367,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+       // super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         Log.d("data", data.toString());
     }
@@ -459,7 +455,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                         finish();
                     } else {
                         Log.d("FromServer", "not confirm");
-                        TastyToast.makeText(getApplicationContext(), "Not Confirm yet!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                 //       TastyToast.makeText(getApplicationContext(), "Not Confirm yet!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -485,6 +481,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.btnGoLive:
                 startActivity(new Intent(CelebrityProfileActivity.this, CelebHomeActivity.class));
+                finish();
                 break;
         }
 

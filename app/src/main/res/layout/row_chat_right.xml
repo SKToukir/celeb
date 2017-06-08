@@ -7,7 +7,6 @@
     android:padding="20dp">
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/imgChat"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -15,18 +14,22 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/chatImage"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:visibility="gone" />
 
     <com.vumobile.utils.MyTextView
-        android:visibility="visible"
         android:id="@+id/txtChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:background="@drawable/round_corner"
-        android:padding="10dp"
+        android:paddingBottom="6dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="6dp"
         android:text="hhhdresreeesdkrorgldesret"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:visibility="visible" />
 
     <com.vumobile.celeb.Utils.RoundedImageView
         android:id="@+id/chatImage"

@@ -24,6 +24,9 @@ public class Session {
     public static String REGISTERED_CELEB = "registered_celeb";
     public static String FB_LOGIN_STATUS = "fb_status";
 
+    public static final String MY_COUNTER_NOTIF_PREFERENCE = "counter_pref_name";
+    public static final String MY_COUNTER_NOTIF_KEY = "counter_pref_key";
+
     public void saveData(String uName, String phoneNumber,boolean isCeleb, boolean checkLogin, Context cntx){
 
         SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -139,4 +142,27 @@ public class Session {
         editor.clear();
         editor.commit();
     }
+
+    public static void setNotifShowCounter(Context cntx, int count){
+        SharedPreferences sharedpreferences = cntx.getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(MY_COUNTER_NOTIF_KEY, count);
+        editor.apply();
+    }
+
+    public static int fetchNotifShowCounter(Context cntx){
+        int countNotif = cntx.getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE).getInt(MY_COUNTER_NOTIF_KEY, 0);
+        return countNotif;
+    }
+
+    public static void clearNotifShowCounter(Context cntx){
+        SharedPreferences sharedpreferences = cntx.getSharedPreferences(MY_COUNTER_NOTIF_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+
+
+
 }
