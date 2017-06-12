@@ -374,7 +374,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
 
     private void share() {
         shareDialog = new ShareDialog(this);
-        List<String> taggedUserIds = new ArrayList<String>();
+        List<String> taggedUserIds = new ArrayList<>();
         taggedUserIds.add("{USER_ID}");
         taggedUserIds.add("{USER_ID}");
         taggedUserIds.add("{USER_ID}");
