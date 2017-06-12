@@ -65,12 +65,10 @@ public class FanCelebImageRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 
         String isImage = fanCelebImageModelEntity.getIsImage();
 
-
-
-            Glide.with(context)
-                    .load(fanCelebImageModelEntity.getImageUrl())
-                    .thumbnail(0.5f)
-                    .into(holder.imageViewRecyclerItem);
+        Glide.with(context)
+                .load(fanCelebImageModelEntity.getImageUrl())
+                .thumbnail(.5f)
+                .into(holder.imageViewRecyclerItem);
 
         holder.imageViewRecyclerItem.setTag(fanCelebImageModelEntity.getImageUrl());
 

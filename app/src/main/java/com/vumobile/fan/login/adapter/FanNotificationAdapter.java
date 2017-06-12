@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MyBounceInterpolator;
@@ -94,7 +95,12 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
 
         FanNotificationModelEnity fanNotificationModelEnity = fanNotificationModelEnities.get(position);
 
-        Glide.with(mContext).load(fanNotificationModelEnity.getImage_url()).thumbnail(0.5f).into(holder.imageViewNotificationProfilePic);
+        Glide.with(mContext)
+                .load(fanNotificationModelEnity.getImage_url())
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.imageViewNotificationProfilePic);
 
 
         holder.textViewNotificationCelebName.setText(fanNotificationModelEnity.getName());
@@ -116,7 +122,11 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
         if (fanNotificationModelEnity.getFlags_Notificaton().equals("1")) {
             holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
 //            holder.imageViewNotificationImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.live_icon));
-            Glide.with(mContext).load("").placeholder(mContext.getResources().getDrawable(R.drawable.live_icon)).into(holder.imageViewNotificationImage);
+            Glide.with(mContext).load("")
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.live_icon))
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.imageViewNotificationImage);
             holder.textViewNotificationMessage.setText("Live video...");
         }
         Log.d("ttt o", "onBindViewHolder: " + fanNotificationModelEnity.getFlags_Notificaton() + fanNotificationModelEnity.getName());
@@ -131,7 +141,12 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
                     if (fanNotificationModelEnity.getIsImage().equals("1")) {
                         holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
                         holder.videoViewNotif.setTag(array.get(a));
-                        Glide.with(mContext).load(array.get(a)).thumbnail(0.5f).into(holder.imageViewNotificationImage);
+                        Glide.with(mContext)
+                                .load(array.get(a))
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(holder.imageViewNotificationImage);
                     } else if (fanNotificationModelEnity.getIsImage().equals("2")) {
                         holder.videoViewNotif.setVisibility(View.VISIBLE);
                         holder.imageViewPlayIcon.setVisibility(View.VISIBLE);
