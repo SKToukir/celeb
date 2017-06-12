@@ -367,8 +367,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         if (userCodeWrapper.getError() == null) {
 
             // TODO
-            /*Hit server to check verification code.
-            If verification code check success then go to home page*/
+            /* Hit server to check verification code.
+            If verification code check success then go to home page */
 
             if (tempVerificationCode.equals(verificationCode)) {
                 // if verification code length is 6 then it will be fan

@@ -94,6 +94,7 @@ public class Api {
     public static final String URL_POST_FOLLOW = "http://wap.shabox.mobi/testwebapi/follower/Follow?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
     public static final String URL_POST_UNFOLLOW = "http://wap.shabox.mobi/testwebapi/Follower/Unfollow?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
     public static final String URL_GET_FOLLOW_CELEB_LIST = "http://wap.shabox.mobi/testwebapi/follower/FollowerList?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String URL_GET_MOST_LIVE_CELEB_LIST = "http://wap.shabox.mobi/testwebapi/Celebrity/MostLiveCelebrity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
     // fan profile
     public static final String URL_GET_CELEB_PROFILE = "http://wap.shabox.mobi/testwebapi/fan/FanInformation?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; //&MSISDN=8801856565865

@@ -89,7 +89,7 @@ public class ParentActivity extends BaseActivity
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    Button buttonFilterAll, buttonFilterFollowing, buttonFilterLive;
+    Button buttonFilterAll, buttonFilterFollowing, buttonMostLive, buttonFilterLive;
     Toolbar toolbar;
     ImageView imageViewNotification, imageViewMessage;
     TextView navUserName, textViewNotificationBadge;
@@ -133,7 +133,6 @@ public class ParentActivity extends BaseActivity
         navUserName = (TextView) hView.findViewById(R.id.textView);
         navUserPic = (ImageView) hView.findViewById(R.id.imageView);
 
-        //  loadCelebrityData(Api.URL_ACTIVATE_USERS);
 
         listCeleb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -162,7 +161,6 @@ public class ParentActivity extends BaseActivity
                     intent.putExtra("FOLLOWER", followerCount);
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -401,63 +399,55 @@ public class ParentActivity extends BaseActivity
 
     }
 
-    private void loadCelebrityDataWhoIsFollowing(String urlCelebrityFollowing, String mFanPhone) {
-
+    private void loadCustomCelebrityData(String celebUrl) {
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
-        String fullUrl = urlCelebrityFollowing + "&MSISDN=" + mFanPhone;
-        Log.d("Full url", "loadCelebrityDataWhoIsFollowing: " + fullUrl);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
-                Log.d("FromServer 13", jsonObject.toString());
+        String fullUrl = celebUrl + "&MSISDN=" + Session.retreivePhone(ParentActivity.this, Session.USER_PHONE);
+        Log.d("Full url ttt", "loadCustomCelebrityData: " + fullUrl);
 
-                try {
-                    JSONArray array = jsonObject.getJSONArray("result");
+        MyVolleyRequest.getAllGenericDataJsonObject(
+                getApplicationContext(),
+                Request.Method.GET,
+                fullUrl,
+                new AllVolleyInterfaces.MyJsonObjectRequest() {
+                    @Override
+                    public void getResponse(JSONObject jsonObject) {
+                        Log.d("FromServer ttt", jsonObject.toString());
+                        try {
+                            JSONArray array = jsonObject.getJSONArray("result");
 
-                    for (int i = 0; i <= array.length() - 1; i++) {
-
-                        JSONObject obj = array.getJSONObject(i);
-                        celebrityClass = new CelebrityClass();
-
-                        celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
-                        celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
-                        celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
-                        celebrityClass.setFb_name(obj.getString("Name"));
-                        celebrityClass.setIsOnline(obj.getString("Live_status"));
-                        celebrityClass.setIsfollow("1");
-                        celebrityClass.setFollowerCount(obj.getString("Follower"));
-
-                        celebrityClassList.add(celebrityClass);
-
-                        listCeleb.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                            for (int i = 0; i <= array.length() - 1; i++) {
+                                JSONObject obj = array.getJSONObject(i);
+                                celebrityClass = new CelebrityClass();
+                                celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
+                                celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
+                                celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
+                                celebrityClass.setFb_name(obj.getString("Name"));
+                                celebrityClass.setIsOnline(obj.getString("Live_status"));
+                                celebrityClass.setIsfollow("1");
+                                celebrityClass.setFollowerCount(obj.getString("Follower"));
+                                celebrityClassList.add(celebrityClass);
+                                listCeleb.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                            celebrityClassListCopy = new ArrayList<>();
+                            celebrityClassListCopy.addAll(celebrityClassList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
                     }
 
-                    celebrityClassListCopy = new ArrayList<>();
-                    celebrityClassListCopy.addAll(celebrityClassList);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    @Override
+                    public void getResponseErr(VolleyError volleyError) {
+                        Log.d("FromServer ttt", volleyError.toString());
+                        Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 }
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("FromServer", volleyError.toString());
-                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
-
-        //Adding request to the queue
-        requestQueue.add(request);
-
+        );
     }
+
 
     private void initUI() {
 
@@ -495,9 +485,11 @@ public class ParentActivity extends BaseActivity
 
         buttonFilterAll = (Button) findViewById(R.id.buttonFilterAll);
         buttonFilterFollowing = (Button) findViewById(R.id.buttonFilterFollowing);
+        buttonMostLive = (Button) findViewById(R.id.buttonMostLive);
         buttonFilterLive = (Button) findViewById(R.id.buttonFilterLive);
         buttonFilterAll.setOnClickListener(this);
         buttonFilterFollowing.setOnClickListener(this);
+        buttonMostLive.setOnClickListener(this);
         buttonFilterLive.setOnClickListener(this);
         buttonFilterAll.setTag("SELECT_ITEM");
         swipeRefreshLayout.post(new Runnable() {
@@ -508,7 +500,9 @@ public class ParentActivity extends BaseActivity
                                         if (buttonFilterAll.getTag().equals("SELECT_ITEM")) {
                                             loadCelebrityData(Api.URL_ACTIVATE_USERS);
                                         } else if (buttonFilterFollowing.getTag().equals("SELECT_ITEM")) {
-                                            loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
+                                            loadCustomCelebrityData(Api.URL_GET_FOLLOW_CELEB_LIST);
+                                        } else if (buttonMostLive.getTag().equals("SELECT_ITEM")) {
+                                            loadCustomCelebrityData(Api.URL_GET_MOST_LIVE_CELEB_LIST);
                                         } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
                                             loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
                                         }
@@ -527,7 +521,9 @@ public class ParentActivity extends BaseActivity
         if (buttonFilterAll.getTag().equals("SELECT_ITEM")) {
             loadCelebrityData(Api.URL_ACTIVATE_USERS);
         } else if (buttonFilterFollowing.getTag().equals("SELECT_ITEM")) {
-            loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
+            loadCustomCelebrityData(Api.URL_GET_FOLLOW_CELEB_LIST);
+        } else if (buttonMostLive.getTag().equals("SELECT_ITEM")) {
+            loadCustomCelebrityData(Api.URL_GET_MOST_LIVE_CELEB_LIST);
         } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
             loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
         }
@@ -664,8 +660,13 @@ public class ParentActivity extends BaseActivity
                 break;
 
             case R.id.buttonFilterFollowing:
-                loadCelebrityDataWhoIsFollowing(Api.URL_GET_FOLLOW_CELEB_LIST, Session.retreivePhone(ParentActivity.this, Session.USER_PHONE));
+                loadCustomCelebrityData(Api.URL_GET_FOLLOW_CELEB_LIST);
                 changeButtonSelectFocus(buttonFilterFollowing);
+                break;
+
+            case R.id.buttonMostLive:
+                loadCustomCelebrityData(Api.URL_GET_MOST_LIVE_CELEB_LIST);
+                changeButtonSelectFocus(buttonMostLive);
                 break;
 
             case R.id.buttonFilterLive:
@@ -790,6 +791,9 @@ public class ParentActivity extends BaseActivity
         buttonFilterFollowing.setBackgroundColor(getResources().getColor(R.color.white));
         buttonFilterFollowing.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterFollowing.setTag("ITEM");
+        buttonMostLive.setBackgroundColor(getResources().getColor(R.color.white));
+        buttonMostLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonMostLive.setTag("ITEM");
         buttonFilterLive.setBackgroundColor(getResources().getColor(R.color.white));
         buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterLive.setTag("ITEM");

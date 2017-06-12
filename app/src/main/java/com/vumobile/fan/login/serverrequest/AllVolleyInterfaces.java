@@ -1,5 +1,7 @@
 package com.vumobile.fan.login.serverrequest;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONObject;
 
 /**
@@ -13,9 +15,9 @@ public class AllVolleyInterfaces {
         void getResponseErr(String responseResultErr);
     }
 
-    public interface ResponseJson{
-        void getResponse(JSONObject jsonObjectResult);
-        void getResponseErr(String responseResultErr);
+    public interface MyJsonObjectRequest{
+        void getResponse(JSONObject jsonObject);
+        void getResponseErr(VolleyError volleyError);
     }
 
 }

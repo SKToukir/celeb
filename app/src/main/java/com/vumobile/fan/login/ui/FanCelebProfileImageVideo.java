@@ -201,7 +201,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
                 swipeRefreshLayoutCelebImages.setRefreshing(false);
             }
         });
-        //Adding request to the queue
+        // Adding request to the queue
         Volley.newRequestQueue(FanCelebProfileImageVideo.this).add(request);
 
     }
