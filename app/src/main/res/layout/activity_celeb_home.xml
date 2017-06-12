@@ -16,7 +16,7 @@
 
     <android.support.design.widget.NavigationView
         app:itemTextColor="#fff"
-        android:background="#D950A6"
+        android:background="#0072bc"
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

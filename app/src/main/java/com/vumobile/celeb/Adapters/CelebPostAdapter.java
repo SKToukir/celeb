@@ -131,7 +131,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         holder.imageViewPlayIcon.setVisibility(View.GONE);
 
 
-        // edit or delete post
+        // Edit or delete post
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

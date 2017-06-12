@@ -28,7 +28,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.sdsmdg.tastytoast.TastyToast;
 import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
@@ -45,8 +44,6 @@ import com.vumobile.videocall.VideoChatViewActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import io.agora.rtc.Constants;
 
 @SuppressWarnings("ALL")
 public class CelebHomeActivity extends BaseActivity
@@ -307,9 +304,7 @@ public class CelebHomeActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgGoLive:
-                //startActivity(new Intent(CelebHomeActivity.this, CameraViewActivity.class));
-                TastyToast.makeText(getApplicationContext(), "Start Live", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-                CelebHomeActivity.this.forwardToLiveRoom(Constants.CLIENT_ROLE_BROADCASTER);
+                startActivity(new Intent(CelebHomeActivity.this, CameraViewActivity.class));
                 break;
             case R.id.etWhatsYourMind:
                 //TODO
@@ -372,6 +367,8 @@ public class CelebHomeActivity extends BaseActivity
 
         }
     }
+
+
 
     public void forwardToLiveRoom(int cRole) {
 

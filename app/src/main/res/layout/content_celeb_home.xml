@@ -76,7 +76,7 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily=""
                     android:text="Someone Celeb"
-                    android:textColor="#fff"
+                    android:textColor="#0072bc"
                     android:textSize="20sp" />
 
                 <com.vumobile.utils.MyTextView
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txtCelebName"
                     android:text="Mirpur"
-                    android:textColor="#fff"
+                    android:textColor="#0072bc"
                     android:textSize="15sp" />
 
                 <ImageView
@@ -107,7 +107,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/follow"
                     android:text="1212"
-                    android:textColor="#fff" />
+                    android:textColor="#0072bc" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -123,7 +123,7 @@
                 android:id="@+id/etWhatsYourMind"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#fff"
+                android:background="#faf5f5"
                 android:ems="10"
                 android:enabled="true"
                 android:gravity="center_vertical"

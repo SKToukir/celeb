@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -76,6 +77,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.agora.rtc.Constants;
 import io.agora.rtc.RtcEngine;
@@ -84,21 +86,23 @@ import io.agora.rtc.video.VideoCanvas;
 @SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
+    public int COUNT_GIFTS = 0;
+    private LinearLayout gift_container, gift_price_container;
     static String likeRoomName, viewRoomName;
     private ShapeFlyer mShapeFlyer;
     private FrameLayout frameLayoutCommentGift;
     static String imageUrl;
     private FragmentTransaction ft;
-    private Matcher m;
     private FragmentManager fm;
     public static String signal = "";
     public static String linkRate = "";
     InputMethodManager imm;
     private int i = 5;
     private ImageView btnLike;
-    private TextView txtLikes, txtViews;
+    public TextView txtLikes, txtViews;
+    static TextView txtGiftsCount, txtTaka;
     private ImageView btnGift;
-    static String temp_key, temp_key_view, temp_key_like, chat_user_name, user_name, id, op;
+    static String temp_key, temp_key_view, temp_key_like, chat_user_name, comment_msisdn, user_name, id, op;
     String roomName;
     private static String video_id;
     private final static Logger log = LoggerFactory.getLogger(LiveRoomActivity.class);
@@ -114,6 +118,9 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     private static DatabaseReference root_like;
     private static DatabaseReference root_view;
     private final HashMap<Integer, SurfaceView> mUidsList = new HashMap<>(); // uid = 0 || uid == EngineConfig.mUid
+    Pattern pattern;
+    Matcher m;
+    public static int gift_price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +175,9 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
 
     private void initUI() {
-
+        pattern = Pattern.compile(CommentListAdapter.URL_REGEX);
+        gift_container = (LinearLayout) findViewById(R.id.gift_container);
+        gift_price_container = (LinearLayout) findViewById(R.id.gift_price_container);
         mShapeFlyer = (ShapeFlyer) findViewById(R.id.floating_container);
         mShapeFlyer.setOnClickListener(this);
         imageUrl = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
@@ -181,6 +190,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         txtLikes = (TextView) findViewById(R.id.txtLikes);
         txtLikes.setOnClickListener(this);
         txtViews = (TextView) findViewById(R.id.txtViews);
+        txtGiftsCount = (TextView) findViewById(R.id.txtGiftsCount);
+        txtTaka = (TextView) findViewById(R.id.txtTaka);
         listOfComment = (ListView) findViewById(R.id.listComment);
         etComment = (EditText) findViewById(R.id.etComment);
         // used this method for showing edittext view when keyboard shows
@@ -193,8 +204,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         LiveRoomActivity.this.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        // hide like button for celebrity
-        // celebruty can not give like
+        // hide ic_like button for celebrity
+        // celebruty can not give ic_like
         if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
             btnLike.setVisibility(View.INVISIBLE);
             btnGift.setVisibility(View.INVISIBLE);
@@ -236,6 +247,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         Log.d("fbName", user);
 
         if (user.equals("celeb")) {
+            gift_container.setVisibility(View.VISIBLE);
+            gift_price_container.setVisibility(View.VISIBLE);
             String fb_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
             msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
             Log.d("fbName", "celeb " + fb_name);
@@ -317,7 +330,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         map.put(video_id, "");
         root.updateChildren(map);
 
-        getAllLikeCeleb(video_id + "like");
+        getAllLikeCeleb(video_id + "ic_like");
 
         getAllViewCeleb(video_id + "view");
 
@@ -325,7 +338,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     private void createRoomOnFirebaseForLike(String video_id) {
 
-        likeRoomName = video_id + "like";
+        likeRoomName = video_id + "ic_like";
         root_like = FirebaseDatabase.getInstance().getReference().getRoot().child(likeRoomName);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(likeRoomName, "");
@@ -862,7 +875,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             case R.id.btnSendComment:
                 String comment = etComment.getText().toString();
                 // add comment to the comment list here
-                postComment(getApplicationContext(), comment);
+                postComment(getApplicationContext(), comment,"0");
                 // hide keyboard
                 hideKeyboard();
                 //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -870,7 +883,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
                 break;
             case R.id.btnLike:
                 final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
-                mShapeFlyer.startAnimation(R.drawable.like);
+                mShapeFlyer.startAnimation(R.drawable.ic_like);
                 // Use bounce interpolator with amplitude 0.2 and frequency 20
                 MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
                 myAnim.setInterpolator(interpolator);
@@ -905,7 +918,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     }
 
-    public static void postComment(Context context, String comment) {
+    public static void postComment(Context context, String comment, String priceOfGift) {
 
         Map<String, Object> map = new HashMap<String, Object>();
         temp_key = root.push().getKey();
@@ -916,6 +929,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         map2.put("name", user_name);
         map2.put("msg", comment);
         map2.put("imageUrl", imageUrl);
+        map2.put("msisdn",Session.retreivePhone(context,Session.USER_PHONE));
+        map2.put("gift_price",priceOfGift);
 
         message_root.updateChildren(map2);
 
@@ -1061,22 +1076,36 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         });
     }
 
-    private String chat_msg, imageUrlProfile;
+    private String chat_msg, imageUrlProfile, price;
+
+    static int g_price = 0;
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
         Iterator i = dataSnapshot.getChildren().iterator();
 
         while (i.hasNext()) {
+            price = (String) ((DataSnapshot) i.next()).getValue();
             imageUrlProfile = (String) ((DataSnapshot) i.next()).getValue();
             chat_msg = (String) ((DataSnapshot) i.next()).getValue();
+            comment_msisdn = (String) ((DataSnapshot) i.next()).getValue();
             chat_user_name = (String) ((DataSnapshot) i.next()).getValue();
+
+            int p = Integer.parseInt(price);
+
+            m = pattern.matcher(chat_msg);
+
+            if (m.find()){
+                COUNT_GIFTS++;
+                txtGiftsCount.setText(String.valueOf(COUNT_GIFTS));
+                g_price = g_price + p;
+                txtTaka.setText(String.valueOf(g_price));
+            }
 
             CommentClass commentClass = new CommentClass();
             commentClass.setUserName(chat_user_name);
             commentClass.setuComment(chat_msg);
             commentClass.setImage(imageUrlProfile);
-            //commentClass.setTime(getTime());
 
             commentClassList.add(commentClass);
         }
@@ -1089,7 +1118,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
     private void append_like(DataSnapshot dataSnapshot) {
 
         if (dataSnapshot.getChildrenCount() > 0) {
-            mShapeFlyer.startAnimation(R.drawable.like);
+            mShapeFlyer.startAnimation(R.drawable.ic_like);
         }
 
         txtLikes.setText(String.valueOf(dataSnapshot.getChildrenCount()));

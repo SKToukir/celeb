@@ -560,7 +560,7 @@ public class ParentActivity extends BaseActivity
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
+                // Toast ic_like print
                 // Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
 
                 if (!searchView.isIconified()) {

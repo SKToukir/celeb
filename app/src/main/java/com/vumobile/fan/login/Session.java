@@ -136,7 +136,7 @@ public class Session {
     public static void clearAllSharedData(Context cntx){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
         prefs = cntx.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
-        //SharedPreferences preferences = (SharedPreferences) cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        //SharedPreferences preferences = (SharedPreferences) cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).Edit();
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.clear();

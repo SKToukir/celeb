@@ -27,7 +27,7 @@
         android:layout_below="@+id/imgProfilePic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="LogIn status" />
+        android:text="" />
 
     <Button
         android:id="@+id/btnGoLive"

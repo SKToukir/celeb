@@ -175,13 +175,13 @@
 
 
             <com.vumobile.ui.AGLinearLayout
-                android:visibility="gone"
                 android:id="@+id/bottom_action_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:visibility="gone"
                     android:layout_width="54dp"
                     android:layout_height="match_parent"
                     android:onClick="onShowHideClicked"
@@ -189,6 +189,7 @@
                     android:src="@drawable/btn_hide" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/btn_1"
                     android:layout_width="54dp"
                     android:layout_height="match_parent"
@@ -197,6 +198,7 @@
                     android:src="@drawable/btn_request_broadcast" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/btn_2"
                     android:layout_width="54dp"
                     android:layout_height="match_parent"
@@ -205,12 +207,63 @@
                     android:src="@drawable/btn_switch_camera" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/btn_3"
                     android:layout_width="54dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:scaleType="center"
                     android:src="@drawable/btn_mute" />
+
+
+                <LinearLayout
+                    android:id="@+id/gift_container"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgGifts"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="center"
+                        android:background="@drawable/ic_gift" />
+                    <TextView
+                        android:id="@+id/txtGiftsCount"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:textColor="#fff"
+                        android:text="0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/gift_price_container"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgTaka"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="center"
+                        android:background="@drawable/ic_gift" />
+                    <TextView
+                        android:id="@+id/txtTaka"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:textColor="#fff"
+                        android:text="0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
             </com.vumobile.ui.AGLinearLayout>
 

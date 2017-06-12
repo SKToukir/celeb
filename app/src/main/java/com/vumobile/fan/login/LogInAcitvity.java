@@ -177,8 +177,13 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
-                } else {
+                } else if (Session.isReg(getApplicationContext(), Session.REGISTERED_CELEB) == true){
                     Intent intent = new Intent(LogInAcitvity.this, CelebHomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    this.finish();
+                }else {
+                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
@@ -190,12 +195,14 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
-                } else {
-                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    this.finish();
                 }
+//                else {
+//                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+//                    this.finish();
+//                }
+
             }
 
 

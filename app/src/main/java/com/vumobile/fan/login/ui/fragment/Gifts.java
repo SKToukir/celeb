@@ -89,7 +89,7 @@ public class Gifts extends Fragment {
                 getActivity().onBackPressed();
             }else if (getActivity().getLocalClassName().contains("LiveRoomActivity")) {
                 Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
-                LiveRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+                LiveRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL(),"15");
                 Log.d(TAG, "onCreateView: " + "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
                 getActivity().onBackPressed();
             }

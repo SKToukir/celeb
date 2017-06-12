@@ -69,7 +69,7 @@ public class VideoChatViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat_view);
 
-        Log.d("ChannelName",channelName);
+        Log.d("ChannelName","channel name"+channelName);
 
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_REQ_ID_RECORD_AUDIO) && checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_REQ_ID_CAMERA)) {
             initAgoraEngineAndJoinChannel(channelName);

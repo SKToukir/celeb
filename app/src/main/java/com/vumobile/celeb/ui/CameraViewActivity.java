@@ -14,13 +14,14 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.CameraView;
 import com.vumobile.celeb.model.ConstantApp;
+import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.fan.login.Session;
 
 import io.agora.rtc.Constants;
 
 public class CameraViewActivity extends BaseActivity{
 
-    private Button btnGoLive;
+    private Button btnGoLive, btnPreschedule;
     private TextView txtCountTimer;
     private Camera mCamera = null;
     private CameraView mCameraView = null;
@@ -33,7 +34,7 @@ public class CameraViewActivity extends BaseActivity{
         initUI();
 
         try{
-            mCamera = Camera.open();//you can use open(int) to use different cameras
+            mCamera = Camera.open(1);//you can use open(int) to use different cameras
         } catch (Exception e){
             Log.d("ERROR", "Failed to get camera: " + e.getMessage());
         }
@@ -45,11 +46,18 @@ public class CameraViewActivity extends BaseActivity{
         }
 
         //btn to close the application
-        Button imgClose = (Button)findViewById(R.id.btnGoLive);
-        imgClose.setOnClickListener(new View.OnClickListener() {
+        Button imgGoLive = (Button)findViewById(R.id.btnGoLive);
+        imgGoLive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startThreads();
+            }
+        });
+
+        btnPreschedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CameraViewActivity.this, SetScheduleActivity.class));
             }
         });
     }
@@ -65,12 +73,13 @@ public class CameraViewActivity extends BaseActivity{
     }
 
     private void initUI() {
+        btnPreschedule = (Button) findViewById(R.id.btnPreschedule);
         txtCountTimer = (TextView) findViewById(R.id.txtCountTimer);
     }
 
     private void startThreads() {
 
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(4000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 txtCountTimer.setText("" + millisUntilFinished / 1000);
@@ -89,11 +98,25 @@ public class CameraViewActivity extends BaseActivity{
 
     public void forwardToLiveRoom(int cRole) {
 
-        String room = Session.retreivePhone(CameraViewActivity.this,Session.USER_PHONE);
+        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+
+        if (!msisdn.isEmpty() || msisdn != null || msisdn != "") {
+            new ServerPostRequest().onLive(getApplicationContext(), msisdn, "1");
+        }
+
+        String room = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         Intent i = new Intent(CameraViewActivity.this, LiveRoomActivity.class);
         i.putExtra(ConstantApp.ACTION_KEY_CROLE, cRole);
         i.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, room);
+        i.putExtra("user", "celeb");
         startActivity(i);
+        mCamera.release();
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mCamera.release();
     }
 }

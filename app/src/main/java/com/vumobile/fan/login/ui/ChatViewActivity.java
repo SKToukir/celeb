@@ -144,7 +144,7 @@ public class ChatViewActivity extends AppCompatActivity {
                     .build();
             //Set to chat view
             mChatView.send(message);
-            //Reset edit text
+            //Reset Edit text
 
 
             //------------------------------------------------------

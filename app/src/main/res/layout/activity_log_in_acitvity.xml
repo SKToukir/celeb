@@ -40,7 +40,7 @@
                     android:id="@+id/usernameWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="#fff"
                     android:gravity="center">
 
                     <EditText
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@color/white"
+                    android:background="#fff"
                     android:gravity="center"
                     android:visibility="visible">
 
@@ -82,20 +82,17 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
+                    android:background="@drawable/signup"
                     android:id="@+id/btnLoginCont"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/white"
                     android:elevation="5dp"
                     android:onClick="btnLoginCont"
                     android:padding="5dp"
-                    android:text="Sign Up"
                     android:textAllCaps="false"
-                    android:textColor="@color/myColorOneBody"
-                    android:textSize="18sp" />
+                    />
 
                 <View
                     android:layout_width="fill_parent"
@@ -114,16 +111,15 @@
 
         <TextView
             android:id="@+id/txt_become_celeb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:layout_marginTop="25dp"
-            android:background="@color/white"
+            android:background="@drawable/becomeacelebrity"
             android:clickable="true"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="10dp"
-            android:text="Become a Celebrity"
             android:textColor="@color/myColorOneBody" />
 
     </LinearLayout>
@@ -155,7 +151,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Active your account"
-                android:textColor="@color/white"
+                android:textColor="@color/dark_black"
                 android:textSize="19sp" />
 
             <TextView
@@ -164,7 +160,7 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Enter the code you received via sms"
-                android:textColor="@color/white"
+                android:textColor="@color/dark_black"
                 android:textSize="15sp" />
 
             <TextView
@@ -174,14 +170,14 @@
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Enter your pin code"
-                android:textColor="@color/white"
+                android:textColor="@color/dark_black"
                 android:textSize="15sp" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/userCodeWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/dark_black"
                 android:gravity="center"
                 android:visibility="visible">
 
@@ -200,7 +196,6 @@
 
             <Button
                 android:id="@+id/btnResendPinSms"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -212,26 +207,19 @@
                 android:paddingRight="25dp"
                 android:text="Resend SMS"
                 android:textAllCaps="false"
-                android:textColor="@color/myColorOneBody"
+                android:textColor="@color/dark_black"
                 android:textSize="18sp"
                 android:visibility="visible" />
 
             <Button
                 android:id="@+id/btnSubmitCode"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/signup"
                 android:elevation="5dp"
                 android:onClick="btnSubmitCode"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp"
-                android:text="Submit"
-                android:textAllCaps="false"
-                android:textColor="@color/myColorOneBody"
-                android:textSize="18sp"
                 android:visibility="visible" />
 
 

@@ -40,6 +40,8 @@ import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity implements View.OnClickListener,SinchService.StartFailedListener {
+
+    private  String LIVE_SCHEDULE;
     private ProgressDialog mSpinner;
     private DatePicker datePicker;
     private Calendar calendar;
@@ -68,6 +70,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
 
         Intent intent = getIntent();
+        LIVE_SCHEDULE = intent.getStringExtra("live");
         fanMsisdn = intent.getStringExtra("msisdn");
 
         calendar = Calendar.getInstance();
@@ -176,7 +179,14 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                     startService(intent);
                 }
 
-                confirmation(Api.URL_REQUESTS_ACCEPT,"1");
+
+                Log.d("jjkjhkjh",LIVE_SCHEDULE+"out if");
+                if (LIVE_SCHEDULE.matches("3")){
+                    Log.d("jjkjhkjh",LIVE_SCHEDULE+"into if");
+                    confirmation(Api.URL_REQUESTS_ACCEPT,"1");
+                }else {
+                    confirmation(Api.URL_REQUESTS_ACCEPT,"1");
+                }
 
                 break;
         }

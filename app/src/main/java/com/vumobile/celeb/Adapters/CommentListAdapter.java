@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
  */
 public class CommentListAdapter extends ArrayAdapter<CommentClass> {
 
+    public int giftsCOunt = 0;
+
     public static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
     Matcher m;
     Context mContext;
