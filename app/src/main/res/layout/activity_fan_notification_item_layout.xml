@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="10 k"
-                android:textColor="@color/white" />
+                android:textColor="@color/dark_black" />
 
         </LinearLayout>
 

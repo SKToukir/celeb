@@ -70,22 +70,21 @@ public class GiftRecyclerViewAdapter extends RecyclerView.Adapter<GiftRecyclerVi
         String contentTitle = giftItemModel.getContentTitle();
         String contentUrl = giftItemModel.getPreviewURL();
 
-        holder.textViewPrice.setText("Price: " + giftItemModel.getChargeType());
+        holder.textViewPrice.setText("Price: " + giftItemModel.getChargePrice());
         holder.textViewPrice.setTag(giftItemModel.getPreviewURL());
 
         Glide.with(context)
-                .load("http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + contentUrl)
+                .load(contentUrl)
                 .into(holder.imageViewGiftItem);
 
         Log.d("adapter ttt", "onBindViewHolder: " + giftItemModel.toString());
     }
 
-    // total number of cells
+    // Total number of cells
     @Override
     public int getItemCount() {
         return giftItemModels.size();
     }
-
 
     // allows clicks events to be caught
     public void setClickListener(ItemClickListener itemClickListener) {

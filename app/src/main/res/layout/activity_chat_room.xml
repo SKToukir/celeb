@@ -4,7 +4,7 @@
     android:id="@+id/activity_chat_room"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#e6e5e5"
     android:orientation="vertical"
     tools:context="com.vumobile.celeb.ui.ChatRoomActivity">
 
@@ -22,7 +22,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:padding="8dp" />
-
 
         <TextView
             android:id="@+id/textViewChatName"
@@ -80,6 +79,7 @@
         android:layout_height="0dp"
         android:layout_weight=".14"
         android:gravity="center"
+        android:background="#ffffff"
         android:minHeight="100dp"
         android:orientation="vertical">
 

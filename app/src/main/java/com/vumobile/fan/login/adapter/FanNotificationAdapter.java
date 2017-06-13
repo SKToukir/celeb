@@ -174,7 +174,6 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         Log.d("FromServer 19", jsonObject.toString());
-
                         try {
 
                             if (!jsonObject.getString("result").equals("0")) {

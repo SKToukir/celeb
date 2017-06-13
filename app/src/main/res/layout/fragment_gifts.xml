@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#83000000"
+    android:background="#ffffff"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="@color/white" />
+            android:background="@color/myColorTwoHeader" />
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeRefreshLayoutGift"

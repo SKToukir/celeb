@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Shahrukh Khan"
-                    android:textColor="#fff"
+                    android:textColor="#050505"
                     android:textSize="22dp"
                     android:textStyle="normal" />
 
@@ -89,7 +89,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:text="111"
-                        android:textColor="#fff" />
+                        android:textColor="#404040" />
 
                 </LinearLayout>
 

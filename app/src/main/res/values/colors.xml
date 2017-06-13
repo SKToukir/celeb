@@ -6,8 +6,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#c4c4c4</color>
+    <color name="pure_white">#FFFFFF</color>
     <color name="myColorOneBody">#fff</color>
     <color name="myColorTwoHeader">#0072bc</color>
+    <color name="myColorTwoHeaderLite">#6cbcf1</color>
 
     <color name="lightColorAccent">#30FF4081</color>
 

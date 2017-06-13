@@ -761,7 +761,7 @@ public class ParentActivity extends BaseActivity
 
             case R.id.imageViewLogout:
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(ParentActivity.this);
-                alertDialog.setTitle("Logout Alert");
+                alertDialog.setTitle("Logout Alert!");
                 alertDialog.setMessage("Want to logout?");
                 alertDialog.setIcon(getResources().getDrawable(R.drawable.ic_action_alert));
                 alertDialog.setPositiveButton("YES", (dialog, which) -> {
@@ -785,21 +785,21 @@ public class ParentActivity extends BaseActivity
     }
 
     private void changeButtonSelectFocus(Button button) {
-        buttonFilterAll.setBackgroundColor(getResources().getColor(R.color.white));
-        buttonFilterAll.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonFilterAll.setTextColor(getResources().getColor(R.color.pure_white));
         buttonFilterAll.setTag("ITEM");
-        buttonFilterFollowing.setBackgroundColor(getResources().getColor(R.color.white));
-        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.pure_white));
         buttonFilterFollowing.setTag("ITEM");
-        buttonMostLive.setBackgroundColor(getResources().getColor(R.color.white));
-        buttonMostLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonMostLive.setTextColor(getResources().getColor(R.color.pure_white));
         buttonMostLive.setTag("ITEM");
-        buttonFilterLive.setBackgroundColor(getResources().getColor(R.color.white));
-        buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonFilterLive.setTextColor(getResources().getColor(R.color.pure_white));
         buttonFilterLive.setTag("ITEM");
 
-        button.setBackgroundColor(getResources().getColor(R.color.myColorTwoHeader));
-        button.setTextColor(getResources().getColor(R.color.white));
+        button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background_lite));
+        button.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         button.setTag("SELECT_ITEM");
     }
 

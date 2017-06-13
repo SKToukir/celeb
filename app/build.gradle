@@ -15,8 +15,8 @@ android {
         applicationId "com.vumobile.celeb"
         minSdkVersion 16 // JELLY_BEAN
         targetSdkVersion 25
-        versionCode 8
-        versionName "x.y.z"
+        versionCode 1
+        versionName "1.0.0"
         multiDexEnabled true
 
         jackOptions {

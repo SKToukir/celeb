@@ -6,25 +6,17 @@ package com.vumobile.fan.login.model;
 
 public class GiftItemModel {
 
-    String GraphicsCode, ContentTitle, ContentType, PhysicalFileName, PreviewURL, ChargeType, Like, ProductID, PreviewUrlTransperrent;
+    String GraphicsCode, ContentTitle, ContentType, PhysicalFileName, PreviewURL, ChargeType, ChargePrice, TimeStamp;
 
-    public GiftItemModel(String graphicsCode, String contentTitle, String contentType, String physicalFileName, String previewURL, String chargeType, String like, String productID, String previewUrlTransperrent) {
-        this.GraphicsCode = graphicsCode;
-        this.ContentTitle = contentTitle;
-        this.ContentType = contentType;
-        this.PhysicalFileName = physicalFileName;
-        this.PreviewURL = previewURL;
-        this.ChargeType = chargeType;
-        this.Like = like;
-        this.ProductID = productID;
-        this.PreviewUrlTransperrent = previewUrlTransperrent;
-    }
-
-    public GiftItemModel(String contentTitle, String graphicsCode, String previewURL, String ChargeType) {
-        this.ContentTitle = contentTitle;
-        this.GraphicsCode = graphicsCode;
-        this.PreviewURL = previewURL;
-        this.ChargeType = ChargeType;
+    public GiftItemModel(String graphicsCode, String contentTitle, String contentType, String physicalFileName, String previewURL, String chargeType, String chargePrice, String timeStamp) {
+        GraphicsCode = graphicsCode;
+        ContentTitle = contentTitle;
+        ContentType = contentType;
+        PhysicalFileName = physicalFileName;
+        PreviewURL = previewURL;
+        ChargeType = chargeType;
+        ChargePrice = chargePrice;
+        TimeStamp = timeStamp;
     }
 
     public String getGraphicsCode() {
@@ -75,32 +67,24 @@ public class GiftItemModel {
         ChargeType = chargeType;
     }
 
-    public String getLike() {
-        return Like;
+    public String getChargePrice() {
+        return ChargePrice;
     }
 
-    public void setLike(String like) {
-        Like = like;
+    public void setChargePrice(String chargePrice) {
+        ChargePrice = chargePrice;
     }
 
-    public String getProductID() {
-        return ProductID;
+    public String getTimeStamp() {
+        return TimeStamp;
     }
 
-    public void setProductID(String productID) {
-        ProductID = productID;
-    }
-
-    public String getPreviewUrlTransperrent() {
-        return PreviewUrlTransperrent;
-    }
-
-    public void setPreviewUrlTransperrent(String previewUrlTransperrent) {
-        PreviewUrlTransperrent = previewUrlTransperrent;
+    public void setTimeStamp(String timeStamp) {
+        TimeStamp = timeStamp;
     }
 
     @Override
     public String toString() {
-        return "" + GraphicsCode + ContentTitle + PreviewURL + ChargeType;
+        return "" + GraphicsCode + ContentTitle + PreviewURL + this.ChargePrice;
     }
 }

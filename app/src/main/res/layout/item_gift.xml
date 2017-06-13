@@ -49,7 +49,7 @@
             android:layout_gravity="center"
             android:gravity="center|top"
             android:text="Price 2 Tk."
-            android:textColor="#fff" />
+            android:textColor="@color/myColorTwoHeader" />
 
     </LinearLayout>
 

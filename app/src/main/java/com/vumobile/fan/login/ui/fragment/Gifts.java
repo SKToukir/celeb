@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.vumobile.Config.Api;
@@ -80,17 +79,17 @@ public class Gifts extends Fragment {
         giftRecyclerViewAdapter.setClickListener((view, position) -> {
             // view.findViewById(R.id.textViewPrice).getTag()
             if (getActivity().getLocalClassName().contains("FanCelebProfileActivity")) {
-                Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
             } else if (getActivity().getLocalClassName().contains("ChatRoomActivity")) {
-                Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
-                ChatRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
-                Log.d(TAG, "onCreateView: " + "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+                //   Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                ChatRoomActivity.postComment(getActivity().getApplicationContext(), giftItemModels.get(position).getPreviewURL());
+                Log.d(TAG, "onCreateView: " + giftItemModels.get(position).getPreviewURL());
                 getActivity().onBackPressed();
-            }else if (getActivity().getLocalClassName().contains("LiveRoomActivity")) {
-                Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
-                LiveRoomActivity.postComment(getActivity().getApplicationContext(), "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL(),"15");
-                Log.d(TAG, "onCreateView: " + "http://wap.shabox.mobi/CMS/GraphicsPreview/Stickers/" + giftItemModels.get(position).getPreviewURL());
+            } else if (getActivity().getLocalClassName().contains("LiveRoomActivity")) {
+                //   Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                LiveRoomActivity.postComment(getActivity().getApplicationContext(), giftItemModels.get(position).getPreviewURL(), giftItemModels.get(position).getChargePrice());
+                Log.d(TAG, "onCreateView: " + giftItemModels.get(position).getPreviewURL());
                 getActivity().onBackPressed();
             }
         });
@@ -110,14 +109,18 @@ public class Gifts extends Fragment {
                 Log.d("gift", "getResponse: " + responseResult);
                 try {
                     JSONObject jsonObject = new JSONObject(responseResult);
-                    JSONArray jsonArray = jsonObject.getJSONArray("stickers");
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jo = new JSONObject(String.valueOf(jsonArray.getJSONObject(i)));
                         giftItemModel = new GiftItemModel(
                                 jo.getString("GraphicsCode"),
                                 jo.getString("ContentTitle"),
-                                jo.getString("PreviewURL"),
-                                jo.getString("ChargeType")
+                                jo.getString("ContentType"),
+                                jo.getString("PhysicalFileName"),
+                                jo.getString("PreviewUrl"),
+                                jo.getString("ChargeType"),
+                                jo.getString("ChargePrice"),
+                                jo.getString("TimeStamp")
                         );
                         Log.d(TAG, "getResponse: " + giftItemModel.toString());
 

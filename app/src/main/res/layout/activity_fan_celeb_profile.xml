@@ -4,7 +4,7 @@
     android:id="@+id/activity_fan_celeb_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EA70BD"
+    android:background="#fff"
     android:orientation="vertical"
     tools:context="com.vumobile.fan.login.FanCelebProfileActivity">
 
@@ -52,7 +52,7 @@
             android:layout_gravity="center"
             android:padding="8dp"
             android:text="John Dow"
-            android:textColor="#fff"
+            android:textColor="#232323"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -73,7 +73,7 @@
                 android:layout_gravity="center"
                 android:padding="2dp"
                 android:text="John Dow"
-                android:textColor="#fff"
+                android:textColor="#414141"
                 android:textSize="12sp" />
         </LinearLayout>
 

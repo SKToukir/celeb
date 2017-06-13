@@ -7,7 +7,6 @@
     android:background="@color/myColorOneBody"
     tools:context="com.vumobile.celeb.ui.RequestActivity">
 
-
     <include
         android:id="@+id/toolbar_request"
         layout="@layout/toolbar_request"/>
@@ -17,7 +16,6 @@
         android:layout_below="@+id/toolbar_request"
         android:id="@+id/listOfRequests"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></ListView>
-
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
