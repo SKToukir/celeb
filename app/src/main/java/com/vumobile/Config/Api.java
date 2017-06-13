@@ -7,6 +7,8 @@ package com.vumobile.Config;
 public class Api {
 
 
+    public static final String API_LIVE_SCHEDULE = "http://wap.shabox.mobi/testwebapi/Celebrity/LiveSchedule?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
     public static final String URL_SET_REG_ID = "http://wap.shabox.mobi/testwebapi/Fan/RegIdCheck?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
     public static final String URL_DELETE_POST = "http://wap.shabox.mobi/testwebapi/Post/DeletePost?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&id=";
     public static final String URL_EDIT_POST = "http://wap.shabox.mobi/testwebapi/Post/EditPost?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";

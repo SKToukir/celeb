@@ -101,6 +101,6 @@ dependencies {
     // Simple Crop
     compile 'com.isseiaoki:simplecropview:1.1.4'
     compile 'com.cipherthinkers:shapeflyer:1.0.0'
-    compile files('libs/AgoraSDK.jar')
+//    compile files('libs/AgoraSDK.jar')
 }
 apply plugin: 'com.google.gms.google-services'

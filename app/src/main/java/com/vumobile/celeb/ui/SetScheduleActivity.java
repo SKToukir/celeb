@@ -39,9 +39,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("ALL")
-public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity implements View.OnClickListener,SinchService.StartFailedListener {
+public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity implements View.OnClickListener, SinchService.StartFailedListener {
 
-    private  String LIVE_SCHEDULE;
+    private String LIVE_SCHEDULE;
     private ProgressDialog mSpinner;
     private DatePicker datePicker;
     private Calendar calendar;
@@ -53,7 +53,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
     private ImageView imgBack;
     private Button btnConfirm;
     private EditText etDate, etFromTime, etToTime;
-    public String startTime,endTime;
+    public String startTime, endTime;
     private String fanMsisdn;
     private String selectedYear, selectedMonth, selectedDate;
     private String room_name, temp_key;
@@ -71,6 +71,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
         Intent intent = getIntent();
         LIVE_SCHEDULE = intent.getStringExtra("live");
+        Log.d("LIVE_SCHEDULE",LIVE_SCHEDULE);
         fanMsisdn = intent.getStringExtra("msisdn");
 
         calendar = Calendar.getInstance();
@@ -86,11 +87,11 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
             public void run() {
                 getFanRegId();
             }
-        });thread.start();
+        });
+        thread.start();
     }
 
     private void getFanRegId() {
-
 
 
     }
@@ -116,7 +117,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.backCelebSchedule:
                 intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -137,8 +138,8 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
                                 etFromTime.setText(hourOfDay + ":" + minute);
 
-                                startTime =String.valueOf(selectedYear)+"-"+String.valueOf(selectedMonth)+"-"+String.valueOf(selectedDate)+" "+String.valueOf(hourOfDay)+":"+String.valueOf(minute)+":"+"00";
-                                Log.d("dates",startTime);
+                                startTime = String.valueOf(selectedYear) + "-" + String.valueOf(selectedMonth) + "-" + String.valueOf(selectedDate) + " " + String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + ":" + "00";
+                                Log.d("dates", startTime);
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -157,8 +158,8 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
                                 etToTime.setText(hourOfDay + ":" + minute);
 
-                                endTime =String.valueOf(selectedYear)+"-"+String.valueOf(selectedMonth)+"-"+String.valueOf(selectedDate)+" "+String.valueOf(hourOfDay)+":"+String.valueOf(minute)+":"+"00";
-                                Log.d("dates",endTime);
+                                endTime = String.valueOf(selectedYear) + "-" + String.valueOf(selectedMonth) + "-" + String.valueOf(selectedDate) + " " + String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + ":" + "00";
+                                Log.d("dates", endTime);
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog1.show();
@@ -168,35 +169,84 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                 break;
             case R.id.btnConfirmTime:
                 if (!getSinchServiceInterface().isStarted()) {
-                    SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+                    SinchService.uName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
                     startService(new Intent(SetScheduleActivity.this, SinchService.class));
-                    getSinchServiceInterface().startClient(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
+                    getSinchServiceInterface().startClient(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
                     showSpinner();
                 } else {
                     //openPlaceCallActivity(celeb_name);
-                    Intent intent = new Intent(SetScheduleActivity.this,SinchService.class);
-                    SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+                    Intent intent = new Intent(SetScheduleActivity.this, SinchService.class);
+                    SinchService.uName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
                     startService(intent);
                 }
 
 
-                Log.d("jjkjhkjh",LIVE_SCHEDULE+"out if");
-                if (LIVE_SCHEDULE.matches("3")){
-                    Log.d("jjkjhkjh",LIVE_SCHEDULE+"into if");
-                    confirmation(Api.URL_REQUESTS_ACCEPT,"1");
+                if (LIVE_SCHEDULE.equals("3")){
+
+                    setLiveSchedule(Api.API_LIVE_SCHEDULE);
+
                 }else {
-                    confirmation(Api.URL_REQUESTS_ACCEPT,"1");
+
+                    confirmation(Api.URL_REQUESTS_ACCEPT, "1");
                 }
 
                 break;
         }
     }
 
+    private void setLiveSchedule(String apiLiveSchedule){
+
+        room_name = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE) + fanMsisdn;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, apiLiveSchedule,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("LIVE_SCHEDULE", response.toString());
+
+                        TastyToast.makeText(getApplicationContext(),response.toString(),TastyToast.LENGTH_LONG,TastyToast.SUCCESS).show();
+
+                        intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("LIVE_SCHEDULE", "" + error.getMessage());
+                        //    TastyToast.makeText(mContext, "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
 
 
-    private void confirmation(String urlRequestsAccept,String flag) {
+                    Log.d("LIVE_SCHEDULE","set live schedule");
+                    params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                    params.put("StartTime", startTime);
+                    params.put("EndTime", endTime);
 
-        room_name = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE)+fanMsisdn;
+
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void confirmation(String urlRequestsAccept, String flag) {
+
+        room_name = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE) + fanMsisdn;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlRequestsAccept,
                 new Response.Listener<String>() {
                     @Override
@@ -204,8 +254,8 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                         Log.d("FromServer", response.toString());
 
                         createRoomOnFirebase(room_name);
-                        Log.d("room_name",room_name);
-                        TastyToast.makeText(getApplicationContext(),response,TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                        Log.d("room_name", room_name);
+                        TastyToast.makeText(getApplicationContext(), response, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                         intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -226,12 +276,23 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("Fan", fanMsisdn);
-                params.put("Celebrity", Session.retreivePhone(getApplicationContext(),Session.USER_PHONE));
-                params.put("flag", flag);
-                params.put("StartTime", startTime);
-                params.put("EndTime", endTime);
-                params.put("RoomNumber",room_name);
+                if (flag.equals("3")){
+                    Log.d("LIVE_SCHEDULE","set live schedule");
+                    params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                    params.put("StartTime", startTime);
+                    params.put("EndTime", endTime);
+
+                }else {
+                    params.put("Fan", fanMsisdn);
+                    params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                    params.put("flag", flag);
+                    params.put("StartTime", startTime);
+                    params.put("EndTime", endTime);
+                    params.put("RoomNumber", room_name);
+                    Log.d("LIVE_SCHEDULE","set other schedule");
+
+                }
+
 
                 return params;
             }
@@ -264,13 +325,12 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                     // arg3 = day
 //                    showDate(arg1, arg2+1, arg3);
                     selectedYear = String.valueOf(arg1);
-                    selectedMonth = String.valueOf(arg2+1);
+                    selectedMonth = String.valueOf(arg2 + 1);
                     selectedDate = String.valueOf(arg3);
 
-                    etDate.setText(selectedYear+"-"+selectedMonth+"-"+selectedDate);
+                    etDate.setText(selectedYear + "-" + selectedMonth + "-" + selectedDate);
                 }
             };
-
 
 
     private String getDate() {
@@ -287,6 +347,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
         return "";
     }
+
     private void createRoomOnFirebase(String room_name) {
 
         Map<String, Object> map = new HashMap<String, Object>();
@@ -325,7 +386,15 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
     private void showSpinner() {
         mSpinner = new ProgressDialog(this);
         mSpinner.setTitle("Logging in");
-        mSpinner.setMessage("Please wait...");
+        mSpinner.setMessage("Please wait..");
         mSpinner.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

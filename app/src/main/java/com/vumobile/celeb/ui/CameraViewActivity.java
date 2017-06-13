@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.celeb.R;
@@ -21,10 +21,16 @@ import io.agora.rtc.Constants;
 
 public class CameraViewActivity extends BaseActivity{
 
-    private Button btnGoLive, btnPreschedule;
-    private TextView txtCountTimer;
+    private Button btnGoLive, btnPreschedule, imgGoLive;
+    private ImageView txtCountTimer;
     private Camera mCamera = null;
     private CameraView mCameraView = null;
+
+    Integer[] imageId = {
+            R.drawable.one,
+            R.drawable.two,
+            R.drawable.three
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +52,12 @@ public class CameraViewActivity extends BaseActivity{
         }
 
         //btn to close the application
-        Button imgGoLive = (Button)findViewById(R.id.btnGoLive);
+        imgGoLive = (Button)findViewById(R.id.btnGoLive);
         imgGoLive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnGoLive.setVisibility(View.GONE);
+                btnPreschedule.setVisibility(View.GONE);
                 startThreads();
             }
         });
@@ -57,7 +65,11 @@ public class CameraViewActivity extends BaseActivity{
         btnPreschedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CameraViewActivity.this, SetScheduleActivity.class));
+                //mCamera.release();
+                Intent intent = new Intent(CameraViewActivity.this, SetScheduleActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("live","3");
+                startActivity(intent);
             }
         });
     }
@@ -74,7 +86,7 @@ public class CameraViewActivity extends BaseActivity{
 
     private void initUI() {
         btnPreschedule = (Button) findViewById(R.id.btnPreschedule);
-        txtCountTimer = (TextView) findViewById(R.id.txtCountTimer);
+        txtCountTimer = (ImageView) findViewById(R.id.txtCountTimer);
     }
 
     private void startThreads() {
@@ -82,7 +94,9 @@ public class CameraViewActivity extends BaseActivity{
         new CountDownTimer(4000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                txtCountTimer.setText("" + millisUntilFinished / 1000);
+                //txtCountTimer.setText("" + millisUntilFinished / 1000);
+                int i = (int) (millisUntilFinished / 1000);
+                txtCountTimer.setImageResource(imageId[i-1]);
             }
 
             public void onFinish() {

@@ -165,7 +165,6 @@
             android:label="@string/title_activity_chat_view"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.RegisterForVideoCallActivity" />
-        <activity android:name="com.vumobile.videocall.VideoChatViewActivity" />
 
         <!-- <receiver -->
         <!-- android:name="com.vumobile.utils.NetworkStateChangeReceiver" -->
@@ -186,21 +185,19 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver android:name="com.vumobile.utils.MyInternetCheckReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
-
         <activity android:name=".ui.CelebEditPostActivity" />
         <activity android:name=".ui.EditPostActivity" />
-        <activity android:name=".ui.EditImageActivity"></activity>
+        <activity android:name=".ui.EditImageActivity" />
 
+        <service android:name="com.vumobile.utils.ChatService" />
 
-        <service android:name="com.vumobile.utils.ChatService"/>
-
+        <activity android:name=".ui.GiftsActivity"></activity>
     </application>
 
 </manifest>

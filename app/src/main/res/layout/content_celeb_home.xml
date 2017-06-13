@@ -15,170 +15,178 @@
         android:layout_width="match_parent"
         android:layout_height="56dp" />
 
-    <!--main layout-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/view"
-        android:background="@color/myColorOneBody"
-        android:orientation="vertical">
 
-        <!--first part-->
+        <!--main layout-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/view"
+            android:background="@color/myColorOneBody"
+            android:orientation="vertical">
 
-            <!--<com.vumobile.celeb.Utils.RoundedImageView-->
-            <!--android:id="@+id/celebImage"-->
-            <!--android:layout_width="80dp"-->
-            <!--android:layout_height="80dp"-->
-            <!--android:src="@drawable/ic_man" />-->
+            <!--first part-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <!--<com.vumobile.celeb.Utils.RoundedImageView-->
+                <!--android:id="@+id/celebImage"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="80dp"-->
+                <!--android:src="@drawable/ic_man" />-->
 
 
-
-            <FrameLayout
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:layout_width="100dp"
-                android:layout_height="100dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:padding="4dp"
-                    android:scaleType="centerCrop"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/celebImage"
+                <FrameLayout
                     android:layout_width="100dp"
-                    android:layout_height="90dp" />
-
-                <ImageView
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:background="@drawable/b"
-                    android:layout_width="95dp"
-                    android:layout_height="95dp" />
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
 
-            </FrameLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/celebImage"
+                        android:layout_width="100dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="95dp"
+                        android:layout_height="95dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/b"
+                        android:scaleType="fitXY" />
+
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.vumobile.utils.MyTextView
+                        android:id="@+id/txtCelebName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily=""
+                        android:text="Someone Celeb"
+                        android:textColor="#0072bc"
+                        android:textSize="20sp" />
+
+                    <com.vumobile.utils.MyTextView
+                        android:id="@+id/txtCelebLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtCelebName"
+                        android:text="Mirpur"
+                        android:textColor="#0072bc"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/follow"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@+id/txtCelebLocation"
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/followicon" />
+
+                    <com.vumobile.utils.MyTextView
+                        android:id="@+id/txtHomePageFollow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txtCelebLocation"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_toRightOf="@+id/follow"
+                        android:text="1212"
+                        android:textColor="#0072bc" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <!--Second part-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+                <View
+                    android:background="#d9d9d9"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"></View>
+
+                <Button
+                    android:id="@+id/etWhatsYourMind"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#ffffff"
+                    android:ems="10"
+                    android:enabled="true"
+                    android:gravity="center_vertical"
+                    android:hint="Whats on your mind?"
+                    android:isScrollContainer="true"
+                    android:padding="10dp" />
+                <View
+                    android:background="#d9d9d9"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"></View>
+
+                <Button
+                    android:id="@+id/btnPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Post"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!--third part-->
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_height="wrap_content">
 
-                <com.vumobile.utils.MyTextView
-                    android:id="@+id/txtCelebName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily=""
-                    android:text="Someone Celeb"
-                    android:textColor="#0072bc"
-                    android:textSize="20sp" />
-
-                <com.vumobile.utils.MyTextView
-                    android:id="@+id/txtCelebLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtCelebName"
-                    android:text="Mirpur"
-                    android:textColor="#0072bc"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/follow"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@+id/txtCelebLocation"
-                    android:layout_marginTop="3dp"
-                    android:src="@drawable/followicon" />
-
-                <com.vumobile.utils.MyTextView
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/txtHomePageFollow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtCelebLocation"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/follow"
-                    android:text="1212"
-                    android:textColor="#0072bc" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <!--Second part-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/etWhatsYourMind"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#faf5f5"
-                android:ems="10"
-                android:enabled="true"
-                android:gravity="center_vertical"
-                android:hint="Whats on your mind?"
-                android:isScrollContainer="true"
-                android:padding="10dp" />
-
-            <Button
-                android:id="@+id/btnPost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Post"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-        <!--third part-->
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:orientation="vertical"
-                android:weightSum="2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
                     android:weightSum="2">
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
-                        <android.support.v7.widget.CardView
-                            app:cardBackgroundColor="@color/myColorOneBody"
-                            android:id="@+id/card_view"
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            card_view:cardCornerRadius="7dp"
-                            card_view:contentPadding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <!--<android.support.v7.widget.CardView-->
+                            <!--app:cardBackgroundColor="@color/myColorOneBody"-->
+                            <!--android:id="@+id/card_view"-->
+                            <!--android:layout_width="140dp"-->
+                            <!--android:layout_height="120dp"-->
+                            <!--android:layout_gravity="center"-->
+                            <!--android:layout_margin="5dp"-->
+                            <!--card_view:cardCornerRadius="7dp"-->
+                            <!--card_view:contentPadding="10dp">-->
 
 
                             <ImageView
@@ -190,25 +198,25 @@
                                 android:clickable="true"
                                 android:src="@drawable/golive" />
 
-                        </android.support.v7.widget.CardView>
+                            <!--//  </android.support.v7.widget.CardView>-->
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <android.support.v7.widget.CardView
-                            app:cardBackgroundColor="@color/myColorOneBody"
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            card_view:cardCornerRadius="7dp"
-                            card_view:contentPadding="10dp">
+                            <!--<android.support.v7.widget.CardView-->
+                            <!--app:cardBackgroundColor="@color/myColorOneBody"-->
+                            <!--android:layout_width="140dp"-->
+                            <!--android:layout_height="120dp"-->
+                            <!--android:layout_gravity="center"-->
+                            <!--android:layout_margin="5dp"-->
+                            <!--card_view:cardCornerRadius="7dp"-->
+                            <!--card_view:contentPadding="10dp">-->
 
                             <ImageView
                                 android:id="@+id/imgImageVideoCeleb"
@@ -218,34 +226,34 @@
                                 android:background="@color/myColorOneBody"
                                 android:src="@drawable/imageandvideo" />
 
-                        </android.support.v7.widget.CardView>
+                            <!--</android.support.v7.widget.CardView>-->
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
-                        <android.support.v7.widget.CardView
-                            app:cardBackgroundColor="@color/myColorOneBody"
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            card_view:cardCornerRadius="7dp"
-                            card_view:contentPadding="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <!--<android.support.v7.widget.CardView-->
+                            <!--app:cardBackgroundColor="@color/myColorOneBody"-->
+                            <!--android:layout_width="140dp"-->
+                            <!--android:layout_height="120dp"-->
+                            <!--android:layout_gravity="center"-->
+                            <!--android:layout_margin="5dp"-->
+                            <!--card_view:cardCornerRadius="7dp"-->
+                            <!--card_view:contentPadding="10dp">-->
 
                             <ImageView
                                 android:id="@+id/imgRequest"
@@ -255,56 +263,55 @@
                                 android:background="@color/myColorOneBody"
                                 android:src="@drawable/request" />
 
-                        </android.support.v7.widget.CardView>
+                            <!--</android.support.v7.widget.CardView>-->
 
-                    </LinearLayout>
+                        </LinearLayout>
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center">
 
-                        <android.support.v7.widget.CardView
-                            app:cardBackgroundColor="@color/myColorOneBody"
-                            android:layout_width="140dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            card_view:cardCornerRadius="7dp"
-                            card_view:contentPadding="10dp">
+                            <!--<android.support.v7.widget.CardView-->
+                            <!--app:cardBackgroundColor="@color/myColorOneBody"-->
+                            <!--android:layout_width="140dp"-->
+                            <!--android:layout_height="120dp"-->
+                            <!--android:layout_gravity="center"-->
+                            <!--android:layout_margin="5dp"-->
+                            <!--card_view:cardCornerRadius="7dp"-->
+                            <!--card_view:contentPadding="10dp">-->
 
                             <ImageView
-                                android:layout_gravity="center"
-                                android:background="@color/myColorOneBody"
                                 android:id="@+id/imgMessage"
                                 android:layout_width="140dp"
                                 android:layout_height="130dp"
+                                android:layout_gravity="center"
+                                android:background="@color/myColorOneBody"
                                 android:src="@drawable/massege" />
-                        </android.support.v7.widget.CardView>
+                            <!--</android.support.v7.widget.CardView>-->
+                        </LinearLayout>
+
                     </LinearLayout>
+
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="300dp"
+                    android:layout_height="2dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/gradient_back" />
 
-            </LinearLayout>
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="300dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/gradient_back_scnd" />
 
-            <View
-                android:layout_width="300dp"
-                android:layout_height="2dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/gradient_back" />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="300dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/gradient_back_scnd" />
-
-        </RelativeLayout>
-    </LinearLayout>
-
+            </RelativeLayout>
+        </LinearLayout>
 </RelativeLayout>

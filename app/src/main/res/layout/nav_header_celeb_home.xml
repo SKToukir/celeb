@@ -76,7 +76,7 @@
 
     <ImageView
         android:layout_centerVertical="true"
-        android:background="@drawable/followicon"
+        android:background="@drawable/followicononline"
         android:layout_below="@+id/textViewPfName"
         android:layout_toLeftOf="@+id/txtFollowers"
         android:layout_width="25dp"

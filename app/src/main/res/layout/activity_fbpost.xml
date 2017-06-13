@@ -75,7 +75,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="141dp"
+                android:layout_height="145dp"
                 android:orientation="vertical">
 
                 <Button
@@ -86,9 +86,9 @@
                     android:layout_below="@id/linearLayout"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
-                    android:background="#0072bc"
+                    android:background="#fff"
                     android:text="POST"
-                    android:textColor="#fff" />
+                    android:textColor="#0072bc" />
 
 
                 <EditText
@@ -97,7 +97,6 @@
                     android:layout_height="70dp"
                     android:layout_below="@+id/btnPost"
                     android:layout_margin="10dp"
-                    android:background="#e7e2e2"
                     android:clickable="true"
                     android:editable="true"
                     android:ems="10"

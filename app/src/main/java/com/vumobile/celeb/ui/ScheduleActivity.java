@@ -99,6 +99,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                 Log.d("FromServer", requestClass.getImageUrl());
                                 requestClass.setStart_time(obj.getString("StartTime"));
                                 Log.d("FromServer", requestClass.getStart_time());
+                                requestClass.setRequestType(obj.getString("RequestType"));
+                                Log.d("FromServer", requestClass.getRequestType());
                                 requestClass.setEnd_time(obj.getString("EndTime"));
                                 Log.d("FromServer", requestClass.getEnd_time());
 
