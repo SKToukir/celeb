@@ -20,14 +20,11 @@
 
         </FrameLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/txtCountTimer"
-            android:textColor="#fff"
             android:layout_gravity="center"
-            android:textSize="200dp"
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="150dp"
+            android:layout_height="200dp" />
 
        <LinearLayout
            android:gravity="center"
