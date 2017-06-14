@@ -9,6 +9,15 @@ public class MessageListClass {
     private String imageUrl;
     private String name;
     private String room_number;
+    private String RequestType;
+
+    public String getRequestType() {
+        return RequestType;
+    }
+
+    public void setRequestType(String requestType) {
+        RequestType = requestType;
+    }
 
     public String getRoom_number() {
         return room_number;

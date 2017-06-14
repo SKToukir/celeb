@@ -3,6 +3,7 @@ package com.vumobile.celeb.ui;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +49,7 @@ import org.json.JSONObject;
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SinchService.StartFailedListener {
 
+    public static final int IMAGE_PICKER_SELECT = 1;
     private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage, nav_home,nav_gallery,
             nav_gifts,nav_schedule,nav_post,nav_logout;
     NavigationView navigationView;
@@ -315,7 +317,8 @@ public class CelebHomeActivity extends BaseActivity
                 //startActivity(new Intent(CelebHomeActivity.this,FBPostActivity.class));
                 break;
             case R.id.imgImageVideoCeleb:
-                startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
+                choose_from_gallery();
+                //startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
                 break;
             case R.id.imgRequest:
                 startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));
@@ -438,6 +441,43 @@ public class CelebHomeActivity extends BaseActivity
             SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
             startService(intent);
             Log.d("SSSSSSSS","Sinch service started else Home");
+        }
+    }
+
+    private void choose_from_gallery() {
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/* video/*");
+        startActivityForResult(pickIntent, IMAGE_PICKER_SELECT);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+            Uri selectedMediaUri = data.getData();
+
+            if (selectedMediaUri.toString().contains("images")) {
+//                //handle image
+//                Uri uri = data.getData();
+//
+//                FBPostActivity.fromHomeUri = uri;
+//                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+//                intent.putExtra("isImage","1");
+//                intent.putExtra("action_value","1");
+//                startActivity(intent);
+
+            } else if (selectedMediaUri.toString().contains("video")) {
+
+//                Uri uri = data.getData();
+//
+//                FBPostActivity.fromHomeUri = uri;
+//                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+//                intent.putExtra("uri",uri);
+//                intent.putExtra("action_value","1");
+//                intent.putExtra("isImage","0");
+//                startActivity(intent);
+
+            }
+
         }
     }
 }

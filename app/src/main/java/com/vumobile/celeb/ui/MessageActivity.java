@@ -111,17 +111,24 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                                 JSONObject obj = array.getJSONObject(i);
                                 requestClass = new MessageListClass();
 
-                                requestClass.setName(obj.getString("Name"));
-                                Log.d("FromServer", requestClass.getName());
-                                requestClass.setImageUrl(obj.getString("Image_url"));
-                                Log.d("FromServer", requestClass.getImageUrl());
-                                requestClass.setRoom_number(obj.getString("RoomNumber"));
-                                Log.d("FromServer", requestClass.getRoom_number());
+                                requestClass.setRequestType(obj.getString("RequestType"));
 
-                                listClasses.add(requestClass);
+                                if (requestClass.getRequestType().equals("1")){
 
-                                listView.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
+                                    requestClass.setName(obj.getString("Name"));
+                                    Log.d("FromServer", requestClass.getName());
+                                    requestClass.setImageUrl(obj.getString("Image_url"));
+                                    Log.d("FromServer", requestClass.getImageUrl());
+                                    requestClass.setRoom_number(obj.getString("RoomNumber"));
+                                    Log.d("FromServer", requestClass.getRoom_number());
+
+                                    listClasses.add(requestClass);
+
+                                    listView.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                }
+
+
 
                             }
                         } catch (JSONException e) {

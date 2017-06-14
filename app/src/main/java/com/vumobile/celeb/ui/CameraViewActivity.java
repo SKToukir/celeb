@@ -56,8 +56,8 @@ public class CameraViewActivity extends BaseActivity{
         imgGoLive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnGoLive.setVisibility(View.GONE);
-                btnPreschedule.setVisibility(View.GONE);
+//                btnGoLive.setVisibility(View.GONE);
+//                btnPreschedule.setVisibility(View.GONE);
                 startThreads();
             }
         });
