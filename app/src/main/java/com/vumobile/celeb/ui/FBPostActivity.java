@@ -1,6 +1,7 @@
 package com.vumobile.celeb.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,6 +53,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,6 +70,7 @@ import io.agora.rtc.Constants;
 
 public class FBPostActivity extends BaseActivity implements View.OnClickListener {
 
+    private ProgressDialog dialog;
     private ShareDialog shareDialog;
     private RelativeLayout imgVdoLayout;
     private LinearLayout selectImageVideoLayout;
@@ -83,7 +87,6 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private ProgressBar progressBar;
     long totalSize = 0;
     private TextView txtPercentage;
-    float rotateDegree = 270f;
     private ImageView btnBack, btnHome;
     private Toolbar toolbar;
     private Intent intent;
@@ -91,6 +94,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private EditText etComment;
     private String name, msisdn, celebID, gender, flags_notification, image_url;
     Uri uri;
+    String actionValue;
+    public static Uri fromHomeUri;
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -115,12 +120,34 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         initUI();
 
         Intent intent = getIntent();
+        actionValue = intent.getStringExtra("action_value");
         celebID = intent.getStringExtra("celeb_id");
         gender = intent.getStringExtra("gender");
         image_url = intent.getStringExtra("image_url");
         name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
+
+//        if (actionValue.equals("1")){
+//            String isImageOrNot = intent.getStringExtra("isImage");
+//            if (isImageOrNot.equals("1")){
+//                //uri = Uri.parse(intent.getStringExtra("uri"));
+//                filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, fromHomeUri));
+//                decodeFile(filePath);
+//                selectImageVideoLayout.setVisibility(View.GONE);
+//                imgVdoLayout.setVisibility(View.VISIBLE);
+//                previewMedia(isImage, filePath);
+//            }else if (isImageOrNot.equals("1")){
+//                selectImageVideoLayout.setVisibility(View.GONE);
+//                imgVdoLayout.setVisibility(View.VISIBLE);
+//                //handle video
+//                Toast.makeText(getApplicationContext(), "This is a video", Toast.LENGTH_LONG).show();
+//                isImage = false;
+//                //Uri uri = Uri.parse(intent.getStringExtra("uri"));
+//                filePath = getRealPathFromURI(getApplicationContext(), fromHomeUri);
+//                previewMedia(isImage, filePath);
+//            }
+//        }
 
     }
 
@@ -179,11 +206,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 choose_from_gallery();
                 break;
             case R.id.btnPost:
+
                 celebComment = etComment.getText().toString();
 
                 if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
                     TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
                 } else {
+
                     new UploadFileToServer().execute(filePath, celebComment);
                 }
 
@@ -437,6 +466,9 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         @Override
         protected void onPreExecute() {
             // setting progress bar to zero
+            dialog = new ProgressDialog(FBPostActivity.this);
+            dialog.setMessage("Uploading please wait..");
+            dialog.show();
             progressBar.setProgress(0);
             super.onPreExecute();
         }
@@ -541,7 +573,20 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         protected void onPostExecute(String result) {
             Log.e("FromServer", "Response from server: " + result);
             // showing the server response in an alert dialog
-            showAlert(result);
+            if (dialog!=null){
+                dialog.dismiss();
+            }
+
+            try {
+                JSONObject obj = new JSONObject(result);
+
+                String r = obj.getString("result");
+                showAlert(r);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
 
             super.onPostExecute(result);
         }
@@ -562,7 +607,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
      */
     private void showAlert(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(message).setTitle("Response from Servers")
+        builder.setMessage(message).setTitle("Upload Report")
                 .setCancelable(false)
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

@@ -1078,7 +1078,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     private String chat_msg, imageUrlProfile, price;
 
-    static int g_price = 0;
+     int g_price = 0;
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
 
