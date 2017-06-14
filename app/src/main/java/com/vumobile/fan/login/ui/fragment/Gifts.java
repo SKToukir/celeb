@@ -1,5 +1,6 @@
 package com.vumobile.fan.login.ui.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.bumptech.glide.Glide;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.ui.ChatRoomActivity;
@@ -49,7 +54,6 @@ public class Gifts extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_gifts, container, false);
         //    linearLayout = (LinearLayout) rootView.findViewById(R.id.linearlayout);
 
-
         // swipe to refresh
         swipeRefreshLayoutGift = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayoutGift);
         swipeRefreshLayoutGift.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -77,21 +81,50 @@ public class Gifts extends Fragment {
         giftRecyclerViewAdapter = new GiftRecyclerViewAdapter(getActivity(), giftItemModels);
 
         giftRecyclerViewAdapter.setClickListener((view, position) -> {
-            // view.findViewById(R.id.textViewPrice).getTag()
-            if (getActivity().getLocalClassName().contains("FanCelebProfileActivity")) {
-                //  Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
-                getActivity().onBackPressed();
-            } else if (getActivity().getLocalClassName().contains("ChatRoomActivity")) {
-                //   Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
-                ChatRoomActivity.postComment(getActivity().getApplicationContext(), giftItemModels.get(position).getPreviewURL());
-                Log.d(TAG, "onCreateView: " + giftItemModels.get(position).getPreviewURL());
-                getActivity().onBackPressed();
-            } else if (getActivity().getLocalClassName().contains("LiveRoomActivity")) {
-                //   Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
-                LiveRoomActivity.postComment(getActivity().getApplicationContext(), giftItemModels.get(position).getPreviewURL(), giftItemModels.get(position).getChargePrice());
-                Log.d(TAG, "onCreateView: " + giftItemModels.get(position).getPreviewURL());
-                getActivity().onBackPressed();
-            }
+
+            // custom dialog
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.dialog_confirm_gift);
+            dialog.setTitle("");
+
+            // set the custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.textViewDialogMessage);
+            text.setText("Want to send this Gift?");
+            ImageView imageViewDialogGift = (ImageView) dialog.findViewById(R.id.imageViewDialogGift);
+            imageViewDialogGift.setImageResource(R.mipmap.ic_launcher);
+            Glide.with(getActivity()).load(giftItemModels.get(position).getPreviewURL()).into(imageViewDialogGift);
+
+            Button buttonDialogCancel = (Button) dialog.findViewById(R.id.buttonDialogCancel);
+            Button buttonDialogOk = (Button) dialog.findViewById(R.id.buttonDialogOk);
+            // if button is clicked, close the custom dialog
+            buttonDialogCancel.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            // if button is clicked, send gift
+            buttonDialogOk.setOnClickListener(v -> {
+                // view.findViewById(R.id.textViewPrice).getTag()
+                if (getActivity().getLocalClassName().contains("FanCelebProfileActivity")) {
+                    //  Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                    getActivity().onBackPressed();
+                } else if (getActivity().getLocalClassName().contains("ChatRoomActivity")) {
+                    //   Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                    ChatRoomActivity.postComment(getActivity().getApplicationContext(), giftItemModels.get(position).getPreviewURL());
+                    Log.d(TAG, "onCreateView: " + giftItemModels.get(position).getPreviewURL());
+                    getActivity().onBackPressed();
+                } else if (getActivity().getLocalClassName().contains("LiveRoomActivity")) {
+                    //   Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
+                    LiveRoomActivity.postComment(getActivity().getApplicationContext(), giftItemModels.get(position).getPreviewURL(), giftItemModels.get(position).getChargePrice());
+                    Log.d(TAG, "onCreateView: " + giftItemModels.get(position).getPreviewURL());
+                    getActivity().onBackPressed();
+                }
+
+                dialog.dismiss();
+
+            });
+
+            dialog.show();
+
+
         });
 
         return rootView;

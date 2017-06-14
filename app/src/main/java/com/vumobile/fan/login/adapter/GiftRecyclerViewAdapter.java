@@ -25,9 +25,8 @@ public class GiftRecyclerViewAdapter extends RecyclerView.Adapter<GiftRecyclerVi
     private Context context;
     private List<GiftItemModel> giftItemModels;
 
-
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {// implements View.OnClickListener
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { // implements View.OnClickListener
         public ImageView imageViewGiftItem;
         public TextView textViewPrice;
 
@@ -54,14 +53,12 @@ public class GiftRecyclerViewAdapter extends RecyclerView.Adapter<GiftRecyclerVi
     // Inflates the cell layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_gift, parent, false);
-
         return new ViewHolder(itemView);
     }
 
-    // binds the data to the textview in each cell
+    // binds the data to the textView in each cell
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 

@@ -127,8 +127,17 @@ public class Api {
 
     // GIFT URL
     public static final String URL_GIFT = "http://wap.shabox.mobi/testwebapi/Fan/Gift?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; // GET http://wap.shabox.mobi/sticker_app_server/default.aspx?&contentCode=NEW_CONTENT
+    public static final String URL_GIFT_SEND = "http://wap.shabox.mobi/testwebapi/Fan/SendGift?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; // GET http://wap.shabox.mobi/sticker_app_server/default.aspx?&contentCode=NEW_CONTENT
+    public static final String GIFT_SEND_ID = "Id";
+    public static final String GIFT_SEND_GRAPHICS_CODE = "GraphicsCode";
+    public static final String GIFT_SEND_FAN = "Fan";
+    public static final String GIFT_SEND_CELEBRITY = "Celebrity";
+    public static final String GIFT_SEND_SENDING_TIME = "SendTime";
 
-// http://wap.shabox.mobi/testwebapi/Fan/Gift?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre
+
+
+
+
 
 
 
