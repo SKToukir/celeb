@@ -158,6 +158,8 @@ public class CelebHomeActivity extends BaseActivity
                     Log.d("FromServer",totalFollowers);
 
                     new Session().saveData(getApplicationContext(),celebName,msisdn,true,true,imageUrl);
+                    new Session().saveCelebId(celeb_id,CelebHomeActivity.this);
+                    new Session().saveGender(gender,CelebHomeActivity.this);
 
                     txtHomePageFollow.setText(totalFollowers);
                     txtFollowers.setText(totalFollowers);
@@ -310,6 +312,7 @@ public class CelebHomeActivity extends BaseActivity
             case R.id.etWhatsYourMind:
                 //TODO
                 Intent intent = new Intent(CelebHomeActivity.this,FBPostActivity.class);
+                intent.putExtra("action_value","0");
                 intent.putExtra("celeb_id",celeb_id);
                 intent.putExtra("gender",gender);
                 intent.putExtra("image_url",imageUrl);
@@ -456,25 +459,31 @@ public class CelebHomeActivity extends BaseActivity
             Uri selectedMediaUri = data.getData();
 
             if (selectedMediaUri.toString().contains("images")) {
-//                //handle image
-//                Uri uri = data.getData();
-//
-//                FBPostActivity.fromHomeUri = uri;
-//                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
-//                intent.putExtra("isImage","1");
-//                intent.putExtra("action_value","1");
-//                startActivity(intent);
+                //handle image
+                Uri uri = data.getData();
+
+                FBPostActivity.fromHomeUri = uri;
+                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+                intent.putExtra("isImage","1");
+                intent.putExtra("action_value","1");
+                intent.putExtra("celeb_id",celeb_id);
+                intent.putExtra("gender",gender);
+                intent.putExtra("image_url",imageUrl);
+                startActivity(intent);
 
             } else if (selectedMediaUri.toString().contains("video")) {
 
-//                Uri uri = data.getData();
-//
-//                FBPostActivity.fromHomeUri = uri;
-//                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
-//                intent.putExtra("uri",uri);
-//                intent.putExtra("action_value","1");
-//                intent.putExtra("isImage","0");
-//                startActivity(intent);
+                Uri uri = data.getData();
+
+                FBPostActivity.fromHomeUri = uri;
+                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+                intent.putExtra("uri",uri);
+                intent.putExtra("isImage","1");
+                intent.putExtra("action_value","1");
+                intent.putExtra("celeb_id",celeb_id);
+                intent.putExtra("gender",gender);
+                intent.putExtra("image_url",imageUrl);
+                startActivity(intent);
 
             }
 

@@ -76,8 +76,8 @@
                     android:id="@+id/btn_edit"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/downarrow"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp" />
+                    android:layout_width="30dp"
+                    android:layout_height="20dp" />
 
                 <LinearLayout
                     android:background="#0072bc"

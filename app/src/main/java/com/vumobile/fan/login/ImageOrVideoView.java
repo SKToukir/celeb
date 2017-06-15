@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -98,8 +99,14 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
 
         }
 
-        photoViewAttacher = new PhotoViewAttacher(imageViewMainPreview);
-        photoViewAttacher.update();
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            // larger than KitKat and newer versions
+            photoViewAttacher = new PhotoViewAttacher(imageViewMainPreview);
+            photoViewAttacher.update();
+        }
+
+
+
 
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_image_or_video_view);

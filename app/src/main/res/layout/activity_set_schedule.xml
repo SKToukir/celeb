@@ -27,6 +27,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:drawableLeft="@drawable/time"
             android:inputType="date"
             android:focusable="false"
             android:clickable="true"
@@ -37,6 +38,7 @@
             android:layout_height="50dp" />
 
         <EditText
+            android:drawableLeft="@drawable/date"
             android:clickable="true"
             android:focusable="false"
             android:inputType="time"
@@ -50,13 +52,14 @@
 
 
         <com.vumobile.utils.MyTextView
-            android:textColor="#fff"
+            android:textColor="@color/myColorTwoHeader"
             android:text="To"
             android:textSize="30sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <EditText
+            android:drawableLeft="@drawable/date"
             android:clickable="true"
             android:focusable="false"
             android:inputType="time"

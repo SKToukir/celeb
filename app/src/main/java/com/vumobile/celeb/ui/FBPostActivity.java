@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.facebook.FacebookSdk;
@@ -122,32 +121,33 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         Intent intent = getIntent();
         actionValue = intent.getStringExtra("action_value");
         celebID = intent.getStringExtra("celeb_id");
+
+        Log.d("celebId",Session.fetchCelebId(getApplicationContext()));
+
         gender = intent.getStringExtra("gender");
         image_url = intent.getStringExtra("image_url");
         name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
-
-//        if (actionValue.equals("1")){
-//            String isImageOrNot = intent.getStringExtra("isImage");
-//            if (isImageOrNot.equals("1")){
-//                //uri = Uri.parse(intent.getStringExtra("uri"));
-//                filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, fromHomeUri));
-//                decodeFile(filePath);
-//                selectImageVideoLayout.setVisibility(View.GONE);
-//                imgVdoLayout.setVisibility(View.VISIBLE);
-//                previewMedia(isImage, filePath);
-//            }else if (isImageOrNot.equals("1")){
-//                selectImageVideoLayout.setVisibility(View.GONE);
-//                imgVdoLayout.setVisibility(View.VISIBLE);
-//                //handle video
-//                Toast.makeText(getApplicationContext(), "This is a video", Toast.LENGTH_LONG).show();
-//                isImage = false;
-//                //Uri uri = Uri.parse(intent.getStringExtra("uri"));
-//                filePath = getRealPathFromURI(getApplicationContext(), fromHomeUri);
-//                previewMedia(isImage, filePath);
-//            }
-//        }
+        if (actionValue.equals("1")){
+            String isImageOrNot = intent.getStringExtra("isImage");
+            if (isImageOrNot.equals("1")){
+                //uri = Uri.parse(intent.getStringExtra("uri"));
+                filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, fromHomeUri));
+                decodeFile(filePath);
+                selectImageVideoLayout.setVisibility(View.GONE);
+                imgVdoLayout.setVisibility(View.VISIBLE);
+                previewMedia(isImage, filePath,fromHomeUri);
+            }else if (isImageOrNot.equals("1")){
+                selectImageVideoLayout.setVisibility(View.GONE);
+                imgVdoLayout.setVisibility(View.VISIBLE);
+                //handle video
+                isImage = false;
+                //Uri uri = Uri.parse(intent.getStringExtra("uri"));
+                filePath = getRealPathFromURI(getApplicationContext(), fromHomeUri);
+                previewMedia(isImage, filePath);
+            }
+        }
 
     }
 
@@ -207,6 +207,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btnPost:
 
+                hideKeyboard();
+
                 celebComment = etComment.getText().toString();
 
                 if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
@@ -265,7 +267,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
             if (selectedMediaUri.toString().contains("images")) {
                 //handle image
-                Toast.makeText(getApplicationContext(), "This is a image", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "This is a image", Toast.LENGTH_LONG).show();
                 isImage = true;
                 uri = data.getData();
                 filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, uri));
@@ -278,7 +280,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 selectImageVideoLayout.setVisibility(View.GONE);
                 imgVdoLayout.setVisibility(View.VISIBLE);
                 //handle video
-                Toast.makeText(getApplicationContext(), "This is a video", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "This is a video", Toast.LENGTH_LONG).show();
                 isImage = false;
                 Uri uri = data.getData();
                 filePath = getRealPathFromURI(getApplicationContext(), uri);
@@ -286,6 +288,40 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
             }
 
+        }
+    }
+
+    private void previewMedia(boolean isImage, String s, Uri fromHomeUri) {
+        // Checking whether captured media is image or video
+        if (isImage) {
+            imgPreview.setVisibility(View.VISIBLE);
+            vdoPreview.setVisibility(View.GONE);
+//            // bimatp factory
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//
+//            // down sizing image as it throws OutOfMemory Exception for larger
+//            // images
+//            options.inSampleSize = 8;
+//
+//            final Bitmap bitmap = BitmapFactory.decodeFile(s, options);
+//
+//            imageBitmap = bitmap;
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(fromHomeUri));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            imgPreview.setImageBitmap(bitmap);
+            //rotate(rotateDegree);
+        } else {
+            btn_edit.setVisibility(View.GONE);
+            imgPreview.setVisibility(View.GONE);
+            vdoPreview.setVisibility(View.VISIBLE);
+            vdoPreview.setVideoPath(s);
+            // start playing
+            vdoPreview.pause();
         }
     }
 
@@ -468,13 +504,23 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             // setting progress bar to zero
             dialog = new ProgressDialog(FBPostActivity.this);
             dialog.setMessage("Uploading please wait..");
-            dialog.show();
+
+            try{
+                dialog.show();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             progressBar.setProgress(0);
             super.onPreExecute();
         }
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
+
+
+
+
             // Making progress bar visible
             progressBar.setVisibility(View.VISIBLE);
             txtPercentage.setVisibility(View.VISIBLE);
@@ -512,6 +558,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                                 publishProgress((int) ((num / (float) totalSize) * 100));
                             }
                         });
+
+                celebID = Session.fetchCelebId(getApplicationContext());
 
                 File sourceFile = new File(fPath);
 
@@ -573,15 +621,23 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         protected void onPostExecute(String result) {
             Log.e("FromServer", "Response from server: " + result);
             // showing the server response in an alert dialog
-            if (dialog!=null){
-                dialog.dismiss();
-            }
+
 
             try {
                 JSONObject obj = new JSONObject(result);
 
                 String r = obj.getString("result");
-                showAlert(r);
+
+                if (r.equals("Success")){
+                    dialog.dismiss();
+
+                    progressBar.setVisibility(View.GONE);
+                    txtPercentage.setVisibility(View.GONE);
+                    Intent intent = new Intent(FBPostActivity.this, CelebEditPostActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -611,9 +667,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 .setCancelable(false)
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finish();
+
                         progressBar.setVisibility(View.GONE);
                         txtPercentage.setVisibility(View.GONE);
+                        Intent intent = new Intent(FBPostActivity.this, CelebEditPostActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
                     }
                 });
         AlertDialog alert = builder.create();
