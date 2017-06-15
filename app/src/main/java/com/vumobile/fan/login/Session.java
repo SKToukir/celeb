@@ -12,7 +12,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Session {
 
-    public static final String CHAT_REQUEST = "chat_request";
+    public static final String GENDER = "gender";
+    public static final String CELEB_ID = "celeb_id";
     public static final String VIDEO_CALL_REQUEST = "video_call_request";
     public static String MY_PREFS_NAME = "login_session";
     public static String USER_NAME = "name";
@@ -34,6 +35,22 @@ public class Session {
         editor.putString(USER_PHONE, phoneNumber);
         editor.putBoolean(CHECK_LOGIN, checkLogin);
         editor.putBoolean(IS_CELEB, isCeleb);
+        editor.commit();
+
+    }
+
+    public void saveCelebId (String celebId, Context cntx){
+
+        SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(CELEB_ID, celebId);
+        editor.commit();
+
+    }
+
+    public void saveGender (String celebId, Context cntx){
+
+        SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(CELEB_ID, celebId);
         editor.commit();
 
     }
@@ -148,6 +165,17 @@ public class Session {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt(MY_COUNTER_NOTIF_KEY, count);
         editor.apply();
+    }
+
+
+    public static String fetchCelebId(Context cntx){
+        String celebId = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString(CELEB_ID,"no data saved");
+        return celebId;
+    }
+
+    public static String fetchGender(Context cntx){
+        String celebId = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).getString(GENDER,"no data saved");
+        return celebId;
     }
 
     public static int fetchNotifShowCounter(Context cntx){
