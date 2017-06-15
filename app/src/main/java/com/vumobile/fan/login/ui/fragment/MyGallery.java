@@ -96,7 +96,7 @@ public class MyGallery extends Fragment {
         fanCelebImageRecyclerViewAdapter.setClickListener((view, position) -> {
             Intent intent = new Intent(getActivity(), ImageOrVideoView.class);
             intent.putExtra("IMG_OR_VID", "1");
-            intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItem).getTag().toString());
+            intent.putExtra("IMG_OR_VID_URL", fanCelebImageModelEntities.get(position).getImageUrl()); //view.findViewById(R.id.imageViewRecyclerItem).getTag().toString())
             startActivity(intent);
         });
 
@@ -104,7 +104,7 @@ public class MyGallery extends Fragment {
             Intent intent = new Intent(getActivity(), ImageOrVideoView.class);
             intent.putExtra("FROM_OFFLINE_GALLERY", "Y");
             intent.putExtra("IMG_OR_VID", "2");
-            intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItemVThumb).getTag().toString());
+            intent.putExtra("IMG_OR_VID_URL", fanCelebVideoModelEntities.get(position).getVideoUrl()); //view.findViewById(R.id.imageViewRecyclerItemVThumb).getTag().toString())
             startActivity(intent);
         });
 
@@ -116,7 +116,6 @@ public class MyGallery extends Fragment {
         swipeRefreshLayoutCelebImages.setRefreshing(true);
         fanCelebImageModelEntities.clear();
 
-
         ArrayList<String> mFiles = new ArrayList<String>();
         File mDirectory;
         String folderPath = Environment.getExternalStorageDirectory().toString() + "/CelebApp/";
@@ -124,9 +123,13 @@ public class MyGallery extends Fragment {
 
         // Get the files in the directory
         File[] files = mDirectory.listFiles();
-        Log.d(TAG, "fetchCelebImages: " + files.length);
-        if (files != null && files.length > 0) {
+        try {
+            Log.d(TAG, "fetchCelebImages: " + files.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        if (files != null && files.length > 0) {
             for (File f : files) {
                 String fUrl = f.getAbsolutePath().replaceAll(" ", "%20");
                 if (fUrl.toLowerCase().endsWith(".jpg") || fUrl.toLowerCase().endsWith(".png") ||
@@ -139,25 +142,27 @@ public class MyGallery extends Fragment {
                     fanCelebImageRecyclerViewAdapter.notifyDataSetChanged();
                 }
             }
-
         }
-
         swipeRefreshLayoutCelebImages.setRefreshing(false);
-
     }
 
     private void fetchCelebVideos() {
         swipeRefreshLayoutCelebVideos.setRefreshing(true);
         fanCelebVideoModelEntities.clear();
 
-        ArrayList<String> mFiles = new ArrayList<String>();
+        ArrayList<String> mFiles = new ArrayList<>();
         File mDirectory;
         String folderPath = Environment.getExternalStorageDirectory().toString() + "/CelebApp/";
         mDirectory = new File(folderPath);
 
         // Get the files in the directory
         File[] files = mDirectory.listFiles();
-        Log.d(TAG, "fetchCelebImages: " + files.length);
+        try {
+            Log.d(TAG, "fetchCelebImages: " + files.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (files != null && files.length > 0) {
 
             for (File f : files) {
@@ -173,9 +178,7 @@ public class MyGallery extends Fragment {
                     recyclerViewCelebVideos.setAdapter(fanCelebVideoRecyclerViewAdapterOffline);
                     fanCelebVideoRecyclerViewAdapterOffline.notifyDataSetChanged();
                 }
-
             }
-
         }
 
         swipeRefreshLayoutCelebVideos.setRefreshing(false);

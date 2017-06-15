@@ -177,7 +177,7 @@
                 android:id="@+id/userCodeWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/dark_black"
+                android:background="@color/pure_white"
                 android:gravity="center"
                 android:visibility="visible">
 
@@ -190,7 +190,7 @@
                     android:inputType="number"
                     android:maxLength="6"
                     android:maxLines="1"
-                    android:textColor="@color/myColorOneBody" />
+                    android:textColor="#000" />
 
             </android.support.design.widget.TextInputLayout>
 

@@ -96,7 +96,7 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
         recyclerViewCelebImages.setItemAnimator(new DefaultItemAnimator());
         recyclerViewCelebVideos.setItemAnimator(new DefaultItemAnimator());
 
-        activity_fan_gallery = (LinearLayout)findViewById(R.id.activity_fan_gallery);
+        activity_fan_gallery = (LinearLayout) findViewById(R.id.activity_fan_gallery);
 
         // msisdn form previous activity
         boolean isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
@@ -123,21 +123,20 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
         fanCelebImageRecyclerViewAdapter.setClickListener((view, position) -> {
             Intent intent = new Intent(this, ImageOrVideoView.class);
             intent.putExtra("IMG_OR_VID", "1");
-            intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItem).getTag().toString());
+            intent.putExtra("IMG_OR_VID_URL", fanCelebImageModelEntities.get(position).getImageUrl());//view.findViewById(R.id.imageViewRecyclerItem).getTag().toString())
             startActivity(intent);
         });
 
         fanCelebVideoRecyclerViewAdapter.setClickListener((view, position) -> {
             Intent intent = new Intent(this, ImageOrVideoView.class);
             intent.putExtra("IMG_OR_VID", "2");
-            intent.putExtra("IMG_OR_VID_URL", view.findViewById(R.id.imageViewRecyclerItemVThumb).getTag().toString());
+            intent.putExtra("IMG_OR_VID_URL", fanCelebVideoModelEntities.get(position).getVideoUrl());
             startActivity(intent);
         });
 
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_fan_gallery);
         new MyInternetCheckReceiver(activity_fan_gallery);
-
 
     } // end of OnCreate
 

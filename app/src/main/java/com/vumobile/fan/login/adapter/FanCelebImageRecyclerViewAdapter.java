@@ -70,7 +70,7 @@ public class FanCelebImageRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
                 .thumbnail(.5f)
                 .into(holder.imageViewRecyclerItem);
 
-        holder.imageViewRecyclerItem.setTag(fanCelebImageModelEntity.getImageUrl());
+    //    holder.imageViewRecyclerItem.setTag(fanCelebImageModelEntity.getImageUrl());
 
         // holder.imageViewRecyclerItem.setImageDrawable(context.getResources().getDrawable(R.drawable.unfollow));
         Log.d("adapter ttt", "onBindViewHolder: " + fanCelebImageModelEntity.getImageUrl());

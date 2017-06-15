@@ -71,7 +71,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 
         Intent intent = getIntent();
         LIVE_SCHEDULE = intent.getStringExtra("live");
-        Log.d("LIVE_SCHEDULE",LIVE_SCHEDULE);
+        // Log.d("LIVE_SCHEDULE",LIVE_SCHEDULE);
         fanMsisdn = intent.getStringExtra("msisdn");
 
         calendar = Calendar.getInstance();
@@ -181,20 +181,20 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                 }
 
 
-                if (LIVE_SCHEDULE.equals("3")){
+//                if (LIVE_SCHEDULE.equals("3")){
+//
+//                    setLiveSchedule(Api.API_LIVE_SCHEDULE);
+//
+//                }else {
 
-                    setLiveSchedule(Api.API_LIVE_SCHEDULE);
-
-                }else {
-
-                    confirmation(Api.URL_REQUESTS_ACCEPT, "1");
-                }
+                confirmation(Api.URL_REQUESTS_ACCEPT, "1");
+//                }
 
                 break;
         }
     }
 
-    private void setLiveSchedule(String apiLiveSchedule){
+    private void setLiveSchedule(String apiLiveSchedule) {
 
         room_name = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE) + fanMsisdn;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, apiLiveSchedule,
@@ -203,7 +203,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                     public void onResponse(String response) {
                         Log.d("LIVE_SCHEDULE", response.toString());
 
-                        TastyToast.makeText(getApplicationContext(),response.toString(),TastyToast.LENGTH_LONG,TastyToast.SUCCESS).show();
+                        TastyToast.makeText(getApplicationContext(), response.toString(), TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
 
                         intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -225,14 +225,10 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-
-                    Log.d("LIVE_SCHEDULE","set live schedule");
-                    params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
-                    params.put("StartTime", startTime);
-                    params.put("EndTime", endTime);
-
-
-
+                Log.d("LIVE_SCHEDULE", "set live schedule");
+                params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+                params.put("StartTime", startTime);
+                params.put("EndTime", endTime);
 
                 return params;
             }
@@ -276,20 +272,20 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                if (flag.equals("3")){
-                    Log.d("LIVE_SCHEDULE","set live schedule");
+                if (flag.equals("3")) {
+                    Log.d("LIVE_SCHEDULE", "set live schedule");
                     params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
                     params.put("StartTime", startTime);
                     params.put("EndTime", endTime);
 
-                }else {
+                } else {
                     params.put("Fan", fanMsisdn);
                     params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
                     params.put("flag", flag);
                     params.put("StartTime", startTime);
                     params.put("EndTime", endTime);
                     params.put("RoomNumber", room_name);
-                    Log.d("LIVE_SCHEDULE","set other schedule");
+                    Log.d("LIVE_SCHEDULE", "set other schedule");
 
                 }
 

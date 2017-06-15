@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -110,6 +112,7 @@ public class ParentActivity extends BaseActivity
         notificationRegister();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         initUI();
 
@@ -543,6 +546,8 @@ public class ParentActivity extends BaseActivity
 
     SearchView searchView = null;
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -551,14 +556,45 @@ public class ParentActivity extends BaseActivity
         getMenuInflater().inflate(R.menu.parent, menu);
 
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        if (myActionMenuItem == null) {
+            return true;
+        }
         searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+//------------------------------------------------------------------------------
+
+
+        MenuItemCompat.setOnActionExpandListener(myActionMenuItem, new MenuItemCompat.OnActionExpandListener() {
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Toast ic_like print
-                // Toast.makeText(ParentActivity.this, "" + query, Toast.LENGTH_SHORT).show();
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Set styles for expanded state here
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.myColorTwoHeaderLite)));
 
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Set styles for collapsed state here
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.myColorTwoHeader)));
+                }
+                return true;
+            }
+        });
+//------------------------------------------------------------------------------
+
+
+
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
                 if (!searchView.isIconified()) {
                     searchView.setIconified(true);
                 }
@@ -566,10 +602,8 @@ public class ParentActivity extends BaseActivity
                 searchView.onActionViewCollapsed();
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String s) {
-//                Toast.makeText(ParentActivity.this, "" + s, Toast.LENGTH_SHORT).show();
                 // Filter
                 s = s.toLowerCase(Locale.getDefault());
                 celebrityClassList.clear();
@@ -583,9 +617,7 @@ public class ParentActivity extends BaseActivity
                     }
                     Log.d("foreach", "onQueryTextChange: " + celebrityClassListCopy.size());
                 }
-
                 adapter.notifyDataSetChanged();
-
                 return false;
             }
         });
@@ -721,8 +753,6 @@ public class ParentActivity extends BaseActivity
 
                 // Commit the transaction
                 transactionHistory.commit();
-
-
                 drawer.closeDrawers();
                 break;
 
@@ -785,21 +815,21 @@ public class ParentActivity extends BaseActivity
     }
 
     private void changeButtonSelectFocus(Button button) {
-        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonFilterAll.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterAll.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterAll.setTag("ITEM");
-        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterFollowing.setTag("ITEM");
-        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonMostLive.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonMostLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonMostLive.setTag("ITEM");
-        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonFilterLive.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterLive.setTag("ITEM");
 
-        button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background_lite));
-        button.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        button.setTextColor(getResources().getColor(R.color.pure_white));
         button.setTag("SELECT_ITEM");
     }
 

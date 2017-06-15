@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/myColorTwoHeader"
+    app:theme="@style/ToolbarColoredBackArrow"
     android:fitsSystemWindows="true"
     android:minHeight="?attr/actionBarSize">
 

@@ -41,6 +41,7 @@ public class MyVolleyRequest {
 
         Volley.newRequestQueue(context).add(stringRequest);
     }
+
     public static void getAllGenericDataJsonObject(Context context, int method, String url, AllVolleyInterfaces.MyJsonObjectRequest myJsonObjectRequest) {
         JsonObjectRequest request = new JsonObjectRequest(method, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -56,7 +57,8 @@ public class MyVolleyRequest {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public static void setRegId(Context context, int method, String url, HashMap<String,String> params, AllVolleyInterfaces.ResponseString responseString) {
+    public static void sendAllGenericDataJsonObject(Context context, int method, String url, HashMap<String, String> params,
+                                                    AllVolleyInterfaces.ResponseString responseString) {
 
         StringRequest stringRequest = new StringRequest(method, url,
                 new Response.Listener<String>() {
@@ -72,7 +74,33 @@ public class MyVolleyRequest {
                         error.printStackTrace();
                         responseString.getResponseErr(error.getMessage());
                     }
-                }){
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(stringRequest);
+    }
+
+    public static void setRegId(Context context, int method, String url, HashMap<String, String> params, AllVolleyInterfaces.ResponseString responseString) {
+
+        StringRequest stringRequest = new StringRequest(method, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+                        responseString.getResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        responseString.getResponseErr(error.getMessage());
+                    }
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return params;

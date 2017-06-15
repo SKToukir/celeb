@@ -6,7 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/white</item>
+
+
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
@@ -14,11 +15,19 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:searchSuggestSelection">@color/white</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="colorControlNormal">@color/pure_white</item>
+        <item name="android:textColorPrimary">@color/dark_black</item>
+        <item name="android:textColorSecondary">@color/dark_black</item>
+        <item name="android:searchSuggestSelection">@color/dark_black</item>
+    </style>
 
 
 </resources>

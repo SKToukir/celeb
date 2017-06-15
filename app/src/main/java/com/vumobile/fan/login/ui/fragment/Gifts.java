@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -89,7 +90,7 @@ public class Gifts extends Fragment {
 
             // set the custom dialog components - text, image and button
             TextView text = (TextView) dialog.findViewById(R.id.textViewDialogMessage);
-            text.setText("Want to send this Gift?");
+            text.setText("This will cost " + giftItemModels.get(position).getChargePrice() + "\nWant to send this Gift?");
             ImageView imageViewDialogGift = (ImageView) dialog.findViewById(R.id.imageViewDialogGift);
             imageViewDialogGift.setImageResource(R.mipmap.ic_launcher);
             Glide.with(getActivity()).load(giftItemModels.get(position).getPreviewURL()).into(imageViewDialogGift);
@@ -102,6 +103,7 @@ public class Gifts extends Fragment {
             });
             // if button is clicked, send gift
             buttonDialogOk.setOnClickListener(v -> {
+
                 // view.findViewById(R.id.textViewPrice).getTag()
                 if (getActivity().getLocalClassName().contains("FanCelebProfileActivity")) {
                     //  Toast.makeText(getActivity().getApplicationContext(), "Gift item :" + getActivity().getLocalClassName(), Toast.LENGTH_SHORT).show();
@@ -119,15 +121,41 @@ public class Gifts extends Fragment {
                 }
 
                 dialog.dismiss();
+                // save sticker send info to db
+                sendGiftSendingInformation();
 
             });
 
             dialog.show();
 
-
         });
 
         return rootView;
+    }
+
+    private void sendGiftSendingInformation() {
+
+        HashMap<String, String> params = new HashMap<>();
+//        params.put("MSISDN", Session.retreivePhone(getActivity(), Session.USER_PHONE));
+//        params.put("RegId", regId);
+
+        String myUrl = Api.URL_GIFT_SEND;
+        MyVolleyRequest.sendAllGenericDataJsonObject(getActivity().getApplicationContext(),
+                Request.Method.GET,
+                myUrl,
+                params,
+                new AllVolleyInterfaces.ResponseString() {
+                    @Override
+                    public void getResponse(String responseResult) {
+                        Log.d(TAG, "getResponse: " + responseResult);
+                    }
+
+                    @Override
+                    public void getResponseErr(String responseResultErr) {
+                        Log.d(TAG, "getResponseErr: " + responseResultErr);
+                    }
+                }
+        );
     }
 
     private void fetchGiftImages() {
@@ -156,7 +184,6 @@ public class Gifts extends Fragment {
                                 jo.getString("TimeStamp")
                         );
                         Log.d(TAG, "getResponse: " + giftItemModel.toString());
-
                         giftItemModels.add(giftItemModel);
                         recyclerViewGift.setAdapter(giftRecyclerViewAdapter);
                         giftRecyclerViewAdapter.notifyDataSetChanged();

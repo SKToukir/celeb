@@ -1,1 +1,28 @@
-<resources></resources>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:searchViewStyle">@color/white</item>
+        <item name="android:searchSuggestSelection">@color/white</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:searchViewStyle">@color/white</item>
+        <item name="android:searchSuggestSelection">@color/white</item>
+    </style>
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="colorControlNormal">@color/pure_white</item>
+        <item name="android:textColorPrimary">@color/pure_white</item>
+        <item name="android:textColorSecondary">@color/pure_white</item>
+        <item name="android:searchViewStyle">@color/pure_white</item>
+    </style>
+</resources>

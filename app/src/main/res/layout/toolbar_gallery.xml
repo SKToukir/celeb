@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@color/myColorTwoHeader"
     android:fitsSystemWindows="true"
-    android:minHeight="?attr/actionBarSize">
+    android:minHeight="?attr/actionBarSize"
+    app:theme="@style/ToolbarColoredBackArrow">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,31 +15,31 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/backCelebGallery"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/back"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/home"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="2dp"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_home"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:src="@drawable/ic_home" />
 
         <TextView
-            android:layout_marginLeft="5dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/backCelebGallery"
             android:text="Gallery"
-            android:textSize="25dp"
             android:textColor="#fff"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" />
+            android:textSize="25dp" />
 
     </RelativeLayout>
 

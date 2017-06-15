@@ -77,6 +77,7 @@
             </intent-filter>
 
             <meta-data
+                android:value="@color/pure_white"
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
