@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
@@ -14,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -54,6 +52,7 @@ import com.vumobile.celeb.ui.ScheduleActivity;
 import com.vumobile.fan.login.FanCelebProfileActivity;
 import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.model.TempInfoModel;
 import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
 import com.vumobile.fan.login.serverrequest.MyVolleyRequest;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
@@ -140,6 +139,9 @@ public class ParentActivity extends BaseActivity
         listCeleb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // to get from Gifts fragment
+                TempInfoModel.setCelebMsisdn(celebrityClassList.get(i).getCeleb_code());
 
                 String name = celebrityClassList.get(i).getCeleb_name();
                 String msisdn = celebrityClassList.get(i).getCeleb_code();
@@ -281,7 +283,7 @@ public class ParentActivity extends BaseActivity
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.d("FromServer fan p", volleyError.toString());
-                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -335,7 +337,7 @@ public class ParentActivity extends BaseActivity
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.d("FromServer", volleyError.toString());
-                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -391,7 +393,7 @@ public class ParentActivity extends BaseActivity
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.d("FromServer", volleyError.toString());
-                Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                //    Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -444,7 +446,7 @@ public class ParentActivity extends BaseActivity
                     @Override
                     public void getResponseErr(VolleyError volleyError) {
                         Log.d("FromServer ttt", volleyError.toString());
-                        Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+                        //      Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
@@ -547,7 +549,6 @@ public class ParentActivity extends BaseActivity
     SearchView searchView = null;
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -556,40 +557,37 @@ public class ParentActivity extends BaseActivity
         getMenuInflater().inflate(R.menu.parent, menu);
 
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
-        if (myActionMenuItem == null) {
-            return true;
-        }
+//        if (myActionMenuItem == null) {
+//            return true;
+//        }
         searchView = (SearchView) myActionMenuItem.getActionView();
 
 
 //------------------------------------------------------------------------------
 
 
-        MenuItemCompat.setOnActionExpandListener(myActionMenuItem, new MenuItemCompat.OnActionExpandListener() {
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                // Set styles for expanded state here
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.myColorTwoHeaderLite)));
-
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                // Set styles for collapsed state here
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.myColorTwoHeader)));
-                }
-                return true;
-            }
-        });
+//        MenuItemCompat.setOnActionExpandListener(myActionMenuItem, new MenuItemCompat.OnActionExpandListener() {
+//
+//            @Override
+//            public boolean onMenuItemActionExpand(MenuItem item) {
+//                // Set styles for expanded state here
+//                if (getSupportActionBar() != null) {
+//                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.myColorTwoHeaderLite)));
+//
+//                }
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onMenuItemActionCollapse(MenuItem item) {
+//                // Set styles for collapsed state here
+//                if (getSupportActionBar() != null) {
+//                    getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.myColorTwoHeader)));
+//                }
+//                return true;
+//            }
+//        });
 //------------------------------------------------------------------------------
-
-
-
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -602,6 +600,7 @@ public class ParentActivity extends BaseActivity
                 searchView.onActionViewCollapsed();
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 // Filter
@@ -815,21 +814,21 @@ public class ParentActivity extends BaseActivity
     }
 
     private void changeButtonSelectFocus(Button button) {
-        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        buttonFilterAll.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonFilterAll.setTextColor(getResources().getColor(R.color.pure_white));
         buttonFilterAll.setTag("ITEM");
-        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.pure_white));
         buttonFilterFollowing.setTag("ITEM");
-        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        buttonMostLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonMostLive.setTextColor(getResources().getColor(R.color.pure_white));
         buttonMostLive.setTag("ITEM");
-        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        buttonFilterLive.setTextColor(getResources().getColor(R.color.pure_white));
         buttonFilterLive.setTag("ITEM");
 
-        button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        button.setTextColor(getResources().getColor(R.color.pure_white));
+        button.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        button.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         button.setTag("SELECT_ITEM");
     }
 

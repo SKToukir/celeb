@@ -6,7 +6,19 @@ package com.vumobile.fan.login.model;
 
 public class GiftItemModel {
 
-    String GraphicsCode, ContentTitle, ContentType, PhysicalFileName, PreviewURL, ChargeType, ChargePrice, TimeStamp;
+    String _id, GraphicsCode, ContentTitle, ContentType, PhysicalFileName, PreviewURL, ChargeType, ChargePrice, TimeStamp;
+
+    public GiftItemModel(String _id, String graphicsCode, String contentTitle, String contentType, String physicalFileName, String previewURL, String chargeType, String chargePrice, String timeStamp) {
+        this._id = _id;
+        GraphicsCode = graphicsCode;
+        ContentTitle = contentTitle;
+        ContentType = contentType;
+        PhysicalFileName = physicalFileName;
+        PreviewURL = previewURL;
+        ChargeType = chargeType;
+        ChargePrice = chargePrice;
+        TimeStamp = timeStamp;
+    }
 
     public GiftItemModel(String graphicsCode, String contentTitle, String contentType, String physicalFileName, String previewURL, String chargeType, String chargePrice, String timeStamp) {
         GraphicsCode = graphicsCode;
@@ -17,6 +29,14 @@ public class GiftItemModel {
         ChargeType = chargeType;
         ChargePrice = chargePrice;
         TimeStamp = timeStamp;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getGraphicsCode() {

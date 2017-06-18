@@ -214,7 +214,6 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
                     TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
                 } else {
-
                     new UploadFileToServer().execute(filePath, celebComment);
                 }
 
