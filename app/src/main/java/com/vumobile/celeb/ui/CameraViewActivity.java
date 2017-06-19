@@ -64,10 +64,10 @@ public class CameraViewActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 //mCamera.release();
-                Intent intent = new Intent(CameraViewActivity.this, SetScheduleActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("live","3");
+                Intent intent = new Intent(CameraViewActivity.this, SetScheduleForLiveActivity.class);
                 startActivity(intent);
+                mCamera.release();
+                finish();
             }
         });
     }

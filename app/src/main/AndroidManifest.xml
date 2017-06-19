@@ -77,9 +77,9 @@
             </intent-filter>
 
             <meta-data
-                android:value="@color/pure_white"
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable"
+                android:value="@color/pure_white" />
         </activity>
         <activity android:name=".ui.CelebrityProfileActivity" />
         <activity
@@ -198,7 +198,8 @@
 
         <service android:name="com.vumobile.utils.ChatService" />
 
-        <activity android:name=".ui.GiftsActivity"></activity>
+        <activity android:name=".ui.GiftsActivity" />
+        <activity android:name=".ui.SetScheduleForLiveActivity"></activity>
     </application>
 
 </manifest>

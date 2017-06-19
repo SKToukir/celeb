@@ -97,6 +97,9 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         initUI();
 
+        if (Session.isCeleb(ChatRoomActivity.this,Session.IS_CELEB)){
+            imageViewChatGift.setVisibility(View.GONE);
+        }
 
         // dont create room here .. create room when confirm user for chat
 
@@ -168,7 +171,12 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.imageViewChatSend:
                 chatText = editTextChatText.getText().toString();
-                postComment(getApplicationContext(), chatText);
+
+                if (!chatText.equals("")){
+                    postComment(getApplicationContext(), chatText);
+                }else {
+                    Log.d("ChatText","Null");
+                }
                 // clear text box
                 editTextChatText.setText("");
                 //  listView.setSelection(adapter.getCount() - 1);

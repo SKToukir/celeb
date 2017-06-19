@@ -87,7 +87,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
+                android:layout_height="160dp"
                 android:orientation="vertical">
 
 
@@ -109,11 +109,28 @@
                     android:isScrollContainer="true"
                     android:maxLines="6"
                     android:minLines="6"
-                    android:padding="10dp" />
+                    android:padding="5dp" />
 
 
                 <!-- Videoview to preview recorded video -->
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="10dp"
+                    android:layout_below="@+id/myText"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/txtPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progressBar"
+                    android:layout_gravity="center"
+                    android:text="100%"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -173,6 +190,7 @@
 
 
                     <com.vumobile.utils.MyTextView
+                        android:visibility="gone"
                         android:id="@+id/myText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,6 +203,7 @@
                         android:textSize="20sp" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/imageIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -194,33 +213,13 @@
                         android:src="@drawable/iamgeicon" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="5dp"
                         android:layout_toLeftOf="@+id/imageIcon"
                         android:src="@drawable/videoicon" />
-
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="200dp"
-                        android:layout_height="10dp"
-                        android:layout_below="@+id/myText"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="10dp"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/txtPercentage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/progressBar"
-                        android:layout_gravity="center"
-                        android:text="100%"
-                        android:visibility="gone" />
 
 
                 </RelativeLayout>
@@ -233,8 +232,8 @@
 
                     <Button
                         android:id="@+id/btnGetPhotoVideo"
-                        android:layout_width="160dp"
-                        android:layout_height="50dp"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
                         android:layout_alignLeft="@+id/btnGoLive"
                         android:layout_alignStart="@+id/btnGoLive"
                         android:layout_below="@+id/btnGoLive"
@@ -244,8 +243,8 @@
 
                     <Button
                         android:id="@+id/btnGoLive"
-                        android:layout_width="160dp"
-                        android:layout_height="50dp"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
                         android:layout_alignLeft="@+id/etWhatsYourMind"
                         android:layout_alignStart="@+id/etWhatsYourMind"
                         android:layout_below="@+id/etWhatsYourMind"

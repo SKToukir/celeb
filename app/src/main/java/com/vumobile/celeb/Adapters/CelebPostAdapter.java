@@ -235,11 +235,18 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
 
 
                 } else {
-                    Intent intent = new Intent(mContext, ImageOrVideoView.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("IMG_OR_VID", holder.textViewNotificationMessage.getTag().toString());
-                    intent.putExtra("IMG_OR_VID_URL", holder.videoViewNotif.getTag().toString());
-                    mContext.startActivity(intent);
+
+                    try{
+                        Intent intent = new Intent(mContext, ImageOrVideoView.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("IMG_OR_VID", holder.textViewNotificationMessage.getTag().toString());
+                        intent.putExtra("IMG_OR_VID_URL", holder.videoViewNotif.getTag().toString());
+                        mContext.startActivity(intent);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+
                 }
             }
         });

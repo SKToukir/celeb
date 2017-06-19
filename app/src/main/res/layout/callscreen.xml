@@ -83,12 +83,14 @@
         android:layout_weight="0.5">
         <Button
             android:id="@+id/hangupButton"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:layout_width="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:layout_width="200dp"
+            android:text="End Call"
+            android:textColor="#fff"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/button_end"/>
+            android:background="@drawable/round_corner_end_call"/>
 
     </RelativeLayout>
 
