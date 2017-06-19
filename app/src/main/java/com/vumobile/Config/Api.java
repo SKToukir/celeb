@@ -133,6 +133,7 @@ public class Api {
     public static final String GIFT_SEND_FAN = "Fan";
     public static final String GIFT_SEND_CELEBRITY = "Celebrity";
     public static final String GIFT_SEND_SENDING_TIME = "SendTime";
+    public static final String GIFT_SEND_SEND_FROM = "ReceiveFrom"; // 1=live, 2=chat, 3=direct
 
 
 
