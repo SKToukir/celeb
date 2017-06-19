@@ -278,14 +278,6 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-
-                if (flag.equals("3")) {
-                    Log.d("LIVE_SCHEDULE", "set live schedule");
-                    params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
-                    params.put("StartTime", startTime);
-                    params.put("EndTime", endTime);
-
-                } else {
                     params.put("Fan", fanMsisdn);
                     params.put("Celebrity", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
                     params.put("flag", flag);
@@ -293,9 +285,6 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                     params.put("EndTime", endTime);
                     params.put("RoomNumber", room_name);
                     Log.d("LIVE_SCHEDULE", "set other schedule");
-
-                }
-
 
                 return params;
             }

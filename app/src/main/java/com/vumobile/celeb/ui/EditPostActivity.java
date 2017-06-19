@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -58,6 +59,7 @@ import java.util.Map;
 
 public class EditPostActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private RelativeLayout imgVdoLayout;
     private Toolbar toolbar;
     private Button btnPost, btnClose, btnChoose;
     private EditText etEditPost;
@@ -94,6 +96,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         postUrls = getIntent().getStringExtra("post_urls");
         isImage = getIntent().getStringExtra("isImage");
 
+
+
         Log.d("extras", postId + " " + post + " " + postUrls + " " + isImage);
 
         initUI();
@@ -101,6 +105,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
     private void initUI() {
 
+        imgVdoLayout = (RelativeLayout) findViewById(R.id.imgVdoLayout);
         txtPercentage = (TextView) findViewById(R.id.txtPercentage);
         progressBar = (ProgressBar) findViewById(R.id.prog);
         btnPost = (Button) findViewById(R.id.btnPost);
@@ -118,6 +123,11 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         btnChoose.setOnClickListener(this);
 
         etEditPost.setText(post);
+
+        if (!postUrls.equals("")){
+            imgVdoLayout.setVisibility(View.VISIBLE);
+            btnChoose.setVisibility(View.VISIBLE);
+        }
 
         if (isImage.equals("1")) {
             vdoPost.setVisibility(View.GONE);
@@ -139,7 +149,13 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setImage(String postUrls) {
-        Picasso.with(getApplicationContext()).load(postUrls).into(imgPost);
+
+        try {
+            Picasso.with(getApplicationContext()).load(postUrls).into(imgPost);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -234,6 +250,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        imgVdoLayout.setVisibility(View.VISIBLE);
 
         if (resultCode == RESULT_OK) {
             Uri selectedMediaUri = data.getData();

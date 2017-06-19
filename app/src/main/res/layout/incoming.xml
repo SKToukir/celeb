@@ -58,16 +58,20 @@
 
         <Button
             android:id="@+id/declineButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
+            android:text="Decline"
+            android:textColor="#fff"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_decline"
+            android:background="@drawable/round_corner_end_call"
             android:layout_toRightOf="@+id/answerButton"/>
 
         <Button
             android:id="@+id/answerButton"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
+            android:text="Answer"
+            android:textColor="#fff"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_accept"
+            android:background="@drawable/round_corner_answer_call"
             android:layout_alignBaseline="@+id/declineButton"
             android:layout_alignBottom="@+id/declineButton"
             android:layout_alignParentLeft="true"

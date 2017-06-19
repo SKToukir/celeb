@@ -23,8 +23,8 @@
         <ImageView
             android:id="@+id/txtCountTimer"
             android:layout_gravity="center"
-            android:layout_width="150dp"
-            android:layout_height="200dp" />
+            android:layout_width="80dp"
+            android:layout_height="90dp" />
 
        <LinearLayout
            android:gravity="center"
@@ -35,14 +35,13 @@
            <Button
                android:layout_marginBottom="5dp"
                android:background="@drawable/golivenow"
-               android:layout_weight="0"
+               android:layout_weight="1"
                android:layout_gravity="center|bottom"
                android:layout_width="150dp"
                android:layout_height="50dp"
                android:id="@+id/btnGoLive"
                />
            <Button
-               android:visibility="gone"
                android:layout_marginBottom="5dp"
                android:background="@drawable/prescedule"
                android:id="@+id/btnPreschedule"

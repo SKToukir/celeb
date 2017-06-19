@@ -79,6 +79,7 @@
                         android:textSize="20sp" />
 
                     <com.vumobile.utils.MyTextView
+                        android:visibility="gone"
                         android:id="@+id/txtCelebLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

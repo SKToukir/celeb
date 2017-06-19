@@ -29,6 +29,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -64,6 +70,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import io.agora.rtc.Constants;
 
@@ -77,7 +84,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private TextView txtCelebName;
     private Button btnGoLive, btnGetPhotoVideo, btn_close, btn_edit;
     public static final int IMAGE_PICKER_SELECT = 1;
-    private String filePath = null;
+    private String filePath = "null";
     private boolean isImage = true;
     private ImageView imgPreview;
     private VideoView vdoPreview;
@@ -122,23 +129,23 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         actionValue = intent.getStringExtra("action_value");
         celebID = intent.getStringExtra("celeb_id");
 
-        Log.d("celebId",Session.fetchCelebId(getApplicationContext()));
+        Log.d("celebId", Session.fetchCelebId(getApplicationContext()));
 
         gender = intent.getStringExtra("gender");
         image_url = intent.getStringExtra("image_url");
         name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
-        if (actionValue.equals("1")){
+        if (actionValue.equals("1")) {
             String isImageOrNot = intent.getStringExtra("isImage");
-            if (isImageOrNot.equals("1")){
+            if (isImageOrNot.equals("1")) {
                 //uri = Uri.parse(intent.getStringExtra("uri"));
                 filePath = decodeFile(getRealPathFromURI(FBPostActivity.this, fromHomeUri));
                 decodeFile(filePath);
                 selectImageVideoLayout.setVisibility(View.GONE);
                 imgVdoLayout.setVisibility(View.VISIBLE);
-                previewMedia(isImage, filePath,fromHomeUri);
-            }else if (isImageOrNot.equals("1")){
+                previewMedia(isImage, filePath, fromHomeUri);
+            } else if (isImageOrNot.equals("1")) {
                 selectImageVideoLayout.setVisibility(View.GONE);
                 imgVdoLayout.setVisibility(View.VISIBLE);
                 //handle video
@@ -211,11 +218,27 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
                 celebComment = etComment.getText().toString();
 
-                if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
+
+                if (filePath.equals("null") && celebComment.equals("")){
                     TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
-                } else {
-                    new UploadFileToServer().execute(filePath, celebComment);
+
+                }else {
+                    if (filePath.equals("null")) {
+                        postComment(celebComment);
+                    } else {
+                        new UploadFileToServer().execute(filePath, celebComment);
+                    }
                 }
+
+
+
+
+//                if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
+//                    TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
+//                } else {
+//
+//                    new UploadFileToServer().execute(filePath, celebComment);
+//                }
 
 
                 break;
@@ -504,10 +527,10 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             dialog = new ProgressDialog(FBPostActivity.this);
             dialog.setMessage("Uploading please wait..");
 
-            try{
-                dialog.show();
+            try {
+                //dialog.show();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             progressBar.setProgress(0);
@@ -518,11 +541,13 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         protected void onProgressUpdate(Integer... progress) {
 
 
-
-
             // Making progress bar visible
             progressBar.setVisibility(View.VISIBLE);
             txtPercentage.setVisibility(View.VISIBLE);
+
+            btnPost.setVisibility(View.GONE);
+            btnGetPhotoVideo.setVisibility(View.GONE);
+            btnGoLive.setVisibility(View.GONE);
 
             // updating progress bar value
             progressBar.setProgress(progress[0]);
@@ -564,6 +589,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
                 // Adding file data to http body
                 Log.d("data", name + " " + msisdn + " " + celebID + " " + gender + " " + IsImage(isImage) + " " + image_url + " " + flags_notification + " " + cmnt);
+
 
                 entity.addPart("image", new FileBody(sourceFile));
                 // Extra parameters if you want to pass to server
@@ -627,7 +653,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
                 String r = obj.getString("result");
 
-                if (r.equals("Success")){
+                if (r.equals("Success")) {
                     dialog.dismiss();
 
                     progressBar.setVisibility(View.GONE);
@@ -750,5 +776,70 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             cropImageSerializable.setByteArray(null);
         }
 
+    }
+
+    public void postComment(String cmnt) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://wap.shabox.mobi/testwebapi/Notification/up?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+                        try {
+
+                            try {
+                                JSONObject obj = new JSONObject(response);
+
+                                String r = obj.getString("result");
+
+                                if (r.equals("Success")) {
+                                    Intent intent = new Intent(FBPostActivity.this, CelebEditPostActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            TastyToast.makeText(getApplicationContext(), "Posted", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+                        TastyToast.makeText(getApplicationContext(), "Error!", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("image", "khali");
+                params.put("Name", name);
+                params.put("MSISDN", msisdn);
+                params.put("Celeb_id", celebID);
+                params.put("gender", gender);
+                params.put("IsImage", IsImage(isImage));
+                params.put("Image_url", image_url);
+                params.put("Flags_Notificaton", "2");
+                params.put("post", cmnt);
+                //params.put("time", currentTime);
+//                params.put("Flag", String.valueOf(celebOrNot));
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 }
