@@ -780,6 +780,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
     public void postComment(String cmnt) {
 
+        String cID = Session.fetchCelebId(getApplicationContext());
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://wap.shabox.mobi/testwebapi/Notification/up?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre",
                 new Response.Listener<String>() {
                     @Override
@@ -824,7 +826,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 params.put("image", "khali");
                 params.put("Name", name);
                 params.put("MSISDN", msisdn);
-                params.put("Celeb_id", celebID);
+                params.put("Celeb_id", cID);
                 params.put("gender", gender);
                 params.put("IsImage", IsImage(isImage));
                 params.put("Image_url", image_url);
