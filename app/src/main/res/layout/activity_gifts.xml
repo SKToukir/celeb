@@ -11,4 +11,10 @@
         android:id="@+id/toolBar_post_gifts"
         layout="@layout/tool_bar_post" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerGifts"
+        android:layout_below="@+id/toolBar_post_gifts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
 </RelativeLayout>

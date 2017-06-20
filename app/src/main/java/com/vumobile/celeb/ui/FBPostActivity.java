@@ -277,9 +277,19 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void choose_from_gallery() {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/* video/*");
-        startActivityForResult(pickIntent, IMAGE_PICKER_SELECT);
+
+        Intent intent = new Intent();
+        intent.setType("image/* video/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(
+                Intent.createChooser(intent, "Complete action using"),
+                IMAGE_PICKER_SELECT);
+
+//        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+//        pickIntent.setType("image/* video/*");
+//        pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//        //startActivityForResult(pickIntent, IMAGE_PICKER_SELECT);
+//        startActivityForResult(Intent.createChooser(pickIntent, "Select From"),IMAGE_PICKER_SELECT);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -584,6 +594,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                         });
 
                 celebID = Session.fetchCelebId(getApplicationContext());
+                gender = Session.fetchGender(getApplicationContext());
+                image_url = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
 
                 File sourceFile = new File(fPath);
 

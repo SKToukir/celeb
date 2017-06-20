@@ -13,12 +13,12 @@
 
     <Button
         android:id="@+id/btnPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/toolbar_edit_posts"
         android:layout_margin="5dp"
-        android:background="@color/myColorTwoHeader"
+        android:background="@drawable/round_corner"
         android:text="Post"
         android:textColor="#fff" />
 
@@ -30,6 +30,11 @@
         android:layout_margin="5dp"
         android:background="#fff" />
 
+    <View
+        android:background="#939191"
+        android:layout_below="@+id/etEditPost"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
     <RelativeLayout
         android:visibility="gone"
         android:id="@+id/imgVdoLayout"
