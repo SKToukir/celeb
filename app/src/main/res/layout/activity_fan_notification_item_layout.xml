@@ -106,12 +106,12 @@
                 android:padding="5dp"
                 android:src="@drawable/logo" />
 
-            <VideoView
-                android:id="@+id/videoViewNotif"
+            <ImageView
+                android:id="@+id/imageViewThumb"
                 android:layout_width="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
                 android:padding="2dp" />
 
             <ImageView

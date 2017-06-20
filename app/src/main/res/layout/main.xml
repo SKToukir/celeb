@@ -2,117 +2,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="0dip"
     android:background="@color/myColorOneBody"
+    android:padding="0dip"
     tools:context="com.vumobile.videocall.PlaceCallActivity">
 
     <include
         android:id="@+id/idVideoCall"
-        layout="@layout/toolbar_video_call"/>
+        layout="@layout/toolbar_video_call" />
 
     <com.vumobile.celeb.Utils.RoundedImageView
         android:id="@+id/imgCelebs"
-        android:layout_marginTop="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_man"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_man" />
 
     <LinearLayout
+        android:id="@+id/numberInputLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:id="@+id/numberInputLayout">
+        android:paddingRight="40dp">
 
 
         <TextView
-            android:visibility="gone"
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:text=""
             android:textAllCaps="true"
-            android:id="@+id/textView" android:layout_gravity="center_horizontal"
-            android:textColor="#fff" android:textSize="20sp"/>
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/callName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="32sp"
+            android:background="@drawable/inputbox"
+            android:inputType="textNoSuggestions"
             android:padding="10dp"
             android:textColor="#000"
-            android:background="@drawable/inputbox" android:inputType="textNoSuggestions">
+            android:textSize="32sp">
 
-            <requestFocus/>
+            <requestFocus />
         </TextView>
 
     </LinearLayout>
 
 
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_above="@+id/numberInputLayout"
-        android:paddingBottom="24dp" android:layout_centerHorizontal="true">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/numberInputLayout"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="24dp">
+
         <TextView
-            android:visibility="gone"
             android:id="@+id/infoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Logged in as: "
             android:textAllCaps="true"
-            android:textColor="@color/sinch_purple"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            />
+            android:textColor="@color/sinch_purple"
+            android:visibility="gone" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/loggedInName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
             android:text="Someone"
             android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"/>
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </LinearLayout>
 
 
-    <RelativeLayout android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/callButton"
-            android:text="Call"
-            android:textColor="#fff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/button_border_radius_background"
             android:minHeight="56dp"
             android:minWidth="132dp"
-            android:layout_centerHorizontal="true"/>
-
+            android:text="Call"
+            android:textColor="#fff" />
 
 
         <Button
-            android:visibility="gone"
             android:id="@+id/stopButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/callButton"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:background="@android:color/transparent"
+            android:text="Stop service"
+            android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/sinch_purple"
-            android:textAllCaps="true"
-            android:text="Stop service" android:layout_centerHorizontal="true"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 

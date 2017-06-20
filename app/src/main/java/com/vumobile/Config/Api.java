@@ -116,6 +116,7 @@ public class Api {
     public static final String NOTIF_TIME = "TimeStamp";
     public static final String NOTIF_LIKE_COUNT = "likeCount";
     public static final String NOTIF_POST_URLS = "Post_Urls";
+    public static final String NOTIF_POST_VIDEO_THUMBS = "VideoThumb";
 
 
 

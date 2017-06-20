@@ -511,7 +511,6 @@ public class ParentActivity extends BaseActivity
                                         } else if (buttonFilterLive.getTag().equals("SELECT_ITEM")) {
                                             loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
                                         }
-
                                     }
                                 }
         );

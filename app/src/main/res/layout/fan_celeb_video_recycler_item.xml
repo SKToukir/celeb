@@ -14,7 +14,7 @@
         android:background="#00000000"
         card_view:cardCornerRadius="4dp">
 
-        <VideoView
+        <ImageView
             android:id="@+id/imageViewRecyclerItemVThumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

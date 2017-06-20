@@ -2,7 +2,6 @@ package com.vumobile.fan.login.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MyBounceInterpolator;
@@ -53,7 +52,7 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
         public ImageView imageViewNotificationProfilePic, imageViewNotificationImage, imageViewNotificationLike, imageViewPlayIcon;
         public TextView textViewNotificationCelebName, textViewNotificationTime, textViewNotificationMessage, textViewNotificationLikeCount;
         public LinearLayout linearLayoutMain;
-        public VideoView videoViewNotif;
+        public ImageView imageViewThumb;
         public RelativeLayout relativeLayoutImageAndVideo;
 
         public MyViewHolder(View view) {
@@ -70,7 +69,7 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
             textViewNotificationMessage = (TextView) view.findViewById(R.id.textViewNotificationMessage);
             textViewNotificationLikeCount = (TextView) view.findViewById(R.id.textViewNotificationLikeCount);
 
-            videoViewNotif = (VideoView) view.findViewById(R.id.videoViewNotif);
+            imageViewThumb = (ImageView) view.findViewById(R.id.imageViewThumb);
 
             relativeLayoutImageAndVideo = (RelativeLayout) view.findViewById(R.id.relativeLayoutImageAndVideo);
 
@@ -114,48 +113,52 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
         holder.textViewNotificationMessage.setTag(fanNotificationModelEnity.getIsImage()); // 1 for image 2 for video
         holder.textViewNotificationLikeCount.setTag(fanNotificationModelEnity.getFlags_Notificaton()); // 1 is live , 2 is post
 
-        holder.videoViewNotif.setVisibility(View.GONE);
+        holder.imageViewThumb.setVisibility(View.GONE);
         holder.imageViewNotificationImage.setVisibility(View.GONE);
         holder.imageViewPlayIcon.setVisibility(View.GONE);
 
 
         if (fanNotificationModelEnity.getFlags_Notificaton().equals("1")) {
-            holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
-//            holder.imageViewNotificationImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.live_icon));
-            Glide.with(mContext).load("")
-                    .placeholder(mContext.getResources().getDrawable(R.drawable.live_icon))
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.imageViewNotificationImage);
-            holder.textViewNotificationMessage.setText("Live video...");
+//            holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
+////            holder.imageViewNotificationImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.live_icon));
+//            Glide.with(mContext).load("")
+//                    .placeholder(mContext.getResources().getDrawable(R.drawable.live_icon))
+//                    .crossFade()
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .into(holder.imageViewNotificationImage);
+//            holder.textViewNotificationMessage.setText("Live video...");
+        } else {
+
         }
         Log.d("ttt o", "onBindViewHolder: " + fanNotificationModelEnity.getFlags_Notificaton() + fanNotificationModelEnity.getName());
 
 
         JSONArray array = null;  //jsonObject.getJSONArray("result");
+        JSONArray array2 = null;  //jsonObject.getJSONArray("result");
         try {
             array = new JSONArray(fanNotificationModelEnity.getPost_Urls());
+            array2 = new JSONArray(fanNotificationModelEnity.getNotifVideoThumb());
+            Log.d("touhid 0", "onBindViewHolder: " + array2.toString());
+            Log.d("touhid 1", "onBindViewHolder: " + fanNotificationModelEnity.toString());
             for (int a = 0; a < array.length(); a++) {
                 if (!array.get(a).equals("")) {
-                    Log.d("touhid", "image or video link: " + array.get(a));
-                    if (fanNotificationModelEnity.getIsImage().equals("1")) {
+                    Log.d("touhid 2", "image or video link: " + array.get(a));
+                    if (fanNotificationModelEnity.getIsImage().equals("1")) { // image
                         holder.imageViewNotificationImage.setVisibility(View.VISIBLE);
-                        holder.videoViewNotif.setTag(array.get(a));
-                        Glide.with(mContext)
-                                .load(array.get(a))
-                                .thumbnail(0.5f)
-                                .crossFade()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        Log.d("touhid 3", "onBindViewHolder: " + array.get(a));
+                        holder.imageViewThumb.setTag(array.get(a));
+                        Picasso.with(mContext)
+                                .load(array.get(a).toString())
                                 .into(holder.imageViewNotificationImage);
-                    } else if (fanNotificationModelEnity.getIsImage().equals("2")) {
-                        holder.videoViewNotif.setVisibility(View.VISIBLE);
+                    } else if (fanNotificationModelEnity.getIsImage().equals("2")) { // video
+                        holder.imageViewThumb.setVisibility(View.VISIBLE);
                         holder.imageViewPlayIcon.setVisibility(View.VISIBLE);
-                        Uri uri = Uri.parse(array.get(a).toString()); //Declare your url here.
-                        holder.videoViewNotif.setVideoURI(uri);
-                        holder.videoViewNotif.setTag(uri);
-                        holder.videoViewNotif.seekTo(1000);
-                        holder.videoViewNotif.pause();
-
+//                        Uri uri = Uri.parse(array.get(a).toString()); //Declare your url here.
+//                        holder.imageViewThumb.setImageURI(uri);
+                        Log.d("touhid u", "onBindViewHolder: " + array2.get(a).toString());
+                        Picasso.with(mContext).load(array2.get(a).toString())
+                                .into(holder.imageViewThumb);
+                        holder.imageViewThumb.setTag(array.get(a));
                     }
 
                 }
@@ -181,7 +184,7 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
                                 intent.putExtra("CELEB_FB_NAME", holder.textViewNotificationCelebName.getText().toString());
                                 mContext.startActivity(intent);
                             } else {
-                                Toast.makeText(mContext, holder.textViewNotificationCelebName.getText().toString()+" is offline now.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, holder.textViewNotificationCelebName.getText().toString() + " is offline now.", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
@@ -199,7 +202,8 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
             } else {
                 Intent intent = new Intent(mContext, ImageOrVideoView.class);
                 intent.putExtra("IMG_OR_VID", holder.textViewNotificationMessage.getTag().toString());
-                intent.putExtra("IMG_OR_VID_URL", holder.videoViewNotif.getTag().toString());
+                Log.d("touhid link", "onBindViewHolder: " + holder.imageViewThumb.getTag().toString());
+                intent.putExtra("IMG_OR_VID_URL", holder.imageViewThumb.getTag().toString());
                 mContext.startActivity(intent);
             }
 

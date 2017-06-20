@@ -18,6 +18,7 @@ public class FanNotificationModelEnity {
     String likeCount;
     String TimeStamp;
     String Post_Urls;
+    String notifVideoThumb;
 
     public String getUrl() {
         return url;
@@ -125,4 +126,16 @@ public class FanNotificationModelEnity {
         Post_Urls = post_Urls;
     }
 
+    public String getNotifVideoThumb() {
+        return notifVideoThumb;
+    }
+
+    public void setNotifVideoThumb(String notifVideoThumb) {
+        this.notifVideoThumb = notifVideoThumb;
+    }
+
+    @Override
+    public String toString() {
+        return "FanNotif: " + notifVideoThumb;
+    }
 }

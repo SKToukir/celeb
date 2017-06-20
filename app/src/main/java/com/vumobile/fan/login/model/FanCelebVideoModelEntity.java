@@ -9,6 +9,7 @@ public class FanCelebVideoModelEntity {
     String videoName;
     String videoUrl;
     String videoOwnerPhone;
+    String videoThumbnail;
 
     public String getSetIsImage() {
         return setIsImage;
@@ -44,4 +45,11 @@ public class FanCelebVideoModelEntity {
         this.videoOwnerPhone = videoOwnerPhone;
     }
 
+    public String getVideoThumbnail() {
+        return videoThumbnail;
+    }
+
+    public void setVideoThumbnail(String videoThumbnail) {
+        this.videoThumbnail = videoThumbnail;
+    }
 }

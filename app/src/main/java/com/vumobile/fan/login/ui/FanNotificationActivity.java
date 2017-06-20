@@ -128,7 +128,7 @@ public class FanNotificationActivity extends AppCompatActivity implements SwipeR
                         fanNotificationModelEnity.setTimeStamp(obj.getString(Api.NOTIF_TIME));
                         fanNotificationModelEnity.setLikeCount(obj.getString(Api.NOTIF_LIKE_COUNT));
                         fanNotificationModelEnity.setPost_Urls(obj.getString(Api.NOTIF_POST_URLS));
-
+                        fanNotificationModelEnity.setNotifVideoThumb(obj.getString(Api.NOTIF_POST_VIDEO_THUMBS));
 
                         fanNotificationModelEnities.add(fanNotificationModelEnity);
 

@@ -7,8 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.VideoView;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.model.FanCelebVideoModelEntity;
 
@@ -27,11 +28,11 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {// implements View.OnClickListener
-        public VideoView imageViewRecyclerItemVThumb;
+        public ImageView imageViewRecyclerItemVThumb;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageViewRecyclerItemVThumb = (VideoView) itemView.findViewById(R.id.imageViewRecyclerItemVThumb);
+            imageViewRecyclerItemVThumb = (ImageView) itemView.findViewById(R.id.imageViewRecyclerItemVThumb);
             itemView.setOnClickListener(this);
         }
 
@@ -73,9 +74,12 @@ public class FanCelebVideoRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 //                .load(fanCelebVideoModelEntity.getVideoUrl())
 //                .thumbnail(0.5f)
 //                .into(holder.imageViewRecyclerItemVThumb);
-        holder.imageViewRecyclerItemVThumb.setVideoURI(uri);
-        holder.imageViewRecyclerItemVThumb.seekTo(3000);
-        holder.imageViewRecyclerItemVThumb.pause();
+//        holder.imageViewRecyclerItemVThumb.setVideoURI(uri);
+//        holder.imageViewRecyclerItemVThumb.seekTo(3000);
+//        holder.imageViewRecyclerItemVThumb.pause();
+
+        if (!fanCelebVideoModelEntity.getVideoThumbnail().equals(""))
+        Picasso.with(context).load(fanCelebVideoModelEntity.getVideoThumbnail()).into(holder.imageViewRecyclerItemVThumb);
       //  holder.videoViewMainPlayer.requestFocus();
        // holder.videoViewMainPlayer.start();
 

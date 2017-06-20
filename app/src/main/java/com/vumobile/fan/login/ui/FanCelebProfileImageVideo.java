@@ -228,12 +228,17 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
                         Log.d("ttt", isImage);
                         if (isImage.matches("2") || isImage.equals("2")) {
                             fanCelebVideoModelEntity.setSetIsImage(obj.getString("IsImage"));
+                            Log.d("thumb", "onResponse: "+obj.getString("VideoThumb"));
                             JSONArray posts = obj.getJSONArray("Post_Urls");
+                            JSONArray vThumbs = obj.getJSONArray("VideoThumb");
 
                             String imageUrl = posts.getString(0).trim();
-                            Log.d("videoUrl", imageUrl);
+                            String thumbUrl = vThumbs.getString(0).trim();
+                            Log.d("thumb 2", vThumbs.toString());
+                            Log.d("thumb 3", thumbUrl);
                             if (imageUrl.length() > 5) {
                                 fanCelebVideoModelEntity.setVideoUrl(imageUrl);
+                                fanCelebVideoModelEntity.setVideoThumbnail(thumbUrl);
                             } else {
                                 continue;
                             }
