@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/title"
             android:textSize="20sp"
-            android:text="Dash Board"/>
+            android:text=""/>
 
     </RelativeLayout>
 

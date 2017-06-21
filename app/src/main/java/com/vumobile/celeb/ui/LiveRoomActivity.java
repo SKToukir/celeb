@@ -874,8 +874,14 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
             case R.id.btnSendComment:
                 String comment = etComment.getText().toString();
-                // add comment to the comment list here
-                postComment(getApplicationContext(), comment,"0");
+
+                if (!comment.equals("")) {
+                    // add comment to the comment list here
+                    postComment(getApplicationContext(), comment,"0");
+
+                }else {
+                    hideKeyboard();
+                }
                 // hide keyboard
                 hideKeyboard();
                 //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

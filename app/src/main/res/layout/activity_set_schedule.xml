@@ -20,14 +20,18 @@
         android:layout_height="match_parent">
 
         <com.vumobile.utils.MyTextView
-            android:textColor="#fff"
-            android:text="Set Schedule Time"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp"
+            android:textColor="#000"
+            android:text="Set Schedule"
             android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:drawableLeft="@drawable/time"
+            android:gravity="center"
+            android:padding="2dp"
+            android:drawableLeft="@drawable/ic_calendar"
             android:inputType="date"
             android:focusable="false"
             android:clickable="true"
@@ -38,7 +42,9 @@
             android:layout_height="50dp" />
 
         <EditText
-            android:drawableLeft="@drawable/date"
+            android:gravity="center"
+            android:padding="2dp"
+            android:drawableLeft="@drawable/ic_clock"
             android:clickable="true"
             android:focusable="false"
             android:inputType="time"
@@ -59,7 +65,9 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:drawableLeft="@drawable/date"
+            android:gravity="center"
+            android:padding="2dp"
+            android:drawableLeft="@drawable/ic_clock"
             android:clickable="true"
             android:focusable="false"
             android:inputType="time"
@@ -71,6 +79,7 @@
             android:layout_height="50dp" />
 
         <Button
+            android:layout_marginTop="12dp"
             android:id="@+id/btnConfirmTime"
             android:background="@drawable/confirm"
             android:layout_width="150dp"

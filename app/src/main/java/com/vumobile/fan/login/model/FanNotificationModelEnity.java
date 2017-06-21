@@ -6,6 +6,7 @@ package com.vumobile.fan.login.model;
 
 public class FanNotificationModelEnity {
 
+    String thumbImage;
     String id;
     String name;
     String MSISDN;
@@ -133,7 +134,13 @@ public class FanNotificationModelEnity {
     public void setNotifVideoThumb(String notifVideoThumb) {
         this.notifVideoThumb = notifVideoThumb;
     }
+    public String getThumbImage() {
+        return thumbImage;
+    }
 
+    public void setThumbImage(String thumbImage) {
+        this.thumbImage = thumbImage;
+    }
     @Override
     public String toString() {
         return "FanNotif: " + notifVideoThumb;

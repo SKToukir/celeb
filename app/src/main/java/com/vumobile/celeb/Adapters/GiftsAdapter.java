@@ -31,7 +31,7 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
     private List<Gift> giftList = new ArrayList<>();
     private Gift gift;
-    private RecyclerView.Adapter adapter;
+    private SingleGiftAdapter adapter;
     private RecyclerView recyclerView;
     private Context mContext;
     private List<GiftClass> videoHomeList;
@@ -59,7 +59,7 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
         Log.d("FromServer",primaryClass.getListOfGift().toString());
 
         JSONArray array = primaryClass.getListOfGift();
-
+        recyclerView.setAdapter(adapter);
         for (int i = 0; i < array.length(); i++){
 
             gift = new Gift();
@@ -72,11 +72,8 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
                 e.printStackTrace();
             }
 
-            recyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
         }
-
+        adapter.notifyDataSetChanged();
     }
 
     @Override

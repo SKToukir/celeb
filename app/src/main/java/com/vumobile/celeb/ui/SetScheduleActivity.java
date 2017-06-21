@@ -32,6 +32,9 @@ import com.vumobile.celeb.R;
 import com.vumobile.fan.login.Session;
 import com.vumobile.videocall.SinchService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -256,13 +259,21 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                     public void onResponse(String response) {
                         Log.d("FromServer", response.toString());
 
-                        createRoomOnFirebase(room_name);
-                        Log.d("room_name", room_name);
-                        TastyToast.makeText(getApplicationContext(), response, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-                        intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            String result = obj.getString("result");
+                            createRoomOnFirebase(room_name);
+                            Log.d("room_name", room_name);
+                            TastyToast.makeText(getApplicationContext(), result, TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                            intent = new Intent(SetScheduleActivity.this, CelebHomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
 
                     }
                 },

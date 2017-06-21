@@ -72,8 +72,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.agora.rtc.Constants;
-
 public class FBPostActivity extends BaseActivity implements View.OnClickListener {
 
     private ProgressDialog dialog;
@@ -145,7 +143,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 selectImageVideoLayout.setVisibility(View.GONE);
                 imgVdoLayout.setVisibility(View.VISIBLE);
                 previewMedia(isImage, filePath, fromHomeUri);
-            } else if (isImageOrNot.equals("1")) {
+            } else if (isImageOrNot.equals("0")) {
                 selectImageVideoLayout.setVisibility(View.GONE);
                 imgVdoLayout.setVisibility(View.VISIBLE);
                 //handle video
@@ -207,7 +205,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
         switch (view.getId()) {
             case R.id.btnGoLive:
-                FBPostActivity.this.forwardToLiveRoom(Constants.CLIENT_ROLE_BROADCASTER);
+                startActivity(new Intent(FBPostActivity.this, CameraViewActivity.class));
+                //FBPostActivity.this.forwardToLiveRoom(Constants.CLIENT_ROLE_BROADCASTER);
                 break;
             case R.id.btnGetPhotoVideo:
                 choose_from_gallery();

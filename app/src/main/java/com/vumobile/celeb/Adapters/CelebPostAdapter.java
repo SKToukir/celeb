@@ -9,7 +9,6 @@ package com.vumobile.celeb.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,6 +31,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.MyBounceInterpolator;
@@ -65,7 +64,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         public ImageView imageViewNotificationProfilePic, imageViewNotificationImage, imageViewNotificationLike, imageViewPlayIcon;
         public TextView textViewNotificationCelebName, textViewNotificationTime, textViewNotificationMessage, textViewNotificationLikeCount;
         public LinearLayout linearLayoutMain;
-        public VideoView videoViewNotif;
+        public ImageView videoViewNotif;
         public RelativeLayout relativeLayoutImageAndVideo;
 
         public MyViewHolder(View view) {
@@ -85,7 +84,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
             textViewNotificationMessage = (TextView) view.findViewById(R.id.textViewNotificationMessage);
             textViewNotificationLikeCount = (TextView) view.findViewById(R.id.textViewNotificationLikeCount);
 
-            videoViewNotif = (VideoView) view.findViewById(R.id.videoViewNotif);
+            videoViewNotif = (ImageView) view.findViewById(R.id.videoViewNotif);
 
             relativeLayoutImageAndVideo = (RelativeLayout) view.findViewById(R.id.relativeLayoutImageAndVideo);
 
@@ -184,11 +183,15 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
                     } else if (fanNotificationModelEnity.getIsImage().equals("2")) {
                         holder.videoViewNotif.setVisibility(View.VISIBLE);
                         holder.imageViewPlayIcon.setVisibility(View.VISIBLE);
-                        Uri uri = Uri.parse(array.get(a).toString()); //Declare your url here.
-                        holder.videoViewNotif.setVideoURI(uri);
-                        holder.videoViewNotif.setTag(uri);
-                        holder.videoViewNotif.seekTo(1000);
-                        holder.videoViewNotif.pause();
+//                        Uri uri = Uri.parse(array.get(a).toString()); //Declare your url here.
+//                        holder.videoViewNotif.setVideoURI(uri);
+//                        holder.videoViewNotif.setTag(uri);
+//                        holder.videoViewNotif.seekTo(1000);
+//                        holder.videoViewNotif.pause();
+                        JSONArray array1 = new JSONArray(fanNotificationModelEnity.getPost_Urls());
+                        holder.videoViewNotif.setTag(array1.get(0).toString());
+                        Log.d("hhhhhhhhhh",array1.get(0).toString());
+                        Picasso.with(mContext).load(fanNotificationModelEnity.getThumbImage()).into(holder.videoViewNotif);
 
                     }
 

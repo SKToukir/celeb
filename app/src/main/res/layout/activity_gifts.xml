@@ -7,14 +7,60 @@
     tools:context="com.vumobile.celeb.ui.GiftsActivity">
 
 
+
+
     <include
         android:id="@+id/toolBar_post_gifts"
         layout="@layout/tool_bar_post" />
 
+    <LinearLayout
+        android:gravity="center"
+        android:id="@+id/barLayout"
+        android:layout_below="@+id/toolBar_post_gifts"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/buttonFilterGiftTop"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:background="@drawable/button_border_selected_item"
+            android:padding="0dp"
+            android:text="Top"
+            android:textAllCaps="false"
+            android:textColor="@color/myColorTwoHeader" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/myColorOneBody" />
+
+        <Button
+            android:id="@+id/buttonFilterDate"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:background="@drawable/button_border_radius_background"
+            android:padding="0dp"
+            android:text="Date"
+            android:textAllCaps="false"
+            android:textColor="@color/pure_white" />
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout_gift"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/barLayout"
+        android:layout_height="wrap_content">
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerGifts"
-        android:layout_below="@+id/toolBar_post_gifts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

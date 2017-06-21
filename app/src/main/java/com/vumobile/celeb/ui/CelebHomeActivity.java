@@ -478,7 +478,7 @@ public class CelebHomeActivity extends BaseActivity
                 FBPostActivity.fromHomeUri = uri;
                 Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
                 intent.putExtra("uri",uri);
-                intent.putExtra("isImage","1");
+                intent.putExtra("isImage","0");
                 intent.putExtra("action_value","1");
                 intent.putExtra("celeb_id",celeb_id);
                 intent.putExtra("gender",gender);

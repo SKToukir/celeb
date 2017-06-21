@@ -103,7 +103,9 @@ public class CelebEditPostActivity extends AppCompatActivity implements SwipeRef
                         enity.setLikeCount(obj.getString(Api.NOTIF_LIKE_COUNT));
                         enity.setPost_Urls(obj.getString(Api.NOTIF_POST_URLS));
                         JSONArray array1 = obj.getJSONArray("Post_Urls");
+                        JSONArray array2 = obj.getJSONArray("VideoThumb");
                         enity.setUrl(array1.getString(0));
+                        enity.setThumbImage(array2.getString(0));
 
 
 

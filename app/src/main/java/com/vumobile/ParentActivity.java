@@ -813,21 +813,21 @@ public class ParentActivity extends BaseActivity
     }
 
     private void changeButtonSelectFocus(Button button) {
-        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonFilterAll.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonFilterAll.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterAll.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterAll.setTag("ITEM");
-        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonFilterFollowing.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterFollowing.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterFollowing.setTag("ITEM");
-        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonMostLive.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonMostLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonMostLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonMostLive.setTag("ITEM");
-        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
-        buttonFilterLive.setTextColor(getResources().getColor(R.color.pure_white));
+        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));//
+        buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
         buttonFilterLive.setTag("ITEM");
 
-        button.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        button.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
+        button.setTextColor(getResources().getColor(R.color.pure_white));
         button.setTag("SELECT_ITEM");
     }
 

@@ -10,51 +10,57 @@
 
     <include
         android:id="@+id/toolbar_liveSchedule"
-        layout="@layout/tool_bar_live_schedule"/>
+        layout="@layout/tool_bar_live_schedule" />
 
     <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_below="@+id/toolbar_schedule"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_schedule"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <com.vumobile.utils.MyTextView
-            android:textColor="#fff"
-            android:text="Set Schedule Time"
-            android:textSize="25sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Set Schedule Time"
+            android:textColor="#fff"
+            android:textSize="25sp"
+            android:visibility="gone" />
 
         <EditText
-            android:drawableLeft="@drawable/time"
-            android:inputType="date"
-            android:focusable="false"
-            android:clickable="true"
-            android:background="#fff"
             android:id="@+id/etDateLive"
-            android:hint="Set Date"
             android:layout_width="150dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:background="#fff"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:focusable="false"
+            android:gravity="center"
+            android:hint="Set Date"
+            android:inputType="date"
+            android:padding="2dp" />
 
         <EditText
-            android:drawableLeft="@drawable/date"
-            android:clickable="true"
-            android:focusable="false"
-            android:inputType="time"
+            android:id="@+id/etTimeLive"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:background="#fff"
-            android:id="@+id/etTimeLive"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_clock"
+            android:focusable="false"
+            android:gravity="center"
             android:hint="Set Time"
-            android:layout_width="150dp"
-            android:layout_height="50dp" />
+            android:inputType="time"
+            android:padding="2dp" />
 
 
         <Button
             android:id="@+id/btnConfirmTimeLive"
-            android:background="@drawable/confirm"
             android:layout_width="150dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/confirm" />
 
     </LinearLayout>
 
