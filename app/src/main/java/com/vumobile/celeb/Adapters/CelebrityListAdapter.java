@@ -77,11 +77,24 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                 Picasso.with(mContext).load(p.getCeleb_image()).into(tt2);
             }
 
+            // live logic
             String isOnline = p.getIsOnline();
             if (isOnline.equals("1") || isOnline.matches("1")) {
                 imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicononline));
             } else {
                 imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicon));
+            }
+
+            // Next live logic
+            if (p.getNextLiveStatus() == 1) {
+                flw.setVisibility(View.INVISIBLE);
+                textViewFollowerCount.setText("Live at: " + p.getNextLive());
+                if (isOnline.equals("1") || isOnline.matches("1")) {
+                    textViewFollowerCount.setText("Live Now...");
+                }
+            } else if (p.getNextLiveStatus() == 2) {
+                flw.setVisibility(View.VISIBLE);
+                textViewFollowerCount.setText("Live Now...");
             }
 
             // Set follow button
@@ -106,6 +119,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
                     }
                 }
             });
+
 
         }
         return v;

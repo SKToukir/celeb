@@ -116,7 +116,7 @@ public class MyGallery extends Fragment {
         swipeRefreshLayoutCelebImages.setRefreshing(true);
         fanCelebImageModelEntities.clear();
 
-        ArrayList<String> mFiles = new ArrayList<String>();
+        ArrayList<String> mFiles = new ArrayList<>();
         File mDirectory;
         String folderPath = Environment.getExternalStorageDirectory().toString() + "/CelebApp/";
         mDirectory = new File(folderPath);
