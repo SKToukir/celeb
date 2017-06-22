@@ -106,8 +106,6 @@ public class ImageOrVideoView extends AppCompatActivity implements View.OnClickL
         }
 
 
-
-
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_image_or_video_view);
         new MyInternetCheckReceiver(activity_image_or_video_view);

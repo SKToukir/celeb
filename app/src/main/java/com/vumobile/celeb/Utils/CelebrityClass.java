@@ -13,6 +13,8 @@ public class CelebrityClass {
     private String isOnline;
     private String Isfollow;
     private String followerCount;
+    private String nextLive;
+    private int nextLiveStatus; // if nextLive is not "" the set 1 or 0
 
     public String getIsOnline() {
         return isOnline;
@@ -68,5 +70,21 @@ public class CelebrityClass {
 
     public void setFollowerCount(String followerCount) {
         this.followerCount = followerCount;
+    }
+
+    public String getNextLive() {
+        return nextLive;
+    }
+
+    public void setNextLive(String nextLive) {
+        this.nextLive = nextLive;
+    }
+
+    public int getNextLiveStatus() {
+        return nextLiveStatus;
+    }
+
+    public void setNextLiveStatus(int nextLiveStatus) {
+        this.nextLiveStatus = nextLiveStatus;
     }
 }

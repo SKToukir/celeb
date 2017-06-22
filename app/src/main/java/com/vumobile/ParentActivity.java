@@ -57,7 +57,6 @@ import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
 import com.vumobile.fan.login.serverrequest.MyVolleyRequest;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 import com.vumobile.fan.login.ui.fragment.Credits;
-import com.vumobile.fan.login.ui.fragment.History;
 import com.vumobile.fan.login.ui.fragment.MyGallery;
 import com.vumobile.fan.login.ui.fragment.Transaction;
 import com.vumobile.notification.MyReceiver;
@@ -96,12 +95,13 @@ public class ParentActivity extends BaseActivity
     TextView navUserName, textViewNotificationBadge;
     ImageView navUserPic;
     // drawer menu
-    ImageView imageViewHome, imageViewMyGallery, imageViewSchedule, imageViewHistory, imageViewTransaction, imageViewCredits, imageViewLogout;
+    ImageView imageViewHome, imageViewMyGallery, imageViewSchedule, imageViewTransaction, imageViewCredits, imageViewLogout;
     static RelativeLayout content_parent;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
 
     LinearLayout linearLayoutMain;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +170,6 @@ public class ParentActivity extends BaseActivity
         });
 
         try {
-
             Intent serviceIntent = new Intent(ParentActivity.this, NetworkedService.class);
             startService(serviceIntent);
             Intent myIntent = new Intent(ParentActivity.this, MyReceiver.class);
@@ -186,7 +185,6 @@ public class ParentActivity extends BaseActivity
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         new MyInternetCheckReceiver(linearLayoutMain);
-
 
     } // end of onCreate
 
@@ -317,9 +315,10 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setIsOnline(obj.getString("Live_status"));
                         celebrityClass.setIsfollow(obj.getString("Isfollow"));
                         celebrityClass.setFollowerCount(obj.getString("Follower"));
+                        celebrityClass.setNextLive(obj.getString("NextLive"));
+                        celebrityClass.setNextLiveStatus(0);
 
                         celebrityClassList.add(celebrityClass);
-
 
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
@@ -364,7 +363,7 @@ public class ParentActivity extends BaseActivity
 
                         JSONObject obj = array.getJSONObject(i);
                         celebrityClass = new CelebrityClass();
-                        if (obj.getString("Live_status").equals("1")) {
+                        if (obj.getString("Live_status").equals("1") || !obj.getString("NextLive").equals("")) {
                             celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
                             celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
                             celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
@@ -372,6 +371,12 @@ public class ParentActivity extends BaseActivity
                             celebrityClass.setIsOnline(obj.getString("Live_status"));
                             celebrityClass.setIsfollow(obj.getString("Isfollow"));
                             celebrityClass.setFollowerCount(obj.getString("Follower"));
+                            celebrityClass.setNextLive(obj.getString("NextLive"));
+                            if (!obj.getString("NextLive").equals("")) {
+                                celebrityClass.setNextLiveStatus(1);
+                            } else {
+                                celebrityClass.setNextLiveStatus(2); // from other tab this value will always 0 only this live tab this may 1 if nextLive does exists or 2 if not
+                            }
 
                             celebrityClassList.add(celebrityClass);
                         }
@@ -397,10 +402,67 @@ public class ParentActivity extends BaseActivity
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
+        Volley.newRequestQueue(ParentActivity.this).add(request);
 
-        //Adding request to the queue
-        requestQueue.add(request);
+
+//        swipeRefreshLayout.setRefreshing(true);
+//        celebrityClassList.clear();
+//        String fullUrl = urlCelebrity + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject jsonObject) {
+//                Log.d("FromServer", jsonObject.toString());
+//
+//                try {
+//                    JSONArray array = jsonObject.getJSONArray("result");
+//
+//                    for (int i = 0; i <= array.length() - 1; i++) {
+//
+//                        JSONObject obj = array.getJSONObject(i);
+//                        celebrityClass = new CelebrityClass();
+//                        if (obj.getString("Live_status").equals("1")) {
+//                            celebrityClass.setCeleb_name(obj.getString(Api.CELEB_NAME));
+//                            celebrityClass.setCeleb_code(obj.getString(Api.CELEB_CODE_MSISDN));
+//                            celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
+//                            celebrityClass.setFb_name(obj.getString("Name"));
+//                            celebrityClass.setIsOnline(obj.getString("Live_status"));
+//                            celebrityClass.setIsfollow(obj.getString("Isfollow"));
+//                            celebrityClass.setFollowerCount(obj.getString("Follower"));
+//        celebrityClass.setNextLive(obj.getString("NextLive"));
+//        if (obj.getString("NextLive").equals("")) {
+//            celebrityClass.setNextLiveStatus(1);
+//        } else {
+//            celebrityClass.setNextLiveStatus(0);
+//        }
+//
+//                            celebrityClassList.add(celebrityClass);
+//                        }
+//
+//                        listCeleb.setAdapter(adapter);
+//                        adapter.notifyDataSetChanged();
+//
+//                    }
+//
+//                    celebrityClassListCopy = new ArrayList<>();
+//                    celebrityClassListCopy.addAll(celebrityClassList);
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Log.d("FromServer", volleyError.toString());
+//                //    Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
+//        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
+//
+//        //Adding request to the queue
+//        requestQueue.add(request);
 
     }
 
@@ -431,6 +493,9 @@ public class ParentActivity extends BaseActivity
                                 celebrityClass.setIsOnline(obj.getString("Live_status"));
                                 celebrityClass.setIsfollow("1");
                                 celebrityClass.setFollowerCount(obj.getString("Follower"));
+                              //  celebrityClass.setNextLive(obj.getString("NextLive"));
+                                celebrityClass.setNextLiveStatus(0);
+
                                 celebrityClassList.add(celebrityClass);
                                 listCeleb.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
@@ -464,7 +529,6 @@ public class ParentActivity extends BaseActivity
         imageViewHome = (ImageView) findViewById(R.id.imageViewHome);
         imageViewMyGallery = (ImageView) findViewById(R.id.imageViewMyGallery);
         imageViewSchedule = (ImageView) findViewById(R.id.imageViewSchedule);
-        imageViewHistory = (ImageView) findViewById(R.id.imageViewHistory);
         imageViewTransaction = (ImageView) findViewById(R.id.imageViewTransaction);
         imageViewCredits = (ImageView) findViewById(R.id.imageViewCredits);
         imageViewLogout = (ImageView) findViewById(R.id.imageViewLogout);
@@ -472,11 +536,9 @@ public class ParentActivity extends BaseActivity
         imageViewHome.setOnClickListener(this);
         imageViewMyGallery.setOnClickListener(this);
         imageViewSchedule.setOnClickListener(this);
-        imageViewHistory.setOnClickListener(this);
         imageViewTransaction.setOnClickListener(this);
         imageViewCredits.setOnClickListener(this);
         imageViewLogout.setOnClickListener(this);
-
 
         listCeleb = (ListView) findViewById(R.id.list_of_celeb);
 
@@ -516,7 +578,6 @@ public class ParentActivity extends BaseActivity
         );
 
         linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);
-
 
     }
 
@@ -624,17 +685,10 @@ public class ParentActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            //  Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -735,22 +789,6 @@ public class ParentActivity extends BaseActivity
             case R.id.imageViewSchedule:
                 ScheduleActivity.USER_TYPE = "0";
                 startActivity(new Intent(this, ScheduleActivity.class));
-
-                drawer.closeDrawers();
-                break;
-
-            case R.id.imageViewHistory:
-                // Create new fragment and transaction
-                Fragment fragmentHistory = new History();
-                FragmentTransaction transactionHistory = getSupportFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack if needed
-                transactionHistory.replace(R.id.fragment_container_main, fragmentHistory);
-                transactionHistory.addToBackStack(null);
-
-                // Commit the transaction
-                transactionHistory.commit();
                 drawer.closeDrawers();
                 break;
 
@@ -852,4 +890,6 @@ public class ParentActivity extends BaseActivity
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         super.onResume();
     }
+
+
 }

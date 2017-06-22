@@ -208,8 +208,9 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
                     intent.putExtra("IMG_OR_VID_URL", holder.imageViewThumb.getTag().toString());
                     mContext.startActivity(intent);
 
+
                 }catch (Exception e){
-                    e.printStackTrace();
+
                 }
 
             }
