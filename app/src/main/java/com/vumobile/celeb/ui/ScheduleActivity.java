@@ -38,7 +38,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private ImageView back;
     private Intent intent;
     CelebScheduleClass requestClass;
-    List<CelebScheduleClass> listOfSchedule = new ArrayList<CelebScheduleClass>();
+    List<CelebScheduleClass> listOfSchedule = new ArrayList<>();
     ScheduleAdapter adapter;
     private ListView scheduleList;
 
