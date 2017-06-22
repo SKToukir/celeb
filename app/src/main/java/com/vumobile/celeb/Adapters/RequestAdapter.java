@@ -72,6 +72,7 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("msisdn",requestClass.getMSISDN());
+                    intent.putExtra("request_type",requestClass.getRequest_type());
                     mContext.startActivity(intent);
                 }
             });

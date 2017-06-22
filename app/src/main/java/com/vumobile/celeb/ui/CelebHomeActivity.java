@@ -49,6 +49,8 @@ import org.json.JSONObject;
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SinchService.StartFailedListener {
 
+    boolean isCeleb;
+    TextView imgNewMsgCount;
     public static final int IMAGE_PICKER_SELECT = 1;
     private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage, nav_home,nav_gallery,
             nav_gifts,nav_schedule,nav_post,nav_logout;
@@ -110,9 +112,49 @@ public class CelebHomeActivity extends BaseActivity
                 txtCele.setText(celebName);
 
         }
+        isCeleb = Session.isCeleb(getApplicationContext(),Session.IS_CELEB);
+
+        if (isCeleb){
+            fetchNewMsg("1");
+        }else {
+            fetchNewMsg("2");
+        }
 
 
+    }
 
+    private void fetchNewMsg(String userType) {
+
+        String my_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+my_msisdn+"&usertype="+userType;
+        Log.d("FromServerNewMsg", url);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("FromServerNewMsg", response.toString());
+
+                try {
+                    String msg_count = response.getString("result");
+
+                    if (!msg_count.equals("0")){
+                        imgNewMsgCount.setVisibility(View.VISIBLE);
+                        imgNewMsgCount.setText(msg_count);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
     }
 
     private void runService() {
@@ -196,6 +238,7 @@ public class CelebHomeActivity extends BaseActivity
     }
 
     private void initUI() {
+        imgNewMsgCount = (TextView) findViewById(R.id.imgNewMsgCount);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         txtHomePageFollow = (TextView) findViewById(R.id.txtHomePageFollow);
         imgMessage = (ImageView) findViewById(R.id.imgMessage);
@@ -327,7 +370,10 @@ public class CelebHomeActivity extends BaseActivity
                 startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));
                 break;
             case R.id.imgMessage:
+
+
                 startActivity(new Intent(getApplicationContext(),MessageActivity.class));
+
                 break;
             case R.id.nav_home:
                 drawer.closeDrawers();
@@ -373,6 +419,61 @@ public class CelebHomeActivity extends BaseActivity
         }
     }
 
+//    private void removeBadge() {
+//
+//        String url = "wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("FromServer", response.toString());
+////                        try {
+////                            JSONObject jsonObj = new JSONObject(response);
+////
+////
+////                        } catch (JSONException e) {
+////                            e.printStackTrace();
+////                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d("FromServer", "" + error.getMessage());
+//
+//                    }
+//                }) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//
+//
+//                String userType;
+//
+//                if (isCeleb){
+//                    userType = "1";
+//                }else {
+//                    userType = "2";
+//                }
+//
+//                params.put("MSISDN", msisdnMy);
+//                params.put("Flag", userType);
+//                Log.d("lkdjalskdjasld",msisdnMy);
+//                Log.d("lkdjalskdjasld",userType);
+//
+//
+//
+//
+//                return params;
+//            }
+//
+//        };
+//
+//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        requestQueue.add(stringRequest);
+//
+//    }
 
 
     public void forwardToLiveRoom(int cRole) {

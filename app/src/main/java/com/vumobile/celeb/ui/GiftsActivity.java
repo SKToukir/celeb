@@ -20,7 +20,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.GiftsAdapter;
-import com.vumobile.celeb.Adapters.SingleGiftAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.Gift;
 import com.vumobile.celeb.model.GiftClass;
@@ -40,7 +39,6 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
     private Toolbar toolbar;
     GiftClass giftClass;
     RecyclerView.Adapter adapter;
-    RecyclerView.Adapter adapterIn;
     RecyclerView recyclerView;
     List<GiftClass> giftClassList = new ArrayList<GiftClass>();
     List<Gift> giftList = new ArrayList<Gift>();
@@ -90,12 +88,9 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
                         Log.d("FromServer", giftClass.getImageUrl());
 
                         JSONArray array1 = object.getJSONArray("Post_Urls");
-                        Gift gift = new Gift();
-                        gift.setArray(array1);
-                        giftClass.setListOfGift(array1);
 
-                        Log.d("FromSSSSSSSSSSSSSS",array1.toString());
-                        adapterIn.notifyDataSetChanged();
+                        Log.d("ListSize", String.valueOf(array1.length()));
+
 
                         giftClassList.add(giftClass);
 
@@ -132,7 +127,6 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
         buttonFilterDate.setOnClickListener(this);
 
         adapter = new GiftsAdapter(getApplicationContext(), giftClassList);
-        adapterIn = new SingleGiftAdapter(getApplicationContext(), giftList);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerGifts);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);

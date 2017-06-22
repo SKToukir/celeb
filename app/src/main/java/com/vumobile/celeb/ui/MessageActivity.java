@@ -35,6 +35,8 @@ import java.util.Map;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
+    boolean isCeleb;
+    String msisdn;
     private MessageUserListAdapter adapter;
     private List<MessageListClass> listClasses = new ArrayList<MessageListClass>();
     private MessageListClass requestClass;
@@ -59,6 +61,11 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 onBackPressed(); // Implemented by activity
             }
         });
+
+        isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
+        msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+
+
 
         initUI();
 
@@ -90,6 +97,65 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         new MyInternetCheckReceiver(activity_message);
 
     } // end of onCreate
+
+
+        private void removeBadge() {
+
+            String url = "wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("FromServer", response.toString());
+//                        try {
+//                            JSONObject jsonObj = new JSONObject(response);
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("FromServer", "" + error.getMessage());
+
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+
+
+                    String userType;
+
+                    if (isCeleb){
+                        userType = "1";
+                    }else {
+                        userType = "2";
+                    }
+
+                    params.put("MSISDN", msisdn);
+                    params.put("Flag", userType);
+                    Log.d("lkdjalskdjasld",msisdn);
+                    Log.d("lkdjalskdjasld",userType);
+
+
+
+
+                    return params;
+                }
+
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
+
+        }
+
+
 
     private void retreiveData(String urlGetSchedules) {
 
@@ -187,6 +253,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
 
         activity_message = (RelativeLayout)findViewById(R.id.activity_message);
+
+        removeBadge();
     }
 
     @Override

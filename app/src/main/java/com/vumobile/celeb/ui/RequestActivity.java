@@ -33,7 +33,7 @@ import java.util.List;
 
 public class RequestActivity extends AppCompatActivity implements View.OnClickListener {
 
-
+    String request_type;
     private List<RequestClass> requestClasses = new ArrayList<>();
     private ListView listOfRequests;
     private RequestAdapter adapter;
@@ -85,7 +85,8 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
                         Log.d("dataa",obj.getString("Name"));
                         requestClass.setImageUrl(obj.getString("Image_url"));
                         Log.d("dataa",obj.getString("Image_url"));
-                        String request_type = obj.getString("RequestType");
+                        request_type = obj.getString("RequestType");
+                        requestClass.setRequest_type(request_type);
                         Log.d("dataa",request_type);
                         if (request_type.matches("1")){
                             requestClass.setRequest("Request for chat");

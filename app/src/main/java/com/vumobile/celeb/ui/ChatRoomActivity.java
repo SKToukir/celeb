@@ -26,6 +26,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,6 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.ChatAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ChatClass;
@@ -61,6 +68,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public String type;
+    public String fanMsisdn, celebMsisdn;
     public static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
     private FrameLayout frameLayoutChatGift;
     private static final int CAMERA_REQUEST = 1888;
@@ -82,7 +91,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private Matcher m;
     FragmentManager fm;
 
-
+    public String CELEB_MSISDN;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://vuceleb.appspot.com/");
     private static DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
@@ -110,8 +119,11 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         profilePic = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
         fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
         //room_name = "88014444444448801666666666";
-        //room_name = "Room:5GAMB3EBCM";
+        //room_name = "Room:5GAMB3EBCM"
+        celebMsisdn = room_name.substring(0,13);
+        fanMsisdn = room_name.substring(13);
         Log.d("room_name", room_name);
+        Log.d("room_name", room_name.substring(0,13));
         Log.d("room_name", msisdn);
         Log.d("room_name", profilePic);
         Log.d("room_name", fbName);
@@ -137,6 +149,17 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
+
+        boolean celebOrNot = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
+
+
+        // 1 = celeb and 2 = fan
+
+        if (celebOrNot){
+            type="1";
+        }else {
+            type="2";
+        }
     }
 
     private void initUI() {
@@ -173,6 +196,9 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
                 chatText = editTextChatText.getText().toString();
 
                 if (!chatText.equals("")){
+
+                    setNewMessageCount(Api.API_SET_NEW_MESSAGE_COUNT);
+
                     postComment(getApplicationContext(), chatText);
                 }else {
                     Log.d("ChatText","Null");
@@ -204,6 +230,49 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
                 break;
         }
+    }
+
+    private void setNewMessageCount(String apiSetNewMessageCount) {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, apiSetNewMessageCount,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+//                        try {
+//                            JSONObject jsonObj = new JSONObject(response);
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Fan", fanMsisdn);
+                params.put("Celebrity", celebMsisdn);
+                params.put("Flag", type);
+                Log.d("fanmsisdn",fanMsisdn);
+                Log.d("fanmsisdn",celebMsisdn);
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
     }
 
     // pic image from gallery

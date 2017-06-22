@@ -44,6 +44,7 @@ import java.util.Map;
 @SuppressWarnings("ALL")
 public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity implements View.OnClickListener, SinchService.StartFailedListener {
 
+    private String request_type;
     private String LIVE_SCHEDULE = "0";
     private ProgressDialog mSpinner;
     private DatePicker datePicker;
@@ -78,6 +79,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 //        Log.d("LIVE_SCHEDULE","l"+LIVE_SCHEDULE);
 
         fanMsisdn = intent.getStringExtra("msisdn");
+        request_type = intent.getStringExtra("request_type");
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -193,7 +195,13 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 //                }else {
 
 
-                confirmation(Api.URL_REQUESTS_ACCEPT, "1");
+                if (request_type.matches("1")){
+                    confirmation(Api.URL_REQUESTS_ACCEPT, "1", "1");
+                }else {
+                    confirmation(Api.URL_REQUESTS_ACCEPT, "1", "2");
+                }
+
+
 //                }
 
                     //confirmation(Api.URL_REQUESTS_ACCEPT, "1");
@@ -250,7 +258,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
     }
 
 
-    private void confirmation(String urlRequestsAccept, String flag) {
+    private void confirmation(String urlRequestsAccept, String flag, String rqstType) {
 
         room_name = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE) + fanMsisdn;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlRequestsAccept,
@@ -295,6 +303,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                     params.put("StartTime", startTime);
                     params.put("EndTime", endTime);
                     params.put("RoomNumber", room_name);
+                    params.put("RequestType", rqstType);
                     Log.d("LIVE_SCHEDULE", "set other schedule");
 
                 return params;

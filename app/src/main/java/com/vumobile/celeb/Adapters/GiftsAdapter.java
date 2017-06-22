@@ -1,9 +1,6 @@
 package com.vumobile.celeb.Adapters;
 
 import android.content.Context;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +10,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.vumobile.celeb.R;
-import com.vumobile.celeb.model.Gift;
 import com.vumobile.celeb.model.GiftClass;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,16 +20,12 @@ import java.util.List;
 
 public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder> {
 
-
-    private List<Gift> giftList = new ArrayList<>();
-    private Gift gift;
-    private SingleGiftAdapter adapter;
-    private RecyclerView recyclerView;
     private Context mContext;
     private List<GiftClass> videoHomeList;
 
 
-    public GiftsAdapter(Context context, List<GiftClass> videoHomeList) {
+    public
+    GiftsAdapter(Context context, List<GiftClass> videoHomeList) {
         this.mContext = context;
         this.videoHomeList = videoHomeList;
     }
@@ -56,24 +44,19 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
         Glide.with(mContext).load(primaryClass.getImageUrl()).override(100, 100).thumbnail(0.1f).into(holder.videoImageView);
 
-        Log.d("FromServer",primaryClass.getListOfGift().toString());
+        List<String> giftList = primaryClass.getGiftList();
 
-        JSONArray array = primaryClass.getListOfGift();
-        recyclerView.setAdapter(adapter);
-        for (int i = 0; i < array.length(); i++){
+        Log.d("ListSize", String.valueOf(giftList.size()));
 
-            gift = new Gift();
-            try {
-                gift.setGiftUrl(array.getString(i));
+        for (int i = 0; i < giftList.size(); i++){
 
-                giftList.add(gift);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            Log.d("ListSize", giftList.get(i));
         }
-        adapter.notifyDataSetChanged();
+
+//        Glide.with(mContext).load(primaryClass.getGiftOne()).override(100, 100).thumbnail(0.1f).into(holder.imgGiftOne);
+//        Glide.with(mContext).load(primaryClass.getGiftTwo()).override(100, 100).thumbnail(0.1f).into(holder.imgGiftTwo);
+//        Glide.with(mContext).load(primaryClass.getGiftThree()).override(100, 100).thumbnail(0.1f).into(holder.imgGiftThree);
+
     }
 
     @Override
@@ -83,17 +66,14 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView videoImageView;
+        ImageView videoImageView, imgGiftOne, imgGiftTwo, imgGiftThree;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            adapter = new SingleGiftAdapter(mContext,giftList);
+            imgGiftOne = (ImageView) itemView.findViewById(R.id.imgGiftOne);
+            imgGiftTwo = (ImageView) itemView.findViewById(R.id.imgGiftTwo);
+            imgGiftThree = (ImageView) itemView.findViewById(R.id.imgGiftThree);
             videoImageView = (ImageView) itemView.findViewById(R.id.imgGiftSender);
-            recyclerView = (RecyclerView) itemView.findViewById(R.id.recycler_view_gifts);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL, false);
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.HORIZONTAL));
 
         }
     }

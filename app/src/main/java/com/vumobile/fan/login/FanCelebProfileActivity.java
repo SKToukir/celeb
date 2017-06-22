@@ -1,11 +1,11 @@
 package com.vumobile.fan.login;
 
 import android.app.AlertDialog;
-import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -47,7 +48,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FanCelebProfileActivity extends BaseActivity implements View.OnClickListener {
 
+
     String msisdn, name, fbName, profilePic, followerCount;
+
     ImageView imageViewNotification, imageViewMessage, imageViewHome;
     ImageView imageViewVideoCall, imageViewChat, imageViewImageAndVideo, imageViewGift;
     LinearLayout activity_fan_celeb_profile;
@@ -67,6 +70,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                 onBackPressed(); // Implemented by activity
             }
         });
+
 
 
         imageViewNotification = (ImageView) toolbar.findViewById(R.id.imageViewNotification);
@@ -107,7 +111,12 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_fan_celeb_profile);
         new MyInternetCheckReceiver(activity_fan_celeb_profile);
 
+
+
+
     } // end of onCreate
+
+
 
     @Override
     public void onClick(View view) {

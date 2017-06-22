@@ -6,7 +6,6 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
-
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -41,7 +40,7 @@
         <service android:name="com.vumobile.videocall.SinchService" />
 
         <activity
-            android:name="com.vumobile.fan.login.LogInAcitvity"
+            android:name="com.vumobile.SplashScreenActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -200,7 +199,8 @@
         <service android:name="com.vumobile.utils.ChatService" />
 
         <activity android:name=".ui.GiftsActivity" />
-        <activity android:name=".ui.SetScheduleForLiveActivity"></activity>
+        <activity android:name=".ui.SetScheduleForLiveActivity" />
+        <activity android:name="com.vumobile.fan.login.LogInAcitvity"></activity>
     </application>
 
 </manifest>

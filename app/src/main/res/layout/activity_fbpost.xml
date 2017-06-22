@@ -234,7 +234,7 @@
                     <Button
                         android:id="@+id/btnGetPhotoVideo"
                         android:layout_width="150dp"
-                        android:layout_height="40dp"
+                        android:layout_height="35dp"
                         android:layout_alignLeft="@+id/btnGoLive"
                         android:layout_alignStart="@+id/btnGoLive"
                         android:layout_below="@+id/btnGoLive"
@@ -245,7 +245,7 @@
                     <Button
                         android:id="@+id/btnGoLive"
                         android:layout_width="150dp"
-                        android:layout_height="40dp"
+                        android:layout_height="35dp"
                         android:layout_alignLeft="@+id/etWhatsYourMind"
                         android:layout_alignStart="@+id/etWhatsYourMind"
                         android:layout_below="@+id/etWhatsYourMind"

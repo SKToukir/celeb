@@ -105,15 +105,23 @@
                     android:padding="10dp"
                     android:src="@drawable/camera" />
 
-                <ImageView
-                    android:id="@+id/imageViewChat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".5"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:padding="10dp"
-                    android:src="@drawable/chat" />
+               <FrameLayout
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight=".5">
+
+                   <ImageView
+                       android:id="@+id/imageViewChat"
+                      android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:background="?attr/selectableItemBackgroundBorderless"
+                       android:clickable="true"
+                       android:padding="10dp"
+                       android:src="@drawable/chat" />
+
+
+
+               </FrameLayout>
 
             </LinearLayout>
 
