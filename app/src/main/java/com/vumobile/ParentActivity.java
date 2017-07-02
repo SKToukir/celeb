@@ -92,7 +92,7 @@ public class ParentActivity extends BaseActivity
     Button buttonFilterAll, buttonFilterFollowing, buttonMostLive, buttonFilterLive;
     Toolbar toolbar;
     ImageView imageViewNotification, imageViewMessage;
-    TextView navUserName, textViewNotificationBadge;
+    TextView navUserName, textViewNotificationBadge, textViewMessageNotificationBadge;
     ImageView navUserPic;
     // drawer menu
     ImageView imageViewHome, imageViewMyGallery, imageViewSchedule, imageViewTransaction, imageViewCredits, imageViewLogout;
@@ -493,7 +493,7 @@ public class ParentActivity extends BaseActivity
                                 celebrityClass.setIsOnline(obj.getString("Live_status"));
                                 celebrityClass.setIsfollow("1");
                                 celebrityClass.setFollowerCount(obj.getString("Follower"));
-                              //  celebrityClass.setNextLive(obj.getString("NextLive"));
+                                //  celebrityClass.setNextLive(obj.getString("NextLive"));
                                 celebrityClass.setNextLiveStatus(0);
 
                                 celebrityClassList.add(celebrityClass);
@@ -525,6 +525,7 @@ public class ParentActivity extends BaseActivity
         content_parent = (RelativeLayout) findViewById(R.id.content_parent);
 
         textViewNotificationBadge = (TextView) findViewById(R.id.textViewNotificationBadge);
+        textViewMessageNotificationBadge = (TextView) findViewById(R.id.textViewMessageNotificationBadge);
 
         imageViewHome = (ImageView) findViewById(R.id.imageViewHome);
         imageViewMyGallery = (ImageView) findViewById(R.id.imageViewMyGallery);
@@ -805,7 +806,6 @@ public class ParentActivity extends BaseActivity
                 // Commit the transaction
                 transactionTrans.commit();
 
-
                 drawer.closeDrawers();
                 break;
 
@@ -886,7 +886,7 @@ public class ParentActivity extends BaseActivity
             e.printStackTrace();
         }
 
-        // show snackbar while no internet
+        // show snack bar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         super.onResume();
     }
