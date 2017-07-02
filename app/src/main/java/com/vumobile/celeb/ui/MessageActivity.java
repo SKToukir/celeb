@@ -63,8 +63,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
-        msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
+        Log.d("celebt", "onCreate: " + isCeleb);
 
 
         initUI();
@@ -99,15 +100,17 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     } // end of onCreate
 
 
-        private void removeBadge() {
+    private void removeBadge() {
 
-            String url = "http://wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("FromServer", response.toString());
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
 //                        try {
 //                            JSONObject jsonObj = new JSONObject(response);
 //
@@ -115,46 +118,43 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 //                        } catch (JSONException e) {
 //                            e.printStackTrace();
 //                        }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("FromServer", "" + error.getMessage());
-
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-
-
-                    String userType;
-
-                    if (isCeleb){
-                        userType = "1";
-                    }else {
-                        userType = "2";
                     }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
 
-                    params.put("MSISDN", msisdn);
-                    params.put("Flag", userType);
-                    Log.d("lkdjalskdjasld",msisdn);
-                    Log.d("lkdjalskdjasld",userType);
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
 
 
+                String userType;
 
-
-                    return params;
+                if (isCeleb) {
+                    userType = "1";
+                } else {
+                    userType = "2";
                 }
 
-            };
+                params.put("MSISDN", msisdn);
+                params.put("Flag", userType);
+                Log.d("lkdjalskdjasld", msisdn);
+                Log.d("lkdjalskdjasld", userType);
 
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(stringRequest);
 
-        }
+                return params;
+            }
 
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
+    }
 
 
     private void retreiveData(String urlGetSchedules) {
@@ -179,7 +179,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
                                 requestClass.setRequestType(obj.getString("RequestType"));
 
-                                if (requestClass.getRequestType().equals("1")){
+                                if (requestClass.getRequestType().equals("1")) {
 
                                     requestClass.setName(obj.getString("Name"));
                                     Log.d("FromServer", requestClass.getName());
@@ -193,7 +193,6 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                                     listView.setAdapter(adapter);
                                     adapter.notifyDataSetChanged();
                                 }
-
 
 
                             }
@@ -252,7 +251,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         profilePic = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
         fbName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
 
-        activity_message = (RelativeLayout)findViewById(R.id.activity_message);
+        activity_message = (RelativeLayout) findViewById(R.id.activity_message);
 
         // remove message count badge
         removeBadge();

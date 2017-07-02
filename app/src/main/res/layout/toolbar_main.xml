@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/myColorTwoHeader"
-    app:theme="@style/ToolbarColoredBackArrow"
     android:fitsSystemWindows="true"
-    android:minHeight="?attr/actionBarSize">
+    android:minHeight="?attr/actionBarSize"
+    app:theme="@style/ToolbarColoredBackArrow">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,13 +50,35 @@
             </RelativeLayout>
 
 
-            <ImageView
-                android:id="@+id/imageViewMessage"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dp"
-                android:padding="5dp"
-                android:src="@drawable/menu_message" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/imageViewMessage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="5dp"
+                    android:src="@drawable/menu_message" />
+
+                <TextView
+                    android:id="@+id/textViewMessageNotificationBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/badge_circle"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="10"
+                    android:textColor="#FFF"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
