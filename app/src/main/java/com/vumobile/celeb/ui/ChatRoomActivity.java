@@ -588,5 +588,64 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         return inSampleSize;
     }
 
+    private void removeBadge() {
 
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/UpdateFanCelebCount?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+//                        try {
+//                            JSONObject jsonObj = new JSONObject(response);
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                String uType;
+
+                if (Session.isCeleb(getApplicationContext(),Session.IS_CELEB)){
+                    uType = "1";
+                }else {
+                    uType = "0";
+                }
+
+                params.put("Fan", fanMsisdn);
+                params.put("Celebrity", celebMsisdn);
+                params.put("Flag", uType);
+                Log.d("lkdjalskdjasld",uType);
+
+
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
+    }
+
+    @Override
+    protected void onResume() {
+        removeBadge();
+        super.onResume();
+    }
 }
