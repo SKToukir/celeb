@@ -134,16 +134,16 @@ public class CelebHomeActivity extends BaseActivity
                 Log.d("FromServerNewMsg", response.toString());
 
                 try {
-                    String msg_count = response.getString("result");
+                    int msg_count = Integer.parseInt(response.getString("result"));
 
-                    if (!msg_count.equals("0")){
+                    if (msg_count != 0){
                         imgNewMsgCount.setVisibility(View.VISIBLE);
-                        imgNewMsgCount.setText(msg_count);
+                        imgNewMsgCount.setText(String.valueOf(msg_count));
                     }else {
-                        imgNewMsgCount.setVisibility(View.INVISIBLE);
+                        imgNewMsgCount.setVisibility(View.GONE);
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

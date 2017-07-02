@@ -225,6 +225,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                     if (filePath.equals("null")) {
                         postComment(celebComment);
                     } else {
+                        //sharePhoto(uri,celebComment);
                         new UploadFileToServer().execute(filePath, celebComment);
                     }
                 }
@@ -666,7 +667,6 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
                 if (r.equals("Success")) {
                     dialog.dismiss();
-
                     progressBar.setVisibility(View.GONE);
                     txtPercentage.setVisibility(View.GONE);
                     Intent intent = new Intent(FBPostActivity.this, CelebEditPostActivity.class);
@@ -717,16 +717,21 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    private void sharePhoto(Bitmap img, String cmnt) {
+    private void sharePhoto(Uri uri, String cmnt) {
         //Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
 
-        Bitmap image = img;
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         shareDialog = new ShareDialog(this);
 
         SharePhoto photo = new SharePhoto.Builder()
-                .setBitmap(image)
+                .setBitmap(bitmap)
                 .setCaption(cmnt)
                 .build();
         SharePhotoContent content = new SharePhotoContent.Builder()

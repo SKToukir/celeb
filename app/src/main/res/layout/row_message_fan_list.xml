@@ -75,5 +75,17 @@
     <!--android:textColor="@color/dark_black"-->
     <!--android:textSize="20sp" />-->
 
+    <TextView
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:id="@+id/txtMessageCount"
+        android:visibility="visible"
+        android:text="12"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
 

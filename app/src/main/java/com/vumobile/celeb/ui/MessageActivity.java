@@ -69,7 +69,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         initUI();
 
-        retreiveData(Api.URL_GET_SCHEDULES);
+        //retreiveData(Api.URL_GET_SCHEDULES);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -159,6 +159,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
     private void retreiveData(String urlGetSchedules) {
 
+        listClasses.clear();
+
         String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlGetSchedules,
@@ -188,26 +190,29 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                                     requestClass.setRoom_number(obj.getString("RoomNumber"));
                                     Log.d("FromServer", requestClass.getRoom_number());
 
+                                    if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
+                                        requestClass.setCelebrityMessageCount(obj.getString("CelebrityCount"));
+                                        Log.d("FromServer", requestClass.getCelebrityMessageCount());
+                                    } else {
+                                        requestClass.setFanMessageCount(obj.getString("FanCount"));
+                                        Log.d("FromServer", requestClass.getFanMessageCount());
+                                    }
+
                                     listClasses.add(requestClass);
 
                                     listView.setAdapter(adapter);
                                     adapter.notifyDataSetChanged();
                                 }
-
-
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("FromServer", "" + error.getMessage());
-
                     }
                 }) {
             @Override
@@ -254,7 +259,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         activity_message = (RelativeLayout)findViewById(R.id.activity_message);
 
-        // remove message count badge
+        // remove message count badge for previous activity
         removeBadge();
     }
 
@@ -270,5 +275,11 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 this.finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        retreiveData(Api.URL_GET_SCHEDULES);
+        super.onResume();
     }
 }

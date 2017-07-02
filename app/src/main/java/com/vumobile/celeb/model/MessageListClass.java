@@ -10,6 +10,25 @@ public class MessageListClass {
     private String name;
     private String room_number;
     private String RequestType;
+    private String celebrityMessageCount;
+
+    public String getFanMessageCount() {
+        return fanMessageCount;
+    }
+
+    public void setFanMessageCount(String fanMessageCount) {
+        this.fanMessageCount = fanMessageCount;
+    }
+
+    public String getCelebrityMessageCount() {
+        return celebrityMessageCount;
+    }
+
+    public void setCelebrityMessageCount(String celebrityMessageCount) {
+        this.celebrityMessageCount = celebrityMessageCount;
+    }
+
+    private String fanMessageCount;
 
     public String getRequestType() {
         return RequestType;
