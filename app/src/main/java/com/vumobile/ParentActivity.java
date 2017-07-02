@@ -886,14 +886,18 @@ public class ParentActivity extends BaseActivity
             e.printStackTrace();
         }
 
+        // new message notif
+        fetchNewMsg("2");
+
         // show snack bar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         super.onResume();
     }
+
     private void fetchNewMsg(String userType) {
 
-        String my_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
-        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+my_msisdn+"&usertype="+userType;
+        String my_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=" + my_msisdn + "&usertype=" + userType;
         Log.d("FromServerNewMsg", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -903,9 +907,11 @@ public class ParentActivity extends BaseActivity
                 try {
                     String msg_count = response.getString("result");
 
-                    if (!msg_count.equals("0")){
-//                        imgNewMsgCount.setVisibility(View.VISIBLE);
-//                        imgNewMsgCount.setText(msg_count);
+                    if (!msg_count.equals("0")) {
+                        textViewMessageNotificationBadge.setVisibility(View.VISIBLE);
+                        textViewMessageNotificationBadge.setText(msg_count);
+                    } else {
+                        textViewMessageNotificationBadge.setVisibility(View.INVISIBLE);
                     }
 
                 } catch (JSONException e) {
@@ -920,8 +926,8 @@ public class ParentActivity extends BaseActivity
             }
         });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(request);
+        Volley.newRequestQueue(this).add(request);
+
     }
 
 }
