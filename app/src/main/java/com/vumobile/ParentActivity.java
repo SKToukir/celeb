@@ -890,6 +890,38 @@ public class ParentActivity extends BaseActivity
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         super.onResume();
     }
+    private void fetchNewMsg(String userType) {
 
+        String my_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+my_msisdn+"&usertype="+userType;
+        Log.d("FromServerNewMsg", url);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("FromServerNewMsg", response.toString());
+
+                try {
+                    String msg_count = response.getString("result");
+
+                    if (!msg_count.equals("0")){
+//                        imgNewMsgCount.setVisibility(View.VISIBLE);
+//                        imgNewMsgCount.setText(msg_count);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
 
 }

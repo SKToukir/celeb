@@ -114,11 +114,11 @@ public class CelebHomeActivity extends BaseActivity
         }
         isCeleb = Session.isCeleb(getApplicationContext(),Session.IS_CELEB);
 
-        if (isCeleb){
-            fetchNewMsg("1");
-        }else {
-            fetchNewMsg("2");
-        }
+//        if (isCeleb){
+//            fetchNewMsg("1");
+//        }else {
+//            fetchNewMsg("2");
+//        }
 
 
     }
@@ -139,6 +139,8 @@ public class CelebHomeActivity extends BaseActivity
                     if (!msg_count.equals("0")){
                         imgNewMsgCount.setVisibility(View.VISIBLE);
                         imgNewMsgCount.setText(msg_count);
+                    }else {
+                        imgNewMsgCount.setVisibility(View.INVISIBLE);
                     }
 
                 } catch (JSONException e) {
@@ -370,10 +372,7 @@ public class CelebHomeActivity extends BaseActivity
                 startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));
                 break;
             case R.id.imgMessage:
-
-
                 startActivity(new Intent(getApplicationContext(),MessageActivity.class));
-
                 break;
             case R.id.nav_home:
                 drawer.closeDrawers();
@@ -495,6 +494,9 @@ public class CelebHomeActivity extends BaseActivity
 
     @Override
     protected void onResume() {
+        // get new message count
+        fetchNewMsg("1");
+
         txtHomePageFollow.setText(totalFollowers);
         txtFollowers.setText(totalFollowers);
         txtProfileName.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));

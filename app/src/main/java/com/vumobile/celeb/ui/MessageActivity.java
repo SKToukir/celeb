@@ -101,7 +101,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         private void removeBadge() {
 
-            String url = "wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+            String url = "http://wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -254,6 +254,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         activity_message = (RelativeLayout)findViewById(R.id.activity_message);
 
+        // remove message count badge
         removeBadge();
     }
 

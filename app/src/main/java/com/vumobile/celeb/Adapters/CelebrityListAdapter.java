@@ -88,7 +88,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
             // Next live logic
             if (p.getNextLiveStatus() == 1) {
                 flw.setVisibility(View.INVISIBLE);
-                textViewFollowerCount.setText("Live at: " + p.getNextLive());
+                textViewFollowerCount.setText("Up Coming: " + p.getNextLive());
                 if (isOnline.equals("1") || isOnline.matches("1")) {
                     textViewFollowerCount.setText("Live Now...");
                 }
