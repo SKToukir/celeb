@@ -84,9 +84,10 @@ public class MyGallery extends Fragment {
 
 
         // Set up the RecyclerView for image
-        int numberOfColumns = 3;
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns);
-        GridLayoutManager gridLayoutManagerV = new GridLayoutManager(getActivity(), numberOfColumns);
+        int numberOfColumnsImg = 3;
+        int numberOfColumnsVid = 2;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), numberOfColumnsImg);
+        GridLayoutManager gridLayoutManagerV = new GridLayoutManager(getActivity(), numberOfColumnsVid);
         recyclerViewCelebImages.setLayoutManager(gridLayoutManager);
         recyclerViewCelebVideos.setLayoutManager(gridLayoutManagerV);
 

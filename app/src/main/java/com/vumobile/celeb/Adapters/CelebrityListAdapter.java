@@ -80,9 +80,9 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
             // live logic
             String isOnline = p.getIsOnline();
             if (isOnline.equals("1") || isOnline.matches("1")) {
-                imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicononline));
+                imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicononlinet));
             } else {
-                imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicon));
+                imageViewOnlineStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.followicononline));
             }
 
             // Next live logic

@@ -198,7 +198,6 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
                 //Adding request to the queue
                 requestQueue.add(request);
 
-
             } else {
                 try {
 
@@ -207,7 +206,6 @@ public class FanNotificationAdapter extends RecyclerView.Adapter<FanNotification
                     Log.d("touhid link", "onBindViewHolder: " + holder.imageViewThumb.getTag().toString());
                     intent.putExtra("IMG_OR_VID_URL", holder.imageViewThumb.getTag().toString());
                     mContext.startActivity(intent);
-
 
                 }catch (Exception e){
 

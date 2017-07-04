@@ -115,7 +115,7 @@ public class NetworkedService extends Service {
                 @SuppressWarnings("NewApi")
                 @Override
                 public void onResponse(JSONObject jsonObject) {
-                    Log.d("FromServerrrPOST", jsonObject.toString());
+                    Log.d("FromServerrr All data", jsonObject.toString());
 
                     if (jsonObject != null) {
                         try {
@@ -124,23 +124,11 @@ public class NetworkedService extends Service {
                             for (int i = 0; i < array.length(); i++) {
 
                                 JSONObject object = array.getJSONObject(i);
-                                Log.d("FromServer", object.toString());
+                                Log.d("FromServer 1", object.toString());
                                 String notificationFlag = object.getString(Api.NOTIFICATION_FLAGS);
 
-                                if (notificationFlag.equals("1") || notificationFlag.matches("1")) {
+                                if (notificationFlag.equals("2")) { // || notificationFlag.matches("1") //  // flag 1 is live 2 is post
 
-                                    String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
-                                    String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
-                                    String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
-                                    String gender = object.getString(Api.CELEB_GENDER_NOTIFICATION);
-                                    String celeb_id = object.getString(Api.CELEB_ID_NOTIFICATION);
-                                    String currentTime = new Methods().getDate();
-
-                                    // save notification data to server
-                                    saveNotification(name, msisdn, profilePic, gender, celeb_id, currentTime);
-
-                                    Utils.setCustomViewNotification(getApplicationContext(), name, msisdn, profilePic);
-                                } else {
                                     TastyToast.makeText(getApplicationContext(), "This is Post notification!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                                     Log.d("FromServerrrPOST", "POST Notific");
 
@@ -176,6 +164,22 @@ public class NetworkedService extends Service {
                                         Utils.setCustomViewPostNotification(getApplicationContext(), name, celeb_image_url, post_url, comment, like, flags_notific, gender, msisdn, celeb_id, isImage);
 
                                     }
+                                } else {
+
+                                    Log.d("FromServerrrLIVE", "LIVE Notific");
+
+                                    String name = object.getString(Api.CELEB_NAME_NOTIFICATION);
+                                    String msisdn = object.getString(Api.CELEB_MSISDN_NOTIFICATION);
+                                    String profilePic = object.getString(Api.CELEB_IMAGE_URL_NOTIFICATION);
+                                    String gender = object.getString(Api.CELEB_GENDER_NOTIFICATION);
+                                    String celeb_id = object.getString(Api.CELEB_ID_NOTIFICATION);
+                                    String currentTime = new Methods().getDate();
+
+                                    // save notification data to server
+                                    saveNotification(name, msisdn, profilePic, gender, celeb_id, currentTime);
+
+                                    Utils.setCustomViewNotification(getApplicationContext(), name, msisdn, profilePic);
+
                                 }
 
                             }
