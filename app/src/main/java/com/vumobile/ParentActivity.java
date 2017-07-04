@@ -115,6 +115,7 @@ public class ParentActivity extends BaseActivity
 
         initUI();
 
+
         // Initialize comment list adapter
         adapter = new CelebrityListAdapter(this, R.layout.celeb_list_row, celebrityClassList);
         listCeleb.setAdapter(adapter);
@@ -187,6 +188,21 @@ public class ParentActivity extends BaseActivity
         new MyInternetCheckReceiver(linearLayoutMain);
 
     } // end of onCreate
+
+    private void checkFromLiveNotificationGoLiveList() {
+        if (getIntent().hasExtra("user")) {
+            Log.d("checkit 1", "checkFromLiveNotificationGoLiveList: ");
+            loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
+            changeButtonSelectFocus(buttonFilterLive);
+            getIntent().removeExtra("user");
+        } else {
+            Log.d("checkit 2", "checkFromLiveNotificationGoLiveList: ");
+        }
+//        i.putExtra(ConstantApp.ACTION_KEY_CROLE, cRole);
+//        i.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, room);
+//        Log.d("livetest", "forwardToLiveRoom: " + cRole + "||" + room);
+//        i.putExtra("user", "fan");
+    }
 
     // retrieve device token for push notification
     private void notificationRegister() {
@@ -350,6 +366,9 @@ public class ParentActivity extends BaseActivity
     private void loadCelebrityDataWhoIsLive(String urlCelebrity) {
         swipeRefreshLayout.setRefreshing(true);
         celebrityClassList.clear();
+        if (celebrityClassListCopy != null) {
+            celebrityClassListCopy.clear();
+        }
         String fullUrl = urlCelebrity + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
@@ -889,6 +908,9 @@ public class ParentActivity extends BaseActivity
         // new message notif
         fetchNewMsg("2");
 
+        // from intent of notif click
+        checkFromLiveNotificationGoLiveList();
+
         // show snack bar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         super.onResume();
@@ -905,15 +927,13 @@ public class ParentActivity extends BaseActivity
                 Log.d("FromServerNewMsg", response.toString());
 
                 try {
-                    String msg_count = response.getString("result");
-
-                    if (!msg_count.equals("0")) {
+                    int msg_count = Integer.parseInt(response.getString("result"));
+                    if (msg_count > 0) {
                         textViewMessageNotificationBadge.setVisibility(View.VISIBLE);
-                        textViewMessageNotificationBadge.setText(msg_count);
+                        textViewMessageNotificationBadge.setText(String.valueOf(msg_count));
                     } else {
                         textViewMessageNotificationBadge.setVisibility(View.INVISIBLE);
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

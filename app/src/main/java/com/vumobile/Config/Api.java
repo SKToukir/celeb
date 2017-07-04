@@ -59,7 +59,7 @@ public class Api {
     public static final String CELEB_FB_LOGIN_STATUS_NOTIFICATION= "Fb_login_status";
     public static final String CELEB_REGID_STATUS_NOTIFICATION= "RegId";
     public static final String CELEB_LIVE_STATUS_NOTIFICATION= "Live_status";
-    public static final String NOTIFICATION_FLAGS = "Flags_Notificaton";
+    public static final String NOTIFICATION_FLAGS = "Flags_Notificaton"; // 1 is live 2 is post
     /*------------------------------------------------------------------*/
 
     /*Get single celeb name and msisdn*/

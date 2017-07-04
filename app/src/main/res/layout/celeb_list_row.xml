@@ -103,9 +103,10 @@
 
                 <ImageView
                     android:id="@+id/imageViewFollower"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="center"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_action_follow_plus" />
 
             </LinearLayout>

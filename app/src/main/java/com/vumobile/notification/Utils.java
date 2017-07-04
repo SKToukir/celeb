@@ -38,6 +38,7 @@ public class Utils extends BaseActivity {
 
     //    @RequiresApi(api = Build.VERSION_CODES.N)
 //    @SuppressWarnings("static-access")
+    // live notif
     public static void setCustomViewNotification(Context context, String name, String msisdn, String sample_url) {
 
         ((AGApplication) context).initWorkerThread();
@@ -88,7 +89,7 @@ public class Utils extends BaseActivity {
         volume.putExtra("DO", "2");
         PendingIntent pVolume = PendingIntent.getActivity(context, 1, resultIntent, 0);
         expandedView.setOnClickPendingIntent(R.id.MainlayoutCustom, pVolume);
-        expandedView.setTextViewText(R.id.text_view, name);
+        expandedView.setTextViewText(R.id.text_view, name + " Is Live Now");
 
         //expandedView.setTextViewText(R.id.notificationTime, strDate);
 
@@ -132,7 +133,6 @@ public class Utils extends BaseActivity {
                 notification.defaults |= Notification.DEFAULT_SOUND;
                 mNotificationManager.notify(0, notification);
 
-
             }
         }).start();
 
@@ -142,7 +142,6 @@ public class Utils extends BaseActivity {
     //    @RequiresApi(api = Build.VERSION_CODES.N)
     //   @SuppressWarnings("static-access")
     public static void setCustomViewPostNotification(Context context, String name, String celeb_image_url, String post_url, String comment, String like, String flags_notific, String gender, String msisdn, String celeb_id, String isImage) {
-
 
         //contentDownloadActivity.doAction=1;
 //        Calendar c = Calendar.getInstance();
@@ -154,7 +153,6 @@ public class Utils extends BaseActivity {
 
         Intent resultIntent;
         resultIntent = new Intent(context, FanNotificationActivity.class);
-
 
         resultIntent.putExtra("fbname", name);
         resultIntent.putExtra("msisdn", msisdn);
@@ -168,7 +166,6 @@ public class Utils extends BaseActivity {
         resultIntent.putExtra("celeb_id", celeb_id);
         resultIntent.putExtra("isImage", isImage);
 
-
         Log.d("fbname", name);
 
      /*   DownloadTask downloadTask = new DownloadTask();
@@ -181,7 +178,6 @@ public class Utils extends BaseActivity {
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(FanNotificationActivity.class);
 
-
         // Adds the Intent that starts the Activity to the top of the stack.
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -191,11 +187,10 @@ public class Utils extends BaseActivity {
 
         Intent volume = new Intent(context, FanNotificationActivity.class);//NotifActivityHandler
 
-
         volume.putExtra("DO", "2");
         PendingIntent pVolume = PendingIntent.getActivity(context, 1, resultIntent, 0);
         expandedView.setOnClickPendingIntent(R.id.MainlayoutCustom, pVolume);
-        expandedView.setTextViewText(R.id.text_view, name);
+        expandedView.setTextViewText(R.id.text_view, "New post of " + name);
 
         //expandedView.setTextViewText(R.id.notificationTime, strDate);
 //        try {
@@ -225,7 +220,6 @@ public class Utils extends BaseActivity {
                     e.printStackTrace();
                 }
 
-
                 expandedView.setImageViewBitmap(R.id.imageViewTest, bitmap);
 
                 Notification notification = new NotificationCompat.Builder(context)
@@ -253,7 +247,7 @@ public class Utils extends BaseActivity {
 
     private static int getNotificationIcon() {
         boolean whiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return whiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
+        return whiteIcon ? R.drawable.white_notif_icon : R.mipmap.ic_launcher;
     }
 
 

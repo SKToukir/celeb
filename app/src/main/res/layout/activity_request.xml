@@ -11,11 +11,19 @@
         android:id="@+id/toolbar_request"
         layout="@layout/toolbar_request"/>
 
-    <ListView
-        android:layout_margin="5dp"
-        android:layout_below="@+id/toolbar_request"
-        android:id="@+id/listOfRequests"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout_req"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_request">
+
+        <ListView
+            android:layout_margin="5dp"
+            android:layout_below="@+id/toolbar_request"
+            android:id="@+id/listOfRequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
