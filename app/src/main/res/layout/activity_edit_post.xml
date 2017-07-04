@@ -28,7 +28,8 @@
         android:layout_height="100dp"
         android:layout_below="@+id/btnPost"
         android:layout_margin="5dp"
-        android:background="#fff" />
+        android:background="#fff"
+        style="@style/AppTheme"/>
 
     <View
         android:background="#939191"

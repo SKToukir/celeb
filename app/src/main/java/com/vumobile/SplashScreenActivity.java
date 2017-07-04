@@ -41,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 while (mbActive && (waited < TIMER_RUNTIME)) {
                     sleep(2100);
                     if (mbActive) {
-                        waited += 5;
+                        waited += 2;
                     }
                 }
             } catch (InterruptedException e) {

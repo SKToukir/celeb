@@ -8,19 +8,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.CameraView;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.fan.login.Session;
+
 import io.agora.rtc.Constants;
 
 public class CameraViewActivity extends BaseActivity{
 
     private Button btnGoLive, btnPreschedule, imgGoLive;
-    private ImageView txtCountTimer;
+    private TextView txtCountTimer;
     private Camera mCamera = null;
     private CameraView mCameraView = null;
 
@@ -84,7 +86,7 @@ public class CameraViewActivity extends BaseActivity{
 
     private void initUI() {
         btnPreschedule = (Button) findViewById(R.id.btnPreschedule);
-        txtCountTimer = (ImageView) findViewById(R.id.txtCountTimer);
+        txtCountTimer = (TextView) findViewById(R.id.txtCountTimer);
     }
 
     private void startThreads() {
@@ -94,7 +96,7 @@ public class CameraViewActivity extends BaseActivity{
             public void onTick(long millisUntilFinished) {
                 //txtCountTimer.setText("" + millisUntilFinished / 1000);
                 int i = (int) (millisUntilFinished / 1000);
-                txtCountTimer.setImageResource(imageId[i-1]);
+                txtCountTimer.setText(String.valueOf(i));
             }
 
             public void onFinish() {

@@ -1,6 +1,6 @@
 package com.vumobile.celeb.model;
 
-import java.util.List;
+import org.json.JSONArray;
 
 /**
  * Created by toukirul on 19/6/2017.
@@ -8,14 +8,15 @@ import java.util.List;
 
 public class GiftClass {
 
-    private List<String> giftList;
+    private JSONArray array;
+    private String totalGifts;
 
-    public List<String> getGiftList() {
-        return giftList;
+    public String getTotalGifts() {
+        return totalGifts;
     }
 
-    public void setGiftList(List<String> giftList) {
-        this.giftList = giftList;
+    public void setTotalGifts(String totalGifts) {
+        this.totalGifts = totalGifts;
     }
 
     private String msisdn;
@@ -24,6 +25,14 @@ public class GiftClass {
     private String giftOne;
     private String giftTwo;
     private String giftThree;
+
+    public JSONArray getArray() {
+        return array;
+    }
+
+    public void setArray(JSONArray array) {
+        this.array = array;
+    }
 
     public String getGiftOne() {
         return giftOne;

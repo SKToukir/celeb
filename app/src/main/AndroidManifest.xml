@@ -200,7 +200,8 @@
 
         <activity android:name=".ui.GiftsActivity" />
         <activity android:name=".ui.SetScheduleForLiveActivity" />
-        <activity android:name="com.vumobile.fan.login.LogInAcitvity"></activity>
+        <activity android:name="com.vumobile.fan.login.LogInAcitvity" />
+        <activity android:name=".ui.ShowAllGiftActivity"></activity>
     </application>
 
 </manifest>

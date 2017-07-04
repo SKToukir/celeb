@@ -210,6 +210,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             btnLike.setVisibility(View.INVISIBLE);
             btnGift.setVisibility(View.INVISIBLE);
         }
+
+        Log.d("ScreenResulation",Methods.getScreenResolution(getApplicationContext()));
     }
 
     @Override
@@ -490,10 +492,10 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         // if connected wifi
         if (1 == 1) {
             Log.d("Connected:", linkRate);
-            int vProfile = Constants.VIDEO_PROFILE_180P_4;
+            int vProfile = Constants.VIDEO_PROFILE_240P;
             // default smothness 1.0f and lightness 0.65f
             // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
-            worker().setPreParameters(0.50f, 0.50f);
+            worker().setPreParameters(1f, 0.65f);
             worker().configEngine(cRole, vProfile);
 
 //            Log.d("Connected:","wifi");
@@ -549,10 +551,10 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             // previous code
             //int vProfile = ConstantApp.VIDEO_PROFILES[prefIndex];
             // my code
-            int vProfile = Constants.VIDEO_PROFILE_180P_4;
+            int vProfile = Constants.VIDEO_PROFILE_240P;
             // default smothness 1.0f and lightness 0.65f
             // if we want set manually smothness and lightness then uncomment below method and set smothness and lightness
-            worker().setPreParameters(0.5f, 0.50f);
+            worker().setPreParameters(1f, 0.65f);
             worker().configEngine(cRole, vProfile);
         }
 
@@ -1198,7 +1200,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             }
         });
 
-        alertDialogBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick
                     (DialogInterface dialogInterface, int i) {
@@ -1219,5 +1221,11 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         }
     }
 
-
+    @Override
+    protected void onStop() {
+        Log.d("ExitLive","ExitLive");
+        new ServerPostRequest().onLive(getApplicationContext(), msisdn, "0");
+        finish();
+        super.onStop();
+    }
 }

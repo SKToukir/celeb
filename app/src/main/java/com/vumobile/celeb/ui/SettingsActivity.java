@@ -64,6 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void doSaveProfile() {
+
         int profileIndex = mVideoProfileAdapter.getSelected();
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);

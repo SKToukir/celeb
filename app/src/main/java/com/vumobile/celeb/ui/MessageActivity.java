@@ -2,6 +2,7 @@ package com.vumobile.celeb.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
+public class MessageActivity extends AppCompatActivity implements View.OnClickListener , SwipeRefreshLayout.OnRefreshListener{
 
     boolean isCeleb;
     String msisdn;
@@ -46,6 +47,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private Intent intent;
     private String profilePic, fbName;
     private RelativeLayout activity_message;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,16 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_message);
         new MyInternetCheckReceiver(activity_message);
+
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        //celebrityClassList = new ArrayList<CelebrityClass>();
+                                        retreiveData(Api.URL_GET_SCHEDULES);
+                                    }
+                                }
+        );
 
     } // end of onCreate
 
@@ -157,8 +169,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private void retreiveData(String urlGetSchedules) {
+    public void retreiveData(String urlGetSchedules) {
 
+        swipeRefreshLayout.setRefreshing(true);
         listClasses.clear();
 
         String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
@@ -208,12 +221,14 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("FromServer", "" + error.getMessage());
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 }) {
             @Override
@@ -250,6 +265,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         listView = (ListView) findViewById(R.id.listChatUser);
         imgBack = (ImageView) toolbar.findViewById(R.id.backCelebMessage);
         imgBack.setOnClickListener(this);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_message);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         adapter = new MessageUserListAdapter(getApplicationContext(), R.layout.row_message_fan_list, listClasses);
         listView.setAdapter(adapter);
@@ -280,7 +297,12 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onResume() {
-        retreiveData(Api.URL_GET_SCHEDULES);
+        //retreiveData(Api.URL_GET_SCHEDULES);
         super.onResume();
+    }
+
+    @Override
+    public void onRefresh() {
+        retreiveData(Api.URL_GET_SCHEDULES);
     }
 }

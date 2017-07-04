@@ -7,7 +7,7 @@ package com.vumobile.celeb.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +15,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.RequestClass;
 import com.vumobile.celeb.ui.SetScheduleActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -28,6 +37,7 @@ import java.util.List;
  */
 public class RequestAdapter extends ArrayAdapter<RequestClass> {
 
+    private List<RequestClass> items;
     private Context mContext;
     private ImageView btnConfirm;
     private ImageView btnDelete;
@@ -39,6 +49,7 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
     public RequestAdapter(Context context, int resource, List<RequestClass> items) {
         super(context, resource, items);
         this.mContext = context;
+        this.items = items;
     }
 
     @SuppressLint("WrongViewCast")
@@ -53,7 +64,7 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
             v = vi.inflate(R.layout.request_row, null);
         }
 
-        RequestClass requestClass = getItem(position);
+        RequestClass requestClass = items.get(position);
 
         if (requestClass != null) {
             TextView tt1 = (TextView) v.findViewById(R.id.txtfanName);
@@ -66,13 +77,13 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TastyToast.makeText(mContext,requestClass.getFanName()+String.valueOf(position),TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
+                    TastyToast.makeText(mContext, requestClass.getFanName() + String.valueOf(position), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 
                     Intent intent = new Intent(mContext, SetScheduleActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("msisdn",requestClass.getMSISDN());
-                    intent.putExtra("request_type",requestClass.getRequest_type());
+                    intent.putExtra("msisdn", requestClass.getMSISDN());
+                    intent.putExtra("request_type", requestClass.getRequest_type());
                     mContext.startActivity(intent);
                 }
             });
@@ -80,7 +91,10 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TastyToast.makeText(mContext,"Delete"+String.valueOf(position),TastyToast.LENGTH_LONG,TastyToast.ERROR);
+
+                    items.remove(position);
+                    notifyDataSetChanged();
+                    deleteItem(requestClass.getID());
                 }
             });
 
@@ -105,10 +119,33 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
     }
 
 
+    private void deleteItem(String id) {
 
-    @Nullable
-    @Override
-    public RequestClass getItem(int position) {
-        return super.getItem(getCount() - position - 1);
+        Log.d("FromServer", id);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://wap.shabox.mobi/testwebapi/Request/CancelRequest?ID=" + id + "&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String log = object.getString("result");
+                            Log.d("sucessresult", log);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(stringRequest);
     }
 }

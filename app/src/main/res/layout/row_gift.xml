@@ -13,35 +13,32 @@ android:layout_margin="5dp"
 
      <com.github.bassaer.chatmessageview.views.RoundImageView
          android:id="@+id/imgGiftSender"
-         android:layout_width="95dp"
+         android:layout_width="68dp"
          android:layout_height="95dp" />
 
      <LinearLayout
-         android:layout_margin="5dp"
+         android:layout_margin="15dp"
          android:orientation="horizontal"
          android:layout_width="match_parent"
          android:layout_height="match_parent">
 
          <ImageView
-             android:id="@+id/imgGiftOne"
              android:layout_margin="5dp"
-             android:layout_weight="1"
-             android:layout_width="match_parent"
+             android:gravity="center"
+             android:src="@drawable/ic_gift"
+             android:layout_width="30dp"
              android:layout_height="match_parent" />
 
-         <ImageView
-             android:id="@+id/imgGiftTwo"
+         <com.vumobile.utils.MyTextView
              android:layout_margin="5dp"
-             android:layout_weight="1"
-             android:layout_width="match_parent"
+             android:id="@+id/txtTotalGifts"
+             android:gravity="center"
+             android:textColor="#000"
+             android:textSize="20sp"
+             android:text="Total Gifts "
+             android:layout_width="wrap_content"
              android:layout_height="match_parent" />
 
-         <ImageView
-             android:id="@+id/imgGiftThree"
-             android:layout_margin="5dp"
-             android:layout_weight="1"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent" />
 
      </LinearLayout>
 

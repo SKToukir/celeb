@@ -164,6 +164,10 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
 
             case R.id.btnPost:
+
+                btnClose.setVisibility(View.GONE);
+
+
                 String comment = etEditPost.getText().toString();
                 if (filePath == null || filePath.equals(null) || filePath.equals("")) {
                     String change = "0";

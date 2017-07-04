@@ -50,7 +50,7 @@ public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SinchService.StartFailedListener {
 
     boolean isCeleb;
-    TextView imgNewMsgCount;
+    TextView imgNewMsgCount, imgNewRequestCount;
     public static final int IMAGE_PICKER_SELECT = 1;
     private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage, nav_home,nav_gallery,
             nav_gifts,nav_schedule,nav_post,nav_logout;
@@ -159,6 +159,43 @@ public class CelebHomeActivity extends BaseActivity
         requestQueue.add(request);
     }
 
+    private void fetchNewRequest() {
+
+        String my_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/RequestCount?MSISDN="+msisdnMy+"&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+        Log.d("FromServerNewRequest", url+" "+msisdnMy);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("FromServerNewRequest", response.toString());
+
+                try {
+                    int msg_count = Integer.parseInt(response.getString("result"));
+
+
+                    if (msg_count != 0){
+                        imgNewRequestCount.setVisibility(View.VISIBLE);
+                        imgNewRequestCount.setText(String.valueOf(msg_count));
+                    }else {
+                        imgNewRequestCount.setVisibility(View.GONE);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
+
     private void runService() {
 
         try {
@@ -240,6 +277,7 @@ public class CelebHomeActivity extends BaseActivity
     }
 
     private void initUI() {
+        imgNewRequestCount = (TextView) findViewById(R.id.imgNewRequestCount);
         imgNewMsgCount = (TextView) findViewById(R.id.imgNewMsgCount);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         txtHomePageFollow = (TextView) findViewById(R.id.txtHomePageFollow);
@@ -496,6 +534,8 @@ public class CelebHomeActivity extends BaseActivity
     protected void onResume() {
         // get new message count
         fetchNewMsg("1");
+        // get new request count
+        fetchNewRequest();
 
         txtHomePageFollow.setText(totalFollowers);
         txtFollowers.setText(totalFollowers);

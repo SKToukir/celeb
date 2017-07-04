@@ -774,6 +774,9 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+
+        btn_close.setVisibility(View.GONE);
+        btn_edit.setVisibility(View.GONE);
     }
 
 
