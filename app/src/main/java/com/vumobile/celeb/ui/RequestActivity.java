@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.RequestAdapter;
@@ -29,7 +30,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RequestActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +45,7 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
     private Toolbar toolbar;
     private ImageView imgBackRequest;
     private Intent intent;
+    String msisdn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +67,11 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
         adapter = new RequestAdapter(getApplicationContext(), R.layout.request_row, requestClasses);
         listOfRequests.setAdapter(adapter);
 
-        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
         retreiveRequest(msisdn);
+
+        removeBadge();
     }
 
     private void retreiveRequest(String msisdn) {
@@ -81,6 +87,7 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 
                         JSONObject obj = array.getJSONObject(i);
                         requestClass = new RequestClass();
+                        requestClass.setID(obj.getString("cid"));
                         requestClass.setFanName(obj.getString("Name"));
                         Log.d("dataa",obj.getString("Name"));
                         requestClass.setImageUrl(obj.getString("Image_url"));
@@ -173,5 +180,47 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
                 this.finish();
                 break;
         }
+    }
+
+    private void removeBadge() {
+
+
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/UpdateRequestCount?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+//                        try {
+//                            JSONObject jsonObj = new JSONObject(response);
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("MSISDN", msisdn);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+
     }
 }

@@ -12,8 +12,9 @@
     tools:context="com.vumobile.SplashScreenActivity">
 
     <ImageView
+        android:background="@drawable/splash"
         android:id="@+id/splashImage"
-        android:layout_width="250dp"
-        android:layout_height="250dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

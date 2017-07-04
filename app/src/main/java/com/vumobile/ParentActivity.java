@@ -905,16 +905,16 @@ public class ParentActivity extends BaseActivity
                 Log.d("FromServerNewMsg", response.toString());
 
                 try {
-                    String msg_count = response.getString("result");
+                    int msg_count = Integer.parseInt(response.getString("result"));
 
-                    if (!msg_count.equals("0")) {
+                    if (msg_count != 0) {
                         textViewMessageNotificationBadge.setVisibility(View.VISIBLE);
-                        textViewMessageNotificationBadge.setText(msg_count);
+                        textViewMessageNotificationBadge.setText(String.valueOf(msg_count));
                     } else {
                         textViewMessageNotificationBadge.setVisibility(View.INVISIBLE);
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

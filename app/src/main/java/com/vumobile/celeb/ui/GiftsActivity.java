@@ -1,5 +1,6 @@
 package com.vumobile.celeb.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -62,6 +66,22 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
         initUI();
 
         fetchData();
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                Toast.makeText(getApplicationContext(),String.valueOf(position),Toast.LENGTH_LONG).show();
+//                JSONArray array = giftList.get(position).getArray();
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     private void fetchData() {
@@ -88,7 +108,9 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
                         Log.d("FromServer", giftClass.getImageUrl());
 
                         JSONArray array1 = object.getJSONArray("Post_Urls");
-
+                        Log.d("hjhjhjhjhjh",array1.toString());
+                        giftClass.setArray(array1);
+                        giftClass.setTotalGifts(String.valueOf(array1.length()));
                         Log.d("ListSize", String.valueOf(array1.length()));
 
 
@@ -176,6 +198,57 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
         button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
         button.setTextColor(getResources().getColor(R.color.pure_white));
         button.setTag("SELECT_ITEM");
+    }
+
+    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private GestureDetector gestureDetector;
+        private ClickListener clickListener;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+            this.clickListener = clickListener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @SuppressWarnings("deprecation")
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clickListener != null) {
+                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                    }
+                }
+            });
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+                clickListener.onClick(child, rv.getChildPosition(child));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+
+        public interface ClickListener {
+            void onClick(View view, int position);
+
+            void onLongClick(View view, int position);
+        }
     }
 
 }

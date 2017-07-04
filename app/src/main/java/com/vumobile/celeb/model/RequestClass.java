@@ -6,6 +6,16 @@ package com.vumobile.celeb.model;
 
 public class RequestClass {
 
+    private String ID;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
     private String imageUrl;
     private String fanName;
     private String request;

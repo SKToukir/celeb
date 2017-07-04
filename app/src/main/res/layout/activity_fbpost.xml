@@ -109,7 +109,8 @@
                     android:isScrollContainer="true"
                     android:maxLines="6"
                     android:minLines="6"
-                    android:padding="5dp" />
+                    android:padding="5dp"
+                    style="@style/AppTheme"/>
 
 
                 <!-- Videoview to preview recorded video -->

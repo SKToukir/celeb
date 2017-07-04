@@ -19,10 +19,21 @@
         android:layout_height="wrap_content" />
 
     <com.vumobile.utils.MyTextView
+        android:gravity="center"
+        android:layout_below="@+id/frame"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:text="You will be charge for video call\n5tk/min"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.vumobile.utils.MyTextView
+        android:visibility="gone"
         android:layout_margin="10dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textColor="#fff"
+        android:textColor="@color/myColorTwoHeader"
         android:textSize="25sp"
         android:layout_below="@+id/text3"
         android:id="@+id/txtUserName"
@@ -31,7 +42,7 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -80,27 +91,46 @@
         android:textStyle="bold"
         android:layout_alignParentBottom="true"/>
 
-    <com.vumobile.celeb.Utils.RoundedImageView
+    <FrameLayout
+        android:layout_marginTop="26dp"
+        android:id="@+id/frame"
+        android:layout_below="@+id/include"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/include"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:id="@+id/imgCalleImage" />
+        android:layout_centerHorizontal="true">
+
+        <com.vumobile.celeb.Utils.RoundedImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_man"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/imgCalleImage" />
+
+        <ImageView
+            android:layout_width="145dp"
+            android:layout_height="145dp"
+            android:layout_gravity="center"
+            android:background="@drawable/b"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+
+
 
     <Button
         android:background="@drawable/button_border_radius_background"
         android:gravity="center"
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:text="Go"
         android:minHeight="56dp"
         android:minWidth="132dp"
         android:textColor="#fff"
         android:textSize="22sp"
-        android:textStyle="bold"
         android:layout_below="@+id/txtUserName"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="77dp" />

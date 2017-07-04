@@ -16,13 +16,31 @@
         android:gravity="left"
         android:orientation="horizontal">
 
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageViewChatProfilePic"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_gravity="center"
-            android:padding="8dp" />
+            android:descendantFocusability="blocksDescendants">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageViewChatProfilePic"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/ic_man"
+                android:layout_gravity="center"
+                android:padding="8dp" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/b"
+                android:scaleType="fitXY" />
+
+        </FrameLayout>
+
+
 
         <TextView
             android:id="@+id/textViewChatName"
@@ -30,8 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Name"
-            android:textColor="#787878"
-            android:textSize="18sp"
+            android:textColor="@color/myColorTwoHeader"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
     </LinearLayout>

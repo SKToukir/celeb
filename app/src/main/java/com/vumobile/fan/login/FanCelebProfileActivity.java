@@ -20,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -308,7 +307,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
                                 intent.putExtra("profilePic", profilePic);
                                 intent.putExtra("celeb_msisdn", msisdn);
                                 startActivity(intent);
-                                TastyToast.makeText(getApplicationContext(), "Start Video Call Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                                //TastyToast.makeText(getApplicationContext(), "Start Video Call Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 

@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
         String userName = user_names;
 
         if (userName.isEmpty()) {
-            Toast.makeText(this, "Please enter a name", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Nmae Not Found", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -166,10 +166,26 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
     }
 
     private void showSpinner() {
+
         mSpinner = new ProgressDialog(this);
         mSpinner.setTitle("Logging in");
         mSpinner.setMessage("Please wait...");
         mSpinner.show();
+
+        Thread thread = new Thread(){
+
+            @Override
+            public void run() {
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }finally {
+                    mSpinner.dismiss();
+                }
+            }
+        };thread.start();
+
     }
 
     private void requestForVideo(String celeb_msisdn, String fan_msisdn, String type) {

@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_margin="5dp"
         android:id="@+id/linearLayoutMessageList"
         android:layout_width="wrap_content"
-        android:layout_height="110dp"
+        android:layout_height="90dp"
+        android:layout_margin="5dp"
         android:layout_weight="3"
         android:orientation="horizontal">
 
@@ -40,14 +39,14 @@
 
 
         <com.vumobile.utils.MyTextView
-        android:id="@+id/txtFanMessageName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="11dp"
-        android:text="SomeOne"
-        android:textColor="@color/dark_black"
-        android:textSize="20sp" />
+            android:id="@+id/txtFanMessageName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="11dp"
+            android:text="SomeOne"
+            android:textColor="#000"
+            android:textSize="18sp" />
 
     </LinearLayout>
     <!--<LinearLayout-->
@@ -76,16 +75,18 @@
     <!--android:textSize="20sp" />-->
 
     <TextView
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000"
         android:id="@+id/txtMessageCount"
-        android:visibility="visible"
-        android:text="12"
-        android:layout_marginRight="15dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="15dp"
+        android:background="@drawable/badge_circle"
+        android:gravity="center"
+        android:text="12"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:visibility="visible" />
 
 </LinearLayout>
 
