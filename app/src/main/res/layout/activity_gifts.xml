@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.vumobile.celeb.ui.GiftsActivity">
 
-
-
-
     <include
         android:id="@+id/toolBar_post_gifts"
         layout="@layout/tool_bar_post" />
@@ -56,11 +53,11 @@
         android:layout_below="@+id/barLayout"
         android:layout_height="wrap_content">
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerGifts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent" />
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
