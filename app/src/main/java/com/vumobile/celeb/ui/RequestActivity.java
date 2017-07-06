@@ -76,7 +76,7 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
-        retreiveRequest(msisdn);
+        //retreiveRequest(msisdn);
 
         removeBadge();
 

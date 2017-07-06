@@ -6,6 +6,7 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -201,7 +202,8 @@
         <activity android:name=".ui.GiftsActivity" />
         <activity android:name=".ui.SetScheduleForLiveActivity" />
         <activity android:name="com.vumobile.fan.login.LogInAcitvity" />
-        <activity android:name=".ui.ShowAllGiftActivity"></activity>
+        <activity android:name=".ui.ShowAllGiftActivity" />
+        <activity android:name="com.vumobile.MainActivity"></activity>
     </application>
 
 </manifest>

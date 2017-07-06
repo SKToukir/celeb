@@ -38,6 +38,7 @@ import java.util.Map;
 public class LoginActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private ImageView imgCalleImage;
+    private TextView txtName;
     private Button mLoginButton, btnSentVideoRequest;
     private EditText mLoginName;
     private ProgressDialog mSpinner;
@@ -59,11 +60,13 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
         btnSentVideoRequest = (Button) findViewById(R.id.btnSentVideoRequest);
         txtUserName = (TextView) findViewById(R.id.txtUserName);
         mLoginName = (EditText) findViewById(R.id.loginName);
+        txtName = (TextView) findViewById(R.id.txtName);
         txtUserName.setText(celeb_name);
         mLoginName.setText(user_name);
 
         imgCalleImage = (ImageView) findViewById(R.id.imgCalleImage);
         Picasso.with(getApplicationContext()).load(celeb_profilePic).into(imgCalleImage);
+        txtName.setText(celeb_name);
         mLoginButton = (Button) findViewById(R.id.loginButton);
         //loginClicked(user_name);
         // here login button is GO button
@@ -171,7 +174,7 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
         mSpinner.setTitle("Logging in");
         mSpinner.setMessage("Please wait...");
         mSpinner.show();
-
+        mLoginButton.setText("GO");
         Thread thread = new Thread(){
 
             @Override
