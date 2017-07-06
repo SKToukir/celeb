@@ -186,7 +186,12 @@ public class FanCelebProfileImageVideo extends AppCompatActivity {
 
                     }
 
-                    Log.d("ttt list", "onResponse: " + fanCelebImageModelEntities.get(0).getImageUrl());
+                    try {
+                        Log.d("ttt list", "onResponse: " + fanCelebImageModelEntities.get(0).getImageUrl());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();

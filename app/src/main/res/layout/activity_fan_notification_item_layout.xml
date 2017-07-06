@@ -20,15 +20,32 @@
             android:layout_margin="5dp"
             android:layout_weight=".7">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageViewNotificationProfilePic"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+            <FrameLayout
+                android:id="@+id/frame"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:foreground="@drawable/circular_image"
-                android:src="@drawable/ic_man" />
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewNotificationProfilePic"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_gravity="center"
+                    android:foreground="@drawable/circular_image"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_man" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/b"
+                    android:scaleType="fitXY" />
+
+            </FrameLayout>
 
         </RelativeLayout>
 
@@ -42,6 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
+                android:layout_marginLeft="5dp"
                 android:gravity="center|left"
                 android:orientation="vertical">
 
@@ -51,8 +69,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Shahrukh Khan"
-                    android:textColor="#000000"
-                    android:textSize="22dp"
+                    android:textColor="#000"
+                    android:textSize="18sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -62,7 +80,7 @@
                     android:layout_below="@+id/txtCelebName"
                     android:layout_centerVertical="true"
                     android:text="00:00 AM"
-                    android:textColor="@color/dark_black" />
+                    android:textColor="#000" />
 
             </LinearLayout>
 
@@ -80,12 +98,12 @@
             android:id="@+id/textViewNotificationMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello this is a notification"
-            android:textColor="@color/dark_black"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:text="Hello this is a notification"
+            android:textColor="@color/dark_black"
+            android:textSize="19dp"
+            android:textStyle="normal" />
 
         <RelativeLayout
             android:id="@+id/relativeLayoutImageAndVideo"
@@ -109,9 +127,9 @@
             <ImageView
                 android:id="@+id/imageViewThumb"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
                 android:padding="2dp" />
 
             <ImageView
@@ -120,8 +138,8 @@
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/play_button"
-                android:contentDescription="Play Icon" />
+                android:contentDescription="Play Icon"
+                android:src="@drawable/play_button" />
 
         </RelativeLayout>
 

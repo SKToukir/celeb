@@ -188,8 +188,8 @@ public class Gifts extends Fragment {
 
                     @Override
                     public void getResponseErr(String responseResultErr) {
-                        Log.d(TAG, "getResponseErr: giftSend " + responseResultErr);
-                        Toast.makeText(getActivity(), "Gift not sent", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "getResponseErr: giftNotSend " + responseResultErr);
+                     //   Toast.makeText(getActivity(), "Gift not sent", Toast.LENGTH_SHORT).show();
                     }
                 }
         );

@@ -81,7 +81,7 @@ public class ParentActivity extends BaseActivity
 
     private CelebrityClass celebrityClass;
     private List<CelebrityClass> celebrityClassList = new ArrayList<CelebrityClass>();
-    private List<CelebrityClass> celebrityClassListCopy;
+    private List<CelebrityClass> celebrityClassListCopy; // for search
     private CelebrityListAdapter adapter;
     private ListView listCeleb;
     private PendingIntent pendingIntent;
@@ -192,16 +192,11 @@ public class ParentActivity extends BaseActivity
     private void checkFromLiveNotificationGoLiveList() {
         if (getIntent().hasExtra("user")) {
             Log.d("checkit 1", "checkFromLiveNotificationGoLiveList: ");
-            loadCelebrityDataWhoIsLive(Api.URL_ACTIVATE_USERS);
             changeButtonSelectFocus(buttonFilterLive);
             getIntent().removeExtra("user");
         } else {
             Log.d("checkit 2", "checkFromLiveNotificationGoLiveList: ");
         }
-//        i.putExtra(ConstantApp.ACTION_KEY_CROLE, cRole);
-//        i.putExtra(ConstantApp.ACTION_KEY_ROOM_NAME, room);
-//        Log.d("livetest", "forwardToLiveRoom: " + cRole + "||" + room);
-//        i.putExtra("user", "fan");
     }
 
     // retrieve device token for push notification
@@ -333,9 +328,8 @@ public class ParentActivity extends BaseActivity
                         celebrityClass.setFollowerCount(obj.getString("Follower"));
                         celebrityClass.setNextLive(obj.getString("NextLive"));
                         celebrityClass.setNextLiveStatus(0);
-
                         celebrityClassList.add(celebrityClass);
-
+                        Log.d("follll 1 list", "onResponse: " + obj.getString("Isfollow"));
                         listCeleb.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
@@ -510,11 +504,11 @@ public class ParentActivity extends BaseActivity
                                 celebrityClass.setCeleb_image(obj.getString(Api.CELEB_IMAGE));
                                 celebrityClass.setFb_name(obj.getString("Name"));
                                 celebrityClass.setIsOnline(obj.getString("Live_status"));
-                                celebrityClass.setIsfollow("1");
+                                celebrityClass.setIsfollow(obj.getString("Isfollow")); //"1"
                                 celebrityClass.setFollowerCount(obj.getString("Follower"));
                                 //  celebrityClass.setNextLive(obj.getString("NextLive"));
                                 celebrityClass.setNextLiveStatus(0);
-
+                                Log.d("follll 1 top", "onResponse: " + obj.getString("Isfollow"));
                                 celebrityClassList.add(celebrityClass);
                                 listCeleb.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
@@ -768,7 +762,7 @@ public class ParentActivity extends BaseActivity
                 changeButtonSelectFocus(buttonFilterFollowing);
                 break;
 
-            case R.id.buttonMostLive:
+            case R.id.buttonMostLive: // top
                 loadCustomCelebrityData(Api.URL_GET_MOST_LIVE_CELEB_LIST);
                 changeButtonSelectFocus(buttonMostLive);
                 break;

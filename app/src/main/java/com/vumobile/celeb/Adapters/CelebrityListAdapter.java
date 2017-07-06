@@ -98,6 +98,7 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
             }
 
             // Set follow button
+            Log.d("follll", "getView: " + p.getIsfollow().equals("1"));
             if (p.getIsfollow().equals("1")) {
                 flw.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_action_unfollow));
             } else {

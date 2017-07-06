@@ -73,9 +73,6 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 
         msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
-
-
-
         retreiveRequest(msisdn);
 
         removeBadge();
@@ -216,9 +213,7 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 
     private void removeBadge() {
 
-
         String url = "http://wap.shabox.mobi/testwebapi/Celebrity/UpdateRequestCount?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
