@@ -83,10 +83,14 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         int result = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
         int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int result4 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int result5 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result6 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         //If permission is granted returning true
         if (result == PackageManager.PERMISSION_GRANTED &&
                 result1 == PackageManager.PERMISSION_GRANTED &&
-                result4 == PackageManager.PERMISSION_GRANTED)
+                result4 == PackageManager.PERMISSION_GRANTED &&
+                result5 == PackageManager.PERMISSION_GRANTED &&
+                result6 == PackageManager.PERMISSION_GRANTED)
             return true;
 
         //If permission is not granted returning false
@@ -97,7 +101,9 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.GET_ACCOUNTS) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_PHONE_STATE) &&
-                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)) {
+                ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
@@ -106,7 +112,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.GET_ACCOUNTS,
                 Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.CAMERA}, REQUEST_GET_ACCOUNT);
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_GET_ACCOUNT);
     }
 
     @Override
@@ -137,7 +143,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                                     requestPermissions(new String[]{android.Manifest.permission.GET_ACCOUNTS,
                                                                     Manifest.permission.READ_PHONE_STATE,
-                                                                    Manifest.permission.CAMERA},
+                                                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                             REQUEST_GET_ACCOUNT);
                                                 }
                                             }
@@ -235,7 +241,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     public void btnLoginCont(View view) {
 
         isCeleb = false;
-        uName = etUserName.getText().toString();
+        //uName = etUserName.getText().toString();
+        uName = "null";
         uPhone = etUserPhone.getText().toString();
 
 
@@ -301,7 +308,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        alertDialogBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -407,7 +414,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
             case R.id.txt_become_celeb:
 
                 isCeleb = true;
-                uName = etUserName.getText().toString();
+                //uName = etUserName.getText().toString();
+                uName = "null";
                 uPhone = etUserPhone.getText().toString();
 
 

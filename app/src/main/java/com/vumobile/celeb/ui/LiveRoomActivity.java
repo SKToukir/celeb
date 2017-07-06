@@ -86,6 +86,7 @@ import io.agora.rtc.video.VideoCanvas;
 @SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
+    private LinearLayout bottom_container;
     public int COUNT_GIFTS = 0;
     private LinearLayout gift_container, gift_price_container;
     static String likeRoomName, viewRoomName;
@@ -175,6 +176,8 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
 
     private void initUI() {
+
+        bottom_container = (LinearLayout) findViewById(R.id.bottom_container);
         pattern = Pattern.compile(CommentListAdapter.URL_REGEX);
         gift_container = (LinearLayout) findViewById(R.id.gift_container);
         gift_price_container = (LinearLayout) findViewById(R.id.gift_price_container);
@@ -256,6 +259,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
             Log.d("fbName", "celeb " + fb_name);
             user_name = fb_name;
         } else if (user.equals("fan")) {
+            bottom_container.setVisibility(View.GONE);
             //user_name = Session.retreiveName(getApplicationContext(), Session.USER_NAME);
             user_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
             Log.d("fbName", "fan " + user_name);

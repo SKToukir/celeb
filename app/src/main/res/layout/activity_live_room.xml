@@ -62,7 +62,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"/>
+
             <com.vumobile.ui.AGLinearLayout
+                android:layout_marginTop="30dp"
                 android:id="@+id/top_area"
                 android:layout_width="wrap_content"
                 android:layout_height="54dp"
@@ -103,13 +109,21 @@
                     android:layout_height="match_parent"
                     android:layout_weight="20" />
 
+
+
+                <ImageView
+                    android:background="@drawable/live"
+                    android:id="@+id/live"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp" />
+
                 <TextView
                     android:layout_marginRight="3dp"
                     android:textColor="#fff"
                     android:gravity="center|right"
                     android:text="0"
                     android:id="@+id/txtViews"
-                    android:layout_width="54dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="2dp"
                     android:scaleType="center"
@@ -121,10 +135,7 @@
                     android:layout_height="20dp" />
 
 
-
-
                 <RelativeLayout
-
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -135,7 +146,7 @@
                         android:gravity="center|right"
                         android:text="0"
                         android:id="@+id/txtLikes"
-                        android:layout_width="54dp"
+                        android:layout_width="40dp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:scaleType="center"

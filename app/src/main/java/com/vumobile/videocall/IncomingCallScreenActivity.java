@@ -22,6 +22,7 @@ import java.util.List;
 
 public class IncomingCallScreenActivity extends BaseActivity {
 
+    private String remoteUserName;
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
     private String mCallId;
     private AudioPlayer mAudioPlayer;
@@ -48,11 +49,22 @@ public class IncomingCallScreenActivity extends BaseActivity {
             call.addCallListener(new SinchCallListener());
             TextView remoteUser = (TextView) findViewById(R.id.remoteUser);
             remoteUser.setText(call.getRemoteUserId());
+            remoteUserName = call.getRemoteUserId();
+
+            //TODO
+            // retrive user image who is calling from server
+            getUserImage(remoteUserName);
 
         } else {
             Log.e(TAG, "Started with invalid callId, aborting");
             finish();
         }
+    }
+
+    private void getUserImage(String remoteUserName) {
+
+
+
     }
 
     private void answerClicked() {

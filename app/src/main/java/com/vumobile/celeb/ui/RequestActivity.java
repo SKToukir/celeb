@@ -73,7 +73,10 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
 
         msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
-        retreiveRequest(msisdn);
+
+
+
+        //retreiveRequest(msisdn);
 
         removeBadge();
 

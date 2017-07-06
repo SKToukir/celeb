@@ -37,13 +37,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         public void run() {
             mbActive = true;
             try {
-                int waited = 0;
-                while (mbActive && (waited < TIMER_RUNTIME)) {
-                    sleep(2100);
-                    if (mbActive) {
-                        waited += 2;
-                    }
-                }
+                sleep(7000);
+//                int waited = 0;
+//                while (mbActive && (waited < TIMER_RUNTIME)) {
+//                    sleep(2100);
+//                    if (mbActive) {
+//                        waited += 2;
+//                    }
+//                }
             } catch (InterruptedException e) {
                 // do nothing
             } finally {

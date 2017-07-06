@@ -12,119 +12,6 @@
         android:id="@+id/tool_bar_login"
         layout="@layout/toolbar_login" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutLoginMain"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".8"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".1" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".8"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:visibility="gone"
-                    android:id="@+id/usernameWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#fff"
-                    android:gravity="center">
-
-                    <EditText
-                        android:id="@+id/etUserName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_icon_profile"
-                        android:drawablePadding="5dp"
-                        android:gravity="left"
-                        android:hint="Name"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:textColorHint="@color/myColorOneBody" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/userphoneWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="#fff"
-                    android:gravity="center"
-                    android:visibility="visible">
-
-                    <EditText
-                        android:id="@+id/etUserPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_icon_mobile"
-                        android:drawablePadding="5dp"
-                        android:gravity="left"
-                        android:hint="Mobile No."
-                        android:inputType="phone"
-                        android:maxLength="11"
-                        android:maxLines="1"
-                        android:textColorHint="@color/myColorOneBody" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:background="@drawable/signup"
-                    android:id="@+id/btnLoginCont"
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:elevation="5dp"
-                    android:onClick="btnLoginCont"
-                    android:padding="5dp"
-                    android:textAllCaps="false"
-                    />
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="#dcdbdb" />
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight=".1" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt_become_celeb"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/becomeacelebrity"
-            android:clickable="true"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:textColor="@color/myColorOneBody" />
-
-    </LinearLayout>
-
     <!--pin submit part-->
     <LinearLayout
         android:id="@+id/linearLayoutOtpVerification"
@@ -133,7 +20,7 @@
         android:layout_weight=".8"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <Space
             android:layout_width="0dp"
@@ -208,7 +95,7 @@
                 android:paddingRight="25dp"
                 android:text="Resend SMS"
                 android:textAllCaps="false"
-                android:textColor="#fff"
+                android:textColor="@color/dark_black"
                 android:textSize="18sp"
                 android:visibility="visible" />
 

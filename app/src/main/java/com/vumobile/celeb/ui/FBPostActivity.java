@@ -77,10 +77,11 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private ProgressDialog dialog;
     private ShareDialog shareDialog;
     private RelativeLayout imgVdoLayout;
-    private LinearLayout selectImageVideoLayout;
+    private LinearLayout selectImageVideoLayout, btnGoLive;
     private ImageView imgCelebImage;
     private TextView txtCelebName;
-    private Button btnGoLive, btnGetPhotoVideo, btn_close, btn_edit;
+    private LinearLayout btnGetPhotoVideo;
+    private Button  btn_close, btn_edit;
     public static final int IMAGE_PICKER_SELECT = 1;
     private String filePath = "null";
     private boolean isImage = true;
@@ -189,8 +190,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
         vdoPreview = (VideoView) findViewById(R.id.videoPreview);
         txtCelebName = (TextView) findViewById(R.id.txtCelebName);
         imgCelebImage = (ImageView) findViewById(R.id.imgCelebImage);
-        btnGetPhotoVideo = (Button) findViewById(R.id.btnGetPhotoVideo);
-        btnGoLive = (Button) findViewById(R.id.btnGoLive);
+        btnGetPhotoVideo = (LinearLayout) findViewById(R.id.btnGetPhotoVideo);
+        btnGoLive = (LinearLayout) findViewById(R.id.btnGoLive);
         btnGoLive.setOnClickListener(this);
         btnPost.setOnClickListener(this);
         btnGetPhotoVideo.setOnClickListener(this);
@@ -278,9 +279,10 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
     private void choose_from_gallery() {
 
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/* video/*");
-        intent.setAction(Intent.ACTION_PICK);
+        //intent.setAction(Intent.ACTION_PICK);
         startActivityForResult(
                 Intent.createChooser(intent, "Complete action using"),
                 IMAGE_PICKER_SELECT);
