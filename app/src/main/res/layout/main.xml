@@ -10,53 +10,35 @@
         android:id="@+id/idVideoCall"
         layout="@layout/toolbar_video_call" />
 
-    <com.vumobile.celeb.Utils.RoundedImageView
-        android:id="@+id/imgCelebs"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="80dp"
-        android:src="@drawable/ic_man" />
+        android:descendantFocusability="blocksDescendants">
 
-    <LinearLayout
-        android:id="@+id/numberInputLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp">
+        <com.vumobile.celeb.Utils.RoundedImageView
+            android:id="@+id/imgCelebs"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_man" />
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:background="@drawable/b"
+            android:scaleType="fitXY" />
 
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:text=""
-            android:textAllCaps="true"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/callName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/inputbox"
-            android:inputType="textNoSuggestions"
-            android:padding="10dp"
-            android:textColor="#000"
-            android:textSize="32sp">
-
-            <requestFocus />
-        </TextView>
-
-    </LinearLayout>
+    </FrameLayout>
 
 
     <LinearLayout
@@ -90,19 +72,20 @@
 
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout2">
 
         <Button
-            android:id="@+id/callButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_border_radius_background"
+            android:background="@drawable/round_corner"
             android:minHeight="56dp"
             android:minWidth="132dp"
             android:text="Call"
@@ -113,7 +96,6 @@
             android:id="@+id/stopButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/callButton"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:background="@android:color/transparent"
@@ -124,5 +106,60 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/round_corner"
+        android:minHeight="56dp"
+        android:minWidth="132dp"
+        android:text="Call"
+        android:textColor="#fff"
+        android:layout_marginTop="113dp"
+        android:layout_below="@+id/numberInputLayout"
+        android:layout_alignRight="@+id/frame"
+        android:layout_alignEnd="@+id/frame" />
+
+    <LinearLayout
+        android:id="@+id/numberInputLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_below="@+id/frame"
+        android:layout_toRightOf="@+id/relativeLayout2"
+        android:layout_toEndOf="@+id/relativeLayout2">
+
+
+        <com.vumobile.utils.MyTextView
+            android:id="@+id/callName"
+            android:gravity="center"
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
+            android:textColor="#000"
+            android:textSize="20sp">
+
+        </com.vumobile.utils.MyTextView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:text=""
+            android:textAllCaps="true"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Session {
 
+    public static final String MSISDN = "msisdn";
     public static final String GENDER = "gender";
     public static final String CELEB_ID = "celeb_id";
     public static final String VIDEO_CALL_REQUEST = "video_call_request";
@@ -51,6 +52,14 @@ public class Session {
 
         SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putString(CELEB_ID, celebId);
+        editor.commit();
+
+    }
+
+    public void saveMsisdn (String msisdn, Context cntx){
+
+        SharedPreferences.Editor editor = cntx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(MSISDN, msisdn);
         editor.commit();
 
     }

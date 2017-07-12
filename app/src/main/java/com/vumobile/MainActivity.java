@@ -14,8 +14,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.celeb.R;
 import com.vumobile.fan.login.LogInAcitvity;
+import com.vumobile.fan.login.Session;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -89,7 +101,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.btnNewUser:
-                startActivity(new Intent(MainActivity.this, LogInAcitvity.class));
+                Intent intent = new Intent(MainActivity.this, LogInAcitvity.class);
+                intent.putExtra("msisdn", registeredPhone);
+                intent.putExtra("reqflag", "0");
+                intent.putExtra("userflag", "faka");
+                startActivity(intent);
+                finish();
                 break;
             case R.id.btnResendPinSmsR:
 
@@ -116,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //TODO
                 // here check user registered or not
+                checkRegOrNot(registeredPhone);
+
 
             }
         });
@@ -129,5 +148,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void checkRegOrNot(String registeredPhone) {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://wap.shabox.mobi/testwebapi/Celebrity/Identity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+registeredPhone, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONArray array = response.getJSONArray("result");
+
+                    JSONObject object  = array.getJSONObject(0);
+
+                    String user = object.getString("user");
+                    String status = object.getString("status");
+
+                    if (status.equals("1")){
+
+                        if (user.equals("0")){
+                            new Session().saveCelebState(MainActivity.this, false);
+                            new Session().saveFbLoginStatus(MainActivity.this, true);
+                            new Session().saveMsisdn(registeredPhone, MainActivity.this);
+                        }else {
+                            new Session().saveCelebState(MainActivity.this, true);
+                            new Session().saveFbLoginStatus(MainActivity.this, true);
+                            new Session().saveMsisdn(registeredPhone, MainActivity.this);
+                        }
+
+                        Intent intent = new Intent(MainActivity.this, LogInAcitvity.class);
+                        intent.putExtra("msisdn", registeredPhone);
+                        intent.putExtra("reqflag", "1");
+                        intent.putExtra("userflag", user);
+                        startActivity(intent);
+                        finish();
+                    }else if (status.equals("0")){
+                        TastyToast.makeText(getApplicationContext(),"You are not registered!",TastyToast.LENGTH_LONG,TastyToast.INFO);
+                        startActivity(new Intent(MainActivity.this, LogInAcitvity.class));
+                    }else {
+                        TastyToast.makeText(getApplicationContext(),"Something wrong!",TastyToast.LENGTH_LONG,TastyToast.INFO);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", error.toString());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
     }
 }

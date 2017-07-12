@@ -928,7 +928,7 @@ public class ParentActivity extends BaseActivity
                     } else {
                         textViewMessageNotificationBadge.setVisibility(View.INVISIBLE);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

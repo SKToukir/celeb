@@ -227,7 +227,7 @@ public class CallScreenActivity extends BaseActivity {
             mAudioPlayer.stopProgressTone();
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
             String endMsg = "Call ended: " + call.getDetails().toString();
-            Toast.makeText(CallScreenActivity.this, endMsg, Toast.LENGTH_LONG).show();
+            Toast.makeText(CallScreenActivity.this, cause.toString().replace("_"," ")+"\n"+call.getDetails().getDuration() + " sec", Toast.LENGTH_LONG).show();
             Log.d("Cause",endMsg);
 
             endCall();

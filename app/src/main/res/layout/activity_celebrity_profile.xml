@@ -11,20 +11,38 @@
         android:id="@+id/toolbar_celeb"
         layout="@layout/toolbar_celeb" />
 
+    <FrameLayout
+        android:layout_below="@+id/toolbar_celeb"
+        android:id="@+id/frame"
+        android:layout_width="150dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="160dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:descendantFocusability="blocksDescendants">
+
     <ImageView
         android:id="@+id/imgProfilePic"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@+id/toolbar_celeb"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:src="@drawable/logo" />
+
+        <ImageView
+            android:layout_width="142dp"
+            android:layout_height="142dp"
+            android:layout_gravity="center"
+            android:background="@drawable/b"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/txtStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgProfilePic"
+        android:layout_below="@+id/frame"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="" />
