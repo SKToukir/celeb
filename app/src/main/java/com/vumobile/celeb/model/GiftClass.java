@@ -12,7 +12,7 @@ public class GiftClass {
     private String totalGifts;
 
     public String getTotalGifts() {
-        return totalGifts;
+        return String.valueOf(Integer.parseInt(totalGifts) - 1);
     }
 
     public void setTotalGifts(String totalGifts) {

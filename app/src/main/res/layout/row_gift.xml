@@ -12,40 +12,81 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgGiftSender"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            android:padding="11dp"
-            android:src="@drawable/face_1" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgGiftSender"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_gravity="center_vertical"
+                android:padding="11dp"
+                android:src="@drawable/face_2" />
+
+            <ImageView
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_gravity="center"
+                android:padding="6dp"
+                android:src="@drawable/b" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:src="@drawable/ic_gift" />
-
-            <com.vumobile.utils.MyTextView
-                android:id="@+id/txtTotalGifts"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Total Gifts "
-                android:textColor="#000"
-                android:textSize="20sp" />
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:src="@drawable/ic_gift" />
+
+                <com.vumobile.utils.MyTextView
+                    android:id="@+id/txtTotalGifts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="#1e1e1e"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbarStyle="insideOverlay">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutGiftThumbnailList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- Dynamic ImageView here-->
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

@@ -16,11 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.Adapters.GiftsAdapter;
@@ -34,17 +34,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    private Button buttonFilterTopGifts, buttonFilterDate;
+    private Button buttonFilterGiftAll, buttonFilterLive;
     private SwipeRefreshLayout swipeRefreshLayoutGift;
     private Toolbar toolbar;
     GiftClass giftClass;
-    RecyclerView.Adapter adapter;
+    GiftsAdapter adapter;
     RecyclerView recyclerView;
-    List<GiftClass> giftClassList = new ArrayList<GiftClass>();
+    List<GiftClass> giftClassList = new ArrayList<>();
     List<Gift> giftList = new ArrayList<Gift>();
 
     @Override
@@ -65,16 +67,12 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
 
         initUI();
 
-        fetchData();
-
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
 
-                Toast.makeText(getApplicationContext(),String.valueOf(position),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
 //                JSONArray array = giftList.get(position).getArray();
-
-
             }
 
             @Override
@@ -84,21 +82,21 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
         }));
     }
 
-    private void fetchData() {
+    private void fetchData(String flag) {
 
         swipeRefreshLayoutGift.setRefreshing(true);
         giftClassList.clear();
 
         String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.API_GET_GIFTS + msisdn, null, new Response.Listener<JSONObject>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, Api.API_GET_GIFTS, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
-
+            public void onResponse(String response) {
                 Log.d("FromServer", response.toString());
 
                 try {
-                    JSONArray array = response.getJSONArray("result");
+                    JSONObject jo = new JSONObject(response);
+                    JSONArray array = jo.getJSONArray("result");
 
                     for (int i = 0; i < array.length(); i++) {
 
@@ -108,33 +106,40 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
                         Log.d("FromServer", giftClass.getImageUrl());
 
                         JSONArray array1 = object.getJSONArray("Post_Urls");
-                        Log.d("hjhjhjhjhjh",array1.toString());
+                        Log.d("hjhjhjhjhjh", array1.toString());
                         giftClass.setArray(array1);
                         giftClass.setTotalGifts(String.valueOf(array1.length()));
                         Log.d("ListSize", String.valueOf(array1.length()));
-
 
                         giftClassList.add(giftClass);
 
                     }
 
-                    recyclerView.setAdapter(adapter);
+                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 swipeRefreshLayoutGift.setRefreshing(false);
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 swipeRefreshLayoutGift.setRefreshing(false);
             }
-        });
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("MSISDN", msisdn);
+                params.put("FLAG", flag); // 0 for all, 5 for only live gifts
+                return params;
+            }
+        };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(request);
+        Volley.newRequestQueue(this).add(sr);
+
     }
 
     private void initUI() {
@@ -142,11 +147,12 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
         swipeRefreshLayoutGift = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout_gift);
         swipeRefreshLayoutGift.setOnRefreshListener(this);
 
-        buttonFilterTopGifts = (Button) findViewById(R.id.buttonFilterGiftTop);
-        buttonFilterDate = (Button) findViewById(R.id.buttonFilterDate);
+        buttonFilterGiftAll = (Button) findViewById(R.id.buttonFilterGiftAll);
+        buttonFilterLive = (Button) findViewById(R.id.buttonFilterLive);
 
-        buttonFilterTopGifts.setOnClickListener(this);
-        buttonFilterDate.setOnClickListener(this);
+        buttonFilterGiftAll.setOnClickListener(this);
+        buttonFilterGiftAll.setTag("SELECT_ITEM");
+        buttonFilterLive.setOnClickListener(this);
 
         adapter = new GiftsAdapter(getApplicationContext(), giftClassList);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerGifts);
@@ -154,32 +160,45 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapter);
 
-        buttonFilterTopGifts.setTag("TOP");
+
+        swipeRefreshLayoutGift.post(new Runnable() {
+            @Override
+            public void run() {
+                if (buttonFilterGiftAll.getTag().equals("SELECT_ITEM")) {
+                    fetchData("0");
+                } else {
+                    fetchData("5");
+                }
+
+            }
+        });
 
     }
 
     @Override
     public void onRefresh() {
-        if (buttonFilterTopGifts.getTag().equals("TOP")) {
-            fetchData();
+        if (buttonFilterGiftAll.getTag().equals("SELECT_ITEM")) {
+            fetchData("0");
         } else {
-            fetchData();
+            fetchData("5");
         }
     }
 
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
-            case R.id.buttonFilterGiftTop:
-                changeButtonSelectFocus(buttonFilterTopGifts);
-                fetchData();
+            case R.id.buttonFilterGiftAll:
+                changeButtonSelectFocus(buttonFilterGiftAll);
+                fetchData("0");
                 break;
-            case R.id.buttonFilterDate:
-                changeButtonSelectFocus(buttonFilterDate);
-                fetchData();
+
+            case R.id.buttonFilterLive:
+                changeButtonSelectFocus(buttonFilterLive);
+                fetchData("5");
                 break;
 
         }
@@ -187,13 +206,12 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
     }
 
     private void changeButtonSelectFocus(Button button) {
-        buttonFilterTopGifts.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        buttonFilterTopGifts.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
-        buttonFilterTopGifts.setTag("ITEM");
-        buttonFilterDate.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
-        buttonFilterDate.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
-        buttonFilterDate.setTag("ITEM");
-
+        buttonFilterGiftAll.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterGiftAll.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterGiftAll.setTag("ITEM");
+        buttonFilterLive.setBackground(getResources().getDrawable(R.drawable.button_border_selected_item));
+        buttonFilterLive.setTextColor(getResources().getColor(R.color.myColorTwoHeader));
+        buttonFilterLive.setTag("ITEM");
 
         button.setBackground(getResources().getDrawable(R.drawable.button_border_radius_background));
         button.setTextColor(getResources().getColor(R.color.pure_white));
@@ -233,6 +251,7 @@ public class GiftsActivity extends AppCompatActivity implements SwipeRefreshLayo
                 clickListener.onClick(child, rv.getChildPosition(child));
             }
             return false;
+
         }
 
         @Override

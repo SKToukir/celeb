@@ -6,10 +6,11 @@ package com.vumobile.Config;
 
 public class Api {
 
+    public static final String BASE_URL = "http://wap.shabox.mobi/testwebapi/";
 
     public static final String API_SET_NEW_MESSAGE_COUNT = "http://wap.shabox.mobi/testwebapi/Celebrity/SendMsg?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
-    public static final String API_GET_GIFTS = "http://wap.shabox.mobi/testwebapi/Celebrity/GiftFromFan?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=";
+    public static final String API_GET_GIFTS = "http://wap.shabox.mobi/testwebapi/Celebrity/GiftFromFan?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre"; //MSISDN=celeb msisdn from session, FLAG = (0 for all, 5 for live gifts only)
 
     public static final String API_LIVE_SCHEDULE = "http://wap.shabox.mobi/testwebapi/Celebrity/LiveSchedule?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
@@ -66,8 +67,6 @@ public class Api {
     public static final String URL_GET_SINGLE_CELEB = "http://wap.shabox.mobi/testwebapi/celebrity/CelebrityInformation?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=";
     public static final String URL_GET_SINGLE_CELEB_NAME = "Name";
     public static final String URL_GET_SINGLE_CELEB_PHONE = "MSISDN";
-
-
 
 
     // id to handle the notification in the notification tray

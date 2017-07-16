@@ -66,7 +66,9 @@
             android:name=".ui.MainActivityLive"
             android:label="@string/title_activity_parent"
             android:theme="@style/AppTheme" />
-        <activity android:name="com.vumobile.ParentActivity">
+        <activity
+            android:name="com.vumobile.ParentActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -84,10 +86,13 @@
                 android:resource="@xml/searchable"
                 android:value="@color/pure_white" />
         </activity>
-        <activity android:name=".ui.CelebrityProfileActivity" />
+        <activity
+            android:name=".ui.CelebrityProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.CelebHomeActivity"
             android:label="@string/title_activity_celeb_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
@@ -115,7 +120,9 @@
         </service>
 
         <activity android:name=".ui.CameraViewActivity" />
-        <activity android:name="com.vumobile.fan.login.FanCelebProfileActivity" />
+        <activity
+            android:name="com.vumobile.fan.login.FanCelebProfileActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name="com.vumobile.notification.MyReceiver">
             <intent-filter>
@@ -205,7 +212,9 @@
         <activity android:name=".ui.SetScheduleForLiveActivity" />
         <activity android:name="com.vumobile.fan.login.LogInAcitvity" />
         <activity android:name=".ui.ShowAllGiftActivity" />
-        <activity android:name="com.vumobile.MainActivity"></activity>
+        <activity android:name="com.vumobile.MainActivity" />
+
+
     </application>
 
 </manifest>
