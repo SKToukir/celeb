@@ -2,7 +2,10 @@ package com.vumobile.celeb.ui;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -29,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
@@ -37,13 +41,18 @@ import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
 import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
+import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
+import com.vumobile.fan.login.serverrequest.MyVolleyRequest;
 import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
+import com.vumobile.service.MyFirebaseInstanceIDService;
 import com.vumobile.videocall.CallReceiver;
 import com.vumobile.videocall.SinchService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 @SuppressWarnings("ALL")
 public class CelebHomeActivity extends BaseActivity
@@ -61,12 +70,15 @@ public class CelebHomeActivity extends BaseActivity
     public static String totalFollowers;
     PendingIntent pendingIntent;
     ImageView imgImage;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
     DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_celeb_home);
+        startService(new Intent(CelebHomeActivity.this, MyFirebaseInstanceIDService.class));
+        notificationRegister();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -631,5 +643,66 @@ public class CelebHomeActivity extends BaseActivity
             }
 
         }
+    }
+
+    // retrieve device token for push notification
+    private void notificationRegister() {
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Api.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Api.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Api.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+                    String time = intent.getStringExtra("time_stamp");
+                    String imageUrl = intent.getStringExtra("image_url");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                }
+            }
+        };
+
+        displayFirebaseRegId();
+
+    }
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Api.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        storeRegId(regId);
+
+        Log.e("TAG", "Firebase reg id: " + regId);
+        Log.e("taggg", "Firebase:" + regId);
+    }
+
+    private void storeRegId(String regId) {
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("MSISDN", Session.retreivePhone(getApplicationContext(), Session.USER_PHONE));
+        params.put("RegId", regId);
+
+        MyVolleyRequest.setRegId(getApplicationContext(), Request.Method.POST, Api.URL_SET_REG_ID, params, new AllVolleyInterfaces.ResponseString() {
+            @Override
+            public void getResponse(String responseResult) {
+                Log.d("FromServerrrrrr", " " + responseResult + "");
+            }
+
+            @Override
+            public void getResponseErr(String responseResultErr) {
+                Log.d("FromServer", responseResultErr + "");
+            }
+        });
     }
 }

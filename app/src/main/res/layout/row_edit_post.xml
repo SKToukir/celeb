@@ -99,7 +99,7 @@
                 <LinearLayout
                     android:id="@+id/editDeleteLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="65dp"
                     android:layout_below="@+id/btn_edit"
                     android:background="#0072bc"
                     android:orientation="vertical"
@@ -137,6 +137,14 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgShareFb"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/ic_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 

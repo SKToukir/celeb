@@ -35,6 +35,7 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.sinch.android.rtc.SinchError;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
+import com.vumobile.celeb.calender.CalendarView;
 import com.vumobile.fan.login.Session;
 import com.vumobile.videocall.SinchService;
 
@@ -206,7 +207,9 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                                 }
 
 
+
                                 etToTime.setText(hourOfDay + ":" + minute + " " + timeSet);
+
 
                                 endTime = String.valueOf(selectedYear) + "-" + String.valueOf(selectedMonth) + "-" + String.valueOf(selectedDate) + " " + String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + ":" + "00" + " " + timeSet;
                                 Log.d("dates", endTime);
@@ -414,6 +417,14 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+
+        alertDialogBuilder.setNegativeButton("Chack Events", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(SetScheduleActivity.this, CalendarView.class));
             }
         });
 

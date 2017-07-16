@@ -18,6 +18,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected static final int TIMER_RUNTIME = 10; // in ms --> 10s
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -37,7 +38,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         public void run() {
             mbActive = true;
             try {
-                sleep(7000);
+                sleep(9000);
 //                int waited = 0;
 //                while (mbActive && (waited < TIMER_RUNTIME)) {
 //                    sleep(2100);

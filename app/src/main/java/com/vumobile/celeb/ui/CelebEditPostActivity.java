@@ -143,7 +143,7 @@ public class CelebEditPostActivity extends AppCompatActivity implements SwipeRef
         swipeRefreshLayoutNotification = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutCelebPost);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new CelebPostAdapter(getApplicationContext(),entityList);
+        adapter = new CelebPostAdapter(CelebEditPostActivity.this,entityList);
 
     }
 

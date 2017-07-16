@@ -93,12 +93,14 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         int result4 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int result5 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int result6 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result7 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR);
         //If permission is granted returning true
         if (result == PackageManager.PERMISSION_GRANTED &&
                 result1 == PackageManager.PERMISSION_GRANTED &&
                 result4 == PackageManager.PERMISSION_GRANTED &&
                 result5 == PackageManager.PERMISSION_GRANTED &&
-                result6 == PackageManager.PERMISSION_GRANTED)
+                result6 == PackageManager.PERMISSION_GRANTED &&
+                result7 == PackageManager.PERMISSION_GRANTED )
             return true;
 
         //If permission is not granted returning false
@@ -111,7 +113,9 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_PHONE_STATE) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
-                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
+
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
@@ -120,7 +124,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.GET_ACCOUNTS,
                 Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_GET_ACCOUNT);
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_CALENDAR}, REQUEST_GET_ACCOUNT);
     }
 
     @Override
@@ -151,7 +156,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                                     requestPermissions(new String[]{android.Manifest.permission.GET_ACCOUNTS,
                                                                     Manifest.permission.READ_PHONE_STATE,
-                                                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_CALENDAR},
                                                             REQUEST_GET_ACCOUNT);
                                                 }
                                             }
