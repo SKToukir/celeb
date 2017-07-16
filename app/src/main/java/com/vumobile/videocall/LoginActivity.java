@@ -144,7 +144,7 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
             SinchService.uName = userName;
             startService(new Intent(LoginActivity.this, SinchService.class));
             getSinchServiceInterface().startClient(userName);
-            showSpinner();
+            showSpinner(userName);
         } else {
             Intent intent = new Intent(LoginActivity.this,SinchService.class);
             SinchService.uName = userName;
@@ -168,13 +168,12 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
         finish();
     }
 
-    private void showSpinner() {
+    private void showSpinner(String userNames) {
 
         mSpinner = new ProgressDialog(this);
         mSpinner.setTitle("Logging in");
         mSpinner.setMessage("Please wait...");
         mSpinner.show();
-        mLoginButton.setText("GO");
         Thread thread = new Thread(){
 
             @Override
@@ -185,6 +184,11 @@ public class LoginActivity extends BaseActivity implements SinchService.StartFai
                     e.printStackTrace();
                 }finally {
                     mSpinner.dismiss();
+
+                    Intent intent = new Intent(LoginActivity.this,SinchService.class);
+                    SinchService.uName = userNames;
+                    startService(intent);
+                    openPlaceCallActivity(celeb_name);
                 }
             }
         };thread.start();

@@ -96,7 +96,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private Toolbar toolbar;
     private Intent intent;
     public String celebComment;
-    private EditText etComment;
+    private static EditText etComment;
     private String name, msisdn, celebID, gender, flags_notification, image_url;
     Uri uri;
     String actionValue;
@@ -214,10 +214,12 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btnPost:
 
+                Log.d("IsImageOrNot",String.valueOf(isImage));
+
                 hideKeyboard();
 
                 celebComment = etComment.getText().toString();
-
+                Log.d("IsImageOrNot",celebComment);
 
                 if (filePath.equals("null") && celebComment.equals("")){
                     TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
@@ -226,7 +228,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                     if (filePath.equals("null")) {
                         postComment(celebComment);
                     } else {
-                        //sharePhoto(uri,celebComment);
+
                         new UploadFileToServer().execute(filePath, celebComment);
                     }
                 }
@@ -671,6 +673,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                     dialog.dismiss();
                     progressBar.setVisibility(View.GONE);
                     txtPercentage.setVisibility(View.GONE);
+
                     Intent intent = new Intent(FBPostActivity.this, CelebEditPostActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

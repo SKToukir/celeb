@@ -10,13 +10,24 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallEndCause;
 import com.sinch.android.rtc.video.VideoCallListener;
+import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -26,12 +37,14 @@ public class IncomingCallScreenActivity extends BaseActivity {
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
     private String mCallId;
     private AudioPlayer mAudioPlayer;
+    private ImageView contactImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.incoming);
 
+        contactImage = (ImageView) findViewById(R.id.contactImage);
         Button answer = (Button) findViewById(R.id.answerButton);
         answer.setOnClickListener(mClickListener);
         Button decline = (Button) findViewById(R.id.declineButton);
@@ -53,7 +66,12 @@ public class IncomingCallScreenActivity extends BaseActivity {
 
             //TODO
             // retrive user image who is calling from server
-            getUserImage(remoteUserName);
+
+            try {
+                getUserImage(remoteUserName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } else {
             Log.e(TAG, "Started with invalid callId, aborting");
@@ -63,7 +81,35 @@ public class IncomingCallScreenActivity extends BaseActivity {
 
     private void getUserImage(String remoteUserName) {
 
+        String cntctName = remoteUserName.replaceAll(" ", "%20");
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/CelebrityImage?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&name=" + cntctName;
 
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String log = object.getString("result");
+                            Picasso.with(getApplicationContext()).load(log).into(contactImage);
+                            Log.d("sucessresult", log);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
 
     }
 

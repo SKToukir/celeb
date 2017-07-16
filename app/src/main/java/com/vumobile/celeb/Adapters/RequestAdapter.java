@@ -21,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.RequestClass;
@@ -77,7 +76,6 @@ public class RequestAdapter extends ArrayAdapter<RequestClass> {
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TastyToast.makeText(mContext, requestClass.getFanName() + String.valueOf(position), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 
                     Intent intent = new Intent(mContext, SetScheduleActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

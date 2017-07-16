@@ -230,7 +230,14 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
 
                     fbName = firstName + " " + lastName;
                     new Session().saveProfilePicUrl(getApplicationContext(), profile_url, fbName);
-                    txtStatus.setText(fbName);
+
+                    if (!fbName.equals("null") || fbName != "null"){
+                        txtStatus.setText(fbName);
+                    }else {
+                        txtStatus.setText("");
+                        txtConfirmationMessage.setText("Please press Log out button and login again!");
+                    }
+
 
 
                     sendDataToServer();

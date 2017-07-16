@@ -165,8 +165,10 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.btnPost:
 
+                progressBar.setVisibility(View.VISIBLE);
                 btnClose.setVisibility(View.GONE);
-
+                btnChoose.setVisibility(View.GONE);
+                btnPost.setVisibility(View.GONE);
 
                 String comment = etEditPost.getText().toString();
                 if (filePath == null || filePath.equals(null) || filePath.equals("")) {

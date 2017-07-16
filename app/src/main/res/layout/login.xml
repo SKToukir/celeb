@@ -23,6 +23,7 @@
         android:textColor="#000"
         android:layout_below="@+id/frame"
         android:gravity="center"
+        android:textSize="20sp"
         android:text="Redoan Ferrai"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -137,7 +138,7 @@
         android:layout_width="120dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
-        android:text="Login"
+        android:text="GO"
         android:minHeight="56dp"
         android:minWidth="132dp"
         android:textColor="#fff"

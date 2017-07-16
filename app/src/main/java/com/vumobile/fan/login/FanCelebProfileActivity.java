@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -298,7 +297,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
                             } else if (request_status.matches("Accepted")) {
 
-                                Toast.makeText(getApplicationContext(), fbName, Toast.LENGTH_SHORT).show();
                                 String fan_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
                                 // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

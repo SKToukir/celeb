@@ -112,10 +112,11 @@
 
 
                 <ImageView
-                    android:background="@drawable/live"
-                    android:id="@+id/live"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp" />
+                    android:visibility="gone"
+                    android:background="@drawable/too"
+                    android:id="@+id/live_gif"
+                    android:layout_width="30dp"
+                    android:layout_height="11.5dp" />
 
                 <TextView
                     android:layout_marginRight="3dp"

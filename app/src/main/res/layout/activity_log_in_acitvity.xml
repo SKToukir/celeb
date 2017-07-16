@@ -83,6 +83,21 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
+                    android:onClick="btnLogin"
+                    android:visibility="visible"
+                    android:id="@+id/btnLogin"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_corner"
+                    android:text="Login"
+                    android:textColor="#fff"
+                    android:textAllCaps="false"
+                    android:elevation="5dp"/>
+
+                <Button
+                    android:visibility="gone"
                     android:background="@drawable/signup"
                     android:id="@+id/btnLoginCont"
                     android:layout_width="200dp"
@@ -111,6 +126,7 @@
         </LinearLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/txt_become_celeb"
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -122,6 +138,19 @@
             android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:textColor="@color/myColorOneBody" />
+
+        <Button
+            android:onClick="btnNewUser"
+            android:id="@+id/btnNewUser"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/round_corner"
+            android:text="New User"
+            android:textAllCaps="false"
+            android:textColor="#fff" />
 
     </LinearLayout>
 
@@ -213,12 +242,14 @@
                 android:visibility="visible" />
 
             <Button
+                android:textColor="#fff"
                 android:id="@+id/btnSubmitCode"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
+                android:layout_width="150dp"
+                android:layout_height="47dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/signup"
+                android:background="@drawable/round_corner"
+                android:text="Confirm"
                 android:elevation="5dp"
                 android:onClick="btnSubmitCode"
                 android:visibility="visible" />

@@ -39,6 +39,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.cipherthinkers.shapeflyer.ShapeFlyer;
 import com.cipherthinkers.shapeflyer.flyschool.FPoint;
 import com.cipherthinkers.shapeflyer.flyschool.FlyBluePrint;
@@ -86,6 +88,7 @@ import io.agora.rtc.video.VideoCanvas;
 @SuppressWarnings("ALL")
 public class LiveRoomActivity extends BaseActivity implements AGEventHandler, View.OnClickListener {
 
+    ImageView live;
     private LinearLayout bottom_container;
     public int COUNT_GIFTS = 0;
     private LinearLayout gift_container, gift_price_container;
@@ -177,6 +180,10 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
 
     private void initUI() {
 
+        live = (ImageView) findViewById(R.id.live_gif);
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(live);
+        Glide.with(this).load(R.drawable.too).into(imageViewTarget);
+
         bottom_container = (LinearLayout) findViewById(R.id.bottom_container);
         pattern = Pattern.compile(CommentListAdapter.URL_REGEX);
         gift_container = (LinearLayout) findViewById(R.id.gift_container);
@@ -210,6 +217,7 @@ public class LiveRoomActivity extends BaseActivity implements AGEventHandler, Vi
         // hide ic_like button for celebrity
         // celebruty can not give ic_like
         if (Session.isCeleb(getApplicationContext(), Session.IS_CELEB)) {
+            live.setVisibility(View.VISIBLE);
             btnLike.setVisibility(View.INVISIBLE);
             btnGift.setVisibility(View.INVISIBLE);
         }

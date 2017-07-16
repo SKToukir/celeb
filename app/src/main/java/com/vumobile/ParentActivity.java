@@ -141,7 +141,7 @@ public class ParentActivity extends BaseActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                // to get from Gifts fragment
+
                 TempInfoModel.setCelebMsisdn(celebrityClassList.get(i).getCeleb_code());
 
                 String name = celebrityClassList.get(i).getCeleb_name();
@@ -928,7 +928,7 @@ public class ParentActivity extends BaseActivity
                     } else {
                         textViewMessageNotificationBadge.setVisibility(View.INVISIBLE);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

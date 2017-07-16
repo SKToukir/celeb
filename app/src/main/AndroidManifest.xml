@@ -6,7 +6,9 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,9 +23,9 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 
     <uses-feature android:name="android.hardware.camera.front" />
@@ -203,7 +205,8 @@
         <activity android:name=".ui.SetScheduleForLiveActivity" />
         <activity android:name="com.vumobile.fan.login.LogInAcitvity" />
         <activity android:name=".ui.ShowAllGiftActivity" />
-        <activity android:name="com.vumobile.MainActivity"></activity>
+        <activity android:name="com.vumobile.MainActivity" />
+        <activity android:name=".calender.CalendarView"></activity>
     </application>
 
 </manifest>

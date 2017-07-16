@@ -7,8 +7,10 @@ package com.vumobile.celeb.Adapters;
 //public class CelebPostAdapter {
 //}
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
@@ -44,6 +49,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -55,6 +62,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
     private List<FanNotificationModelEnity> fanNotificationModelEnities;
     Context mContext;
     String totalLike;
+    ShareDialog shareDialog;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -66,9 +74,12 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         public LinearLayout linearLayoutMain;
         public ImageView videoViewNotif;
         public RelativeLayout relativeLayoutImageAndVideo;
+        private ImageView imgShareFb;
 
         public MyViewHolder(View view) {
             super(view);
+            FacebookSdk.sdkInitialize(mContext);
+            imgShareFb = (ImageView) view.findViewById(R.id.imgShareFb);
             editButton = (ImageView) view.findViewById(R.id.editButton);
             deleteButton = (ImageView) view.findViewById(R.id.deleteButton);
             btn_edit = (Button) view.findViewById(R.id.btn_edit);
@@ -129,6 +140,38 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         holder.imageViewNotificationImage.setVisibility(View.GONE);
         holder.imageViewPlayIcon.setVisibility(View.GONE);
 
+        // share with facebook
+        holder.imgShareFb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String url = fanNotificationModelEnity.getPost_Urls();
+                String postUrl = null;
+                try {
+                    postUrl = getUrlFromArray(url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String commentText = fanNotificationModelEnity.getPost();
+                Log.d("share_content","Post url "+ postUrl + " Comment "+commentText);
+
+               if (!postUrl.isEmpty() && commentText.isEmpty()){
+                   // share only url
+                   Log.d("share_content","share only url");
+
+                   shareContentUrl(postUrl);
+               }else if (!postUrl.isEmpty() && !commentText.isEmpty()){
+                   // share url and post
+                   Log.d("share_content","share url and post");
+                   shareContentNpost(postUrl,commentText);
+               }else if (postUrl.isEmpty() && !commentText.isEmpty()){
+                   // share only post
+                   Log.d("share_content","share only post");
+                   sharePost(commentText);
+               }
+
+            }
+        });
 
         // Edit or delete post
         holder.editButton.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +318,55 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         });
 
 
+    }
+
+    private String getUrlFromArray(String postUrl) throws JSONException {
+
+        JSONArray jsonArray = new JSONArray(postUrl);
+        String url = jsonArray.getString(0);
+
+        return url;
+    }
+
+    // share text
+    private void sharePost(String commentText) {
+        Log.d("share_content","Comment "+commentText);
+        shareDialog = new ShareDialog((Activity) mContext);
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentTitle("CelebAp")
+                .setContentDescription(
+                        commentText).setQuote(commentText)
+                .build();
+        shareDialog.show(linkContent);
+    }
+
+    // share url n text
+    private void shareContentNpost(String postUrl, String commentText) {
+        Log.d("share_content","Post url "+ postUrl + "Comment "+commentText);
+        shareDialog = new ShareDialog((Activity) mContext);
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentTitle("CelebAp")
+                .setQuote(commentText)
+                .setContentUrl(Uri.parse(postUrl)).build();
+        shareDialog.show(linkContent);
+    }
+
+    // share url
+    private void shareContentUrl(String postUrl) {
+        Log.d("share_content","Post url "+ postUrl);
+        URI uri = null;
+        try {
+            uri = new URI(postUrl);
+
+        }
+        catch (URISyntaxException e) {
+
+        }
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.setType("image/*");
+        mContext.startActivity(Intent.createChooser(shareIntent, "post image"));
     }
 
     private void deleteItem(String id) {

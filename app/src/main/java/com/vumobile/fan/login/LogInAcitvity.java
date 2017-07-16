@@ -25,8 +25,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.vumobile.Config.Api;
 import com.vumobile.ParentActivity;
 import com.vumobile.celeb.R;
@@ -34,6 +36,7 @@ import com.vumobile.celeb.ui.CelebHomeActivity;
 import com.vumobile.celeb.ui.CelebrityProfileActivity;
 import com.vumobile.utils.MyInternetCheckReceiver;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,16 +44,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LogInAcitvity extends AppCompatActivity implements View.OnClickListener {
+
+    public boolean alreadyReg = false;
     private static final int REQUEST_GET_ACCOUNT = 112;
     PendingIntent pendingIntent;
     private static final String TAG = "LogInAcitvity.java";
     private EditText etUserName, etUserPhone, etVerificationCode;
     private TextView txtBecomeCeleb, txtCopyright;
     private String uName, uPhone, verificationCode, tempVerificationCode;
-    private Button btnSubmitCode, btnLogInCont;
+    private Button btnSubmitCode, btnLogInCont, btnNewUser, btnLogin;
     TextInputLayout userphoneWrapper, usernameWrapper, userCodeWrapper;
+    String msisdn = "null";
     private boolean isCeleb;
     public static String whichButtonClicked;
+    String reqflag = "0";
 
     private LinearLayout activity_log_in_acitvity, linearLayoutLoginMain, linearLayoutOtpVerification;
 
@@ -60,6 +67,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_log_in_acitvity);
 
         initUI();
+
         if (android.os.Build.VERSION.SDK_INT > 22) {
             if (isReadStorageAllowed()) {
                 isLogin();
@@ -85,12 +93,14 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         int result4 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int result5 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int result6 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int result7 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR);
         //If permission is granted returning true
         if (result == PackageManager.PERMISSION_GRANTED &&
                 result1 == PackageManager.PERMISSION_GRANTED &&
                 result4 == PackageManager.PERMISSION_GRANTED &&
                 result5 == PackageManager.PERMISSION_GRANTED &&
-                result6 == PackageManager.PERMISSION_GRANTED)
+                result6 == PackageManager.PERMISSION_GRANTED &&
+                result7 == PackageManager.PERMISSION_GRANTED )
             return true;
 
         //If permission is not granted returning false
@@ -103,7 +113,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_PHONE_STATE) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA) &&
                 ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
-                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
@@ -112,7 +123,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.GET_ACCOUNTS,
                 Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_GET_ACCOUNT);
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_CALENDAR}, REQUEST_GET_ACCOUNT);
     }
 
     @Override
@@ -143,7 +155,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                                     requestPermissions(new String[]{android.Manifest.permission.GET_ACCOUNTS,
                                                                     Manifest.permission.READ_PHONE_STATE,
-                                                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WRITE_CALENDAR},
                                                             REQUEST_GET_ACCOUNT);
                                                 }
                                             }
@@ -183,12 +195,12 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
-                } else if (Session.isReg(getApplicationContext(), Session.REGISTERED_CELEB) == true){
+                } else if (Session.isReg(getApplicationContext(), Session.REGISTERED_CELEB) == true) {
                     Intent intent = new Intent(LogInAcitvity.this, CelebHomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     this.finish();
-                }else {
+                } else {
                     Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -217,6 +229,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
     private void initUI() {
 
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnNewUser = (Button) findViewById(R.id.btnNewUser);
         etVerificationCode = (EditText) findViewById(R.id.etVerificationCode);
         userCodeWrapper = (TextInputLayout) findViewById(R.id.userCodeWrapper);
         usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
@@ -295,14 +309,9 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 otpRequest(rqst);
-                // only visible verify button
-//                userphoneWrapper.setVisibility(View.GONE);
-//                txtBecomeCeleb.setVisibility(View.GONE);
-//                usernameWrapper.setVisibility(View.GONE);
-//                btnLogInCont.setVisibility(View.GONE);
-//                btnSubmitCode.setVisibility(View.VISIBLE);
-//                userCodeWrapper.setVisibility(View.VISIBLE);
+
                 linearLayoutLoginMain.setVisibility(View.GONE);
                 linearLayoutOtpVerification.setVisibility(View.VISIBLE);
             }
@@ -331,7 +340,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                         try {
                             JSONObject jsonObj = new JSONObject(response);
                             tempVerificationCode = jsonObj.getString("CODE");
-                            etVerificationCode.setText(tempVerificationCode);
+                            //etVerificationCode.setText(tempVerificationCode);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -359,6 +368,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         requestQueue.add(stringRequest);
 
     }
+
+
 
     public void btnSubmitCode(View view) {
 
@@ -401,7 +412,17 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
+        if (btnLogin.getVisibility() == View.GONE) {
+
+            btnLogin.setVisibility(View.VISIBLE);
+            btnNewUser.setVisibility(View.VISIBLE);
+            txtBecomeCeleb.setVisibility(View.GONE);
+            btnLogInCont.setVisibility(View.GONE);
+
+        } else {
+            finish();
+        }
     }
 
     @Override
@@ -465,5 +486,110 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     public void btnResendPinSms(View view) {
         otpRequest(whichButtonClicked);
         Toast.makeText(this, "Request has been send, Please wait.", Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void btnNewUser(View view) {
+
+        btnLogin.setVisibility(View.GONE);
+        btnNewUser.setVisibility(View.GONE);
+        txtBecomeCeleb.setVisibility(View.VISIBLE);
+        btnLogInCont.setVisibility(View.VISIBLE);
+
+    }
+
+    public void btnLogin(View view) {
+
+        uName = "null";
+        uPhone = etUserPhone.getText().toString();
+
+
+        if (uPhone.isEmpty()) {
+            userphoneWrapper.setError("Required");
+        } else {
+            userphoneWrapper.setError(null);
+        }
+
+        if (usernameWrapper.getError() == null && userphoneWrapper.getError() == null) {
+
+            if (uPhone.startsWith("01")) {
+                uPhone = "88" + uPhone;
+
+                Log.d("msisdn", uPhone);
+                //showConfirmDialog(uPhone, "1");
+
+                checkRegOrNot(uPhone);
+//                        otpRequest("1");
+//                        // only visible verify button
+//                        userphoneWrapper.setVisibility(View.GONE);
+//                        txtBecomeCeleb.setVisibility(View.GONE);
+//                        usernameWrapper.setVisibility(View.GONE);
+//                        btnLogInCont.setVisibility(View.GONE);
+//                        btnSubmitCode.setVisibility(View.VISIBLE);
+//                        userCodeWrapper.setVisibility(View.VISIBLE);
+
+            } else if (uPhone.equals("") || uPhone.equals(" ")
+                    || uPhone.equals(null) || uPhone.isEmpty()
+                    || uPhone.length() > 13 || uPhone.length() < 11 || !uPhone.startsWith("01")) {
+                Toast.makeText(getApplicationContext(),
+                        "Please Enter Correct Mobile Number",
+                        Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+
+    }
+
+    private void checkRegOrNot(String registeredPhone) {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://wap.shabox.mobi/testwebapi/Celebrity/Identity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+registeredPhone, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONArray array = response.getJSONArray("result");
+
+                    JSONObject object  = array.getJSONObject(0);
+
+                    String user = object.getString("user");
+                    String status = object.getString("status");
+
+                    if (user.equals("1")){
+                        isCeleb = true;
+                    }else {
+                        isCeleb = false;
+                    }
+
+                    if (status.equals("1")){
+
+                        alreadyReg = true;
+                        new Session().saveFbLoginStatus(LogInAcitvity.this, true);
+                        showConfirmDialog(registeredPhone, user);
+
+                    }else {
+
+                        TastyToast.makeText(LogInAcitvity.this,"You have to register first!", TastyToast.LENGTH_LONG,TastyToast.INFO);
+                        btnLogin.setVisibility(View.GONE);
+                        btnNewUser.setVisibility(View.GONE);
+                        txtBecomeCeleb.setVisibility(View.VISIBLE);
+                        btnLogInCont.setVisibility(View.VISIBLE);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", error.toString());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+
     }
 }
