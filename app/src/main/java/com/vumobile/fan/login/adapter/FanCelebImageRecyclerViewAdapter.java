@@ -67,7 +67,7 @@ public class FanCelebImageRecyclerViewAdapter extends RecyclerView.Adapter<FanCe
 
         Glide.with(context)
                 .load(fanCelebImageModelEntity.getImageUrl())
-                .thumbnail(.5f)
+                .thumbnail(.1f)
                 .into(holder.imageViewRecyclerItem);
 
 

@@ -11,23 +11,24 @@
         layout="@layout/tool_bar_post" />
 
     <LinearLayout
-        android:gravity="center"
         android:id="@+id/barLayout"
-        android:layout_below="@+id/toolBar_post_gifts"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBar_post_gifts"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="4dp">
 
         <Button
-            android:id="@+id/buttonFilterGiftTop"
+            android:id="@+id/buttonFilterGiftAll"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_margin="0dp"
-            android:background="@drawable/button_border_selected_item"
+            android:background="@drawable/button_border_radius_background"
             android:padding="0dp"
-            android:text="Top"
+            android:text="All"
             android:textAllCaps="false"
-            android:textColor="@color/myColorTwoHeader" />
+            android:textColor="@color/pure_white" />
 
         <View
             android:layout_width="2dp"
@@ -35,28 +36,28 @@
             android:background="@color/myColorOneBody" />
 
         <Button
-            android:id="@+id/buttonFilterDate"
+            android:id="@+id/buttonFilterLive"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_margin="0dp"
-            android:background="@drawable/button_border_radius_background"
+            android:background="@drawable/button_border_selected_item"
             android:padding="0dp"
-            android:text="Date"
+            android:text="Live"
             android:textAllCaps="false"
-            android:textColor="@color/pure_white" />
+            android:textColor="@color/myColorTwoHeader" />
 
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout_gift"
         android:layout_width="match_parent"
-        android:layout_below="@+id/barLayout"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/barLayout">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerGifts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerGifts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

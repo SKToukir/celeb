@@ -5,11 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.GiftClass;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -23,7 +28,7 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
     private Context mContext;
     private List<GiftClass> videoHomeList;
-
+    View view;
 
     public GiftsAdapter(Context context, List<GiftClass> videoHomeList) {
         this.mContext = context;
@@ -32,7 +37,7 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_gift, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_gift, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -41,9 +46,24 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
         GiftClass primaryClass = videoHomeList.get(position);
 
-        Glide.with(mContext).load(primaryClass.getImageUrl()).override(100, 100).thumbnail(0.1f).into(holder.videoImageView);
+        Glide.with(mContext).load(primaryClass.getImageUrl()).override(100, 100).into(holder.videoImageView); //.thumbnail(0.5f)
 
-        holder.txtTotalGifts.setText("Total Gifts " + primaryClass.getTotalGifts());
+        JSONArray jsArURL = primaryClass.getArray();
+
+        for (int i = 0; i < jsArURL.length(); i++) {
+            try {
+                String mUrl = jsArURL.getString(i);
+                if (!mUrl.equals("")) {
+                    ImageView imageView = new ImageView(mContext);
+                    Glide.with(mContext).load(mUrl).override(80, 80).into(imageView);
+                    holder.linearLayoutGiftThumbnailList.addView(imageView);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        holder.txtTotalGifts.setText("" + primaryClass.getTotalGifts());
 
     }
 
@@ -56,11 +76,13 @@ public class GiftsAdapter extends RecyclerView.Adapter<GiftsAdapter.MyViewHolder
 
         CircleImageView videoImageView;
         TextView txtTotalGifts;
+        LinearLayout linearLayoutGiftThumbnailList;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             txtTotalGifts = (TextView) itemView.findViewById(R.id.txtTotalGifts);
             videoImageView = (CircleImageView) itemView.findViewById(R.id.imgGiftSender);
+            linearLayoutGiftThumbnailList = (LinearLayout) itemView.findViewById(R.id.linearLayoutGiftThumbnailList);
         }
 
     }
