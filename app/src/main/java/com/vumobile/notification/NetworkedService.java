@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -194,7 +193,7 @@ public class NetworkedService extends Service {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     Log.d("FromServer", volleyError.toString());
-                    Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Connection Error!", Toast.LENGTH_LONG).show();
 
                 }
             });

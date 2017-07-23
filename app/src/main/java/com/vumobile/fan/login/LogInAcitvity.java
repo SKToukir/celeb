@@ -49,7 +49,8 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     private static final int REQUEST_GET_ACCOUNT = 112;
     PendingIntent pendingIntent;
     private static final String TAG = "LogInAcitvity.java";
-    private EditText etUserName, etUserPhone, etVerificationCode;
+    public EditText etUserName, etUserPhone;
+    public static EditText etVerificationCode;
     private TextView txtBecomeCeleb, txtCopyright;
     private String uName, uPhone, verificationCode, tempVerificationCode;
     private Button btnSubmitCode, btnLogInCont, btnNewUser, btnLogin;
@@ -100,7 +101,7 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 result4 == PackageManager.PERMISSION_GRANTED &&
                 result5 == PackageManager.PERMISSION_GRANTED &&
                 result6 == PackageManager.PERMISSION_GRANTED &&
-                result7 == PackageManager.PERMISSION_GRANTED )
+                result7 == PackageManager.PERMISSION_GRANTED)
             return true;
 
         //If permission is not granted returning false
@@ -371,7 +372,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
     public void btnSubmitCode(View view) {
 
         // here user put verification code
@@ -544,33 +544,33 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
     private void checkRegOrNot(String registeredPhone) {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://wap.shabox.mobi/testwebapi/Celebrity/Identity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+registeredPhone, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://wap.shabox.mobi/testwebapi/Celebrity/Identity?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=" + registeredPhone, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 try {
                     JSONArray array = response.getJSONArray("result");
 
-                    JSONObject object  = array.getJSONObject(0);
+                    JSONObject object = array.getJSONObject(0);
 
                     String user = object.getString("user");
                     String status = object.getString("status");
 
-                    if (user.equals("1")){
+                    if (user.equals("1")) {
                         isCeleb = true;
-                    }else {
+                    } else {
                         isCeleb = false;
                     }
 
-                    if (status.equals("1")){
+                    if (status.equals("1")) {
 
                         alreadyReg = true;
                         new Session().saveFbLoginStatus(LogInAcitvity.this, true);
                         showConfirmDialog(registeredPhone, user);
 
-                    }else {
+                    } else {
 
-                        TastyToast.makeText(LogInAcitvity.this,"You have to register first!", TastyToast.LENGTH_LONG,TastyToast.INFO);
+                        TastyToast.makeText(LogInAcitvity.this, "You have to register first!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                         btnLogin.setVisibility(View.GONE);
                         btnNewUser.setVisibility(View.GONE);
                         txtBecomeCeleb.setVisibility(View.VISIBLE);
@@ -593,4 +593,16 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         requestQueue.add(request);
 
     }
+
+    public static void setVerifyPinCodeFromSms(String pinCode) {
+        try {
+            if (etVerificationCode != null && pinCode != null) {
+                etVerificationCode.setText(pinCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
