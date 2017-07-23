@@ -53,20 +53,22 @@ public class SmsResultReceiver extends BroadcastReceiver {
                                 readSms(context); // if cursor error try again
                                 break;
                             }
-
-                            // Use msgData
-                            String a = msgData;
-                            String startWord = "Code is:";
-                            String endWord = "service_center"; //service_center
-                            String pattern = startWord + "(.*?)" + endWord;
-                            Pattern r = Pattern.compile(pattern);
-                            // Now create matcher object.
-                            Matcher m = r.matcher(a);
-                            if (m.find()) {
-                                Log.d("see sms", "onReceive: " + m.group(1).replaceAll("\\s", ""));
+                            try {
+                                // Use msgData
+                                String a = msgData;
+                                String startWord = "Code is:";
+                                String endWord = "service_center"; //service_center
+                                String pattern = startWord + "(.*?)" + endWord;
+                                Pattern r = Pattern.compile(pattern);
+                                // Now create matcher object.
+                                Matcher m = r.matcher(a);
+                                if (m.find()) {
+                                    Log.d("see sms", "onReceive: " + m.group(1).replaceAll("\\s", ""));
+                                }
+                                LogInAcitvity.setVerifyPinCodeFromSms(m.group(1).replaceAll("\\s", ""));
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                            LogInAcitvity.setVerifyPinCodeFromSms(m.group(1).replaceAll("\\s", ""));
 
                             break; // first time of loop will collect last item of sms if more than one sms from same smsReadNo
                         } while (cursor.moveToNext());

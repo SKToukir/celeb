@@ -569,7 +569,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                         showConfirmDialog(registeredPhone, user);
 
                     } else {
-
                         TastyToast.makeText(LogInAcitvity.this, "You have to register first!", TastyToast.LENGTH_LONG, TastyToast.INFO);
                         btnLogin.setVisibility(View.GONE);
                         btnNewUser.setVisibility(View.GONE);
