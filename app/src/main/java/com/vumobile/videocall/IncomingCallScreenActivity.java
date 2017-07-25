@@ -35,7 +35,7 @@ public class IncomingCallScreenActivity extends BaseActivity {
 
     private String remoteUserName;
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
-    private String mCallId;
+    private String mCallId,mCallName;
     private AudioPlayer mAudioPlayer;
     private ImageView contactImage;
 
@@ -53,6 +53,8 @@ public class IncomingCallScreenActivity extends BaseActivity {
         mAudioPlayer = new AudioPlayer(this);
         mAudioPlayer.playRingtone();
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
+        mCallName = getIntent().getStringExtra(SinchService.CALL_Name);
+
     }
 
     @Override
@@ -61,14 +63,14 @@ public class IncomingCallScreenActivity extends BaseActivity {
         if (call != null) {
             call.addCallListener(new SinchCallListener());
             TextView remoteUser = (TextView) findViewById(R.id.remoteUser);
-            remoteUser.setText(call.getRemoteUserId());
+            remoteUser.setText(mCallName);
             remoteUserName = call.getRemoteUserId();
-
+            Log.d("FromServer","Remote username "+mCallName);
             //TODO
             // retrive user image who is calling from server
 
             try {
-                getUserImage(remoteUserName);
+                getUserImage(mCallName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,11 +81,11 @@ public class IncomingCallScreenActivity extends BaseActivity {
         }
     }
 
-    private void getUserImage(String remoteUserName) {
+    public void getUserImage(String remoteUserName) {
 
         String cntctName = remoteUserName.replaceAll(" ", "%20");
         String url = "http://wap.shabox.mobi/testwebapi/Celebrity/CelebrityImage?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&name=" + cntctName;
-
+        Log.d("FromServer", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

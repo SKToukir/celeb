@@ -21,7 +21,7 @@
         android:layout_gravity="center"
         android:descendantFocusability="blocksDescendants">
 
-    <ImageView
+    <com.vumobile.celeb.Utils.RoundedImageView
         android:id="@+id/imgProfilePic"
         android:layout_width="150dp"
         android:layout_height="150dp"

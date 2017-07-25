@@ -28,6 +28,7 @@ public class SinchService extends Service {
     private static final String ENVIRONMENT = "clientapi.sinch.com";
 
     public static final String CALL_ID = "CALL_ID";
+    public static final String CALL_Name = "u_name";
     static final String TAG = SinchService.class.getSimpleName();
     public static String uName = "";
 
@@ -75,6 +76,7 @@ public class SinchService extends Service {
             mSinchClient.addSinchClientListener(new MySinchClientListener());
             mSinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
             mSinchClient.start();
+            Log.d("videoservicestarted","videoservicestarted "+userName);
         }
     }
 
@@ -201,9 +203,10 @@ public class SinchService extends Service {
 
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
-            Log.d(TAG, "Incoming call");
+            Log.d("FromServer", call.getCallId());
             Intent intent = new Intent(SinchService.this, IncomingCallScreenActivity.class);
             intent.putExtra(CALL_ID, call.getCallId());
+            intent.putExtra(CALL_Name, uName);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SinchService.this.startActivity(intent);
         }

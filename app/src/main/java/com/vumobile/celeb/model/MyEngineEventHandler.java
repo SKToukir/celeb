@@ -1,6 +1,8 @@
 package com.vumobile.celeb.model;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,11 +66,28 @@ public class MyEngineEventHandler {
         }
 
         @Override
+        public void onRemoteVideoStats(RemoteVideoStats stats) {
+            Log.d("Connection","Connection stats "+String.valueOf(stats.delay)+" "+String.valueOf(stats.receivedFrameRate));
+        }
+
+        @Override
         public void onUserMuteVideo(int uid, boolean muted) {
         }
 
         @Override
+        public void onLocalVideoStats(LocalVideoStats stats) {
+            Log.d("Connection","Connection stats "+String.valueOf(stats.sentBitrate));
+            Toast.makeText(mContext,String.valueOf(stats.sentBitrate),Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
+            Log.d("ConnectionStats","Transfer Quality "+String.valueOf(txQuality)+" "+"Receiver Quality "+String.valueOf(txQuality));
+        }
+
+        @Override
         public void onRtcStats(RtcStats stats) {
+            Log.d("ConnectionStats","kbrate "+String.valueOf(stats.rxVideoKBitRate)+"  "+String.valueOf(stats.txVideoKBitRate) );
         }
 
 

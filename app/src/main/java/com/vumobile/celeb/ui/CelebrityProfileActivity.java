@@ -96,6 +96,7 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
                     isRegistered();
                 }
             });
+
             thread.start();
 
 

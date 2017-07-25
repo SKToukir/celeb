@@ -183,9 +183,11 @@ public class Gifts extends Fragment {
                     @Override
                     public void getResponse(String responseResult) {
                         Log.d(TAG, "getResponse: giftSend " + responseResult);
-                        Toast.makeText(getActivity(), "Gift sent", Toast.LENGTH_SHORT).show();
-                    }
 
+                        if (getActivity().getLocalClassName().contains("FanCelebProfileActivity")){
+                            Toast.makeText(getActivity(), "Gift sent", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     @Override
                     public void getResponseErr(String responseResultErr) {
                         Log.d(TAG, "getResponseErr: giftNotSend " + responseResultErr);

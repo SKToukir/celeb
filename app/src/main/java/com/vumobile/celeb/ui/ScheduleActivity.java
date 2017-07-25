@@ -1,5 +1,8 @@
 package com.vumobile.celeb.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +36,11 @@ import java.util.Map;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static ArrayList<Long> setTime = new ArrayList<>();
+    PendingIntent pendingIntent;
+    AlarmManager alarmManager;
+    private Context context;
+
     public static String USER_TYPE;
     private Toolbar toolbar;
     private ImageView back;
@@ -47,6 +55,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        context = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar_schedule);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,7 +112,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                 Log.d("FromServer", requestClass.getRequestType());
                                 requestClass.setEnd_time(obj.getString("EndTime"));
                                 Log.d("FromServer", requestClass.getEnd_time());
-
                                 listOfSchedule.add(requestClass);
 
                                 scheduleList.setAdapter(adapter);
@@ -111,6 +119,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                                 adapter.notifyDataSetChanged();
 
                             }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();

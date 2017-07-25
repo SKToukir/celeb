@@ -31,11 +31,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
+import com.vumobile.alarm.AlarmTimeClass;
+import com.vumobile.alarm.MyBroadcastReceiver;
+import com.vumobile.alarm.SharedPref;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
@@ -43,7 +47,6 @@ import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
 import com.vumobile.fan.login.serverrequest.MyVolleyRequest;
-import com.vumobile.fan.login.ui.FanCelebProfileImageVideo;
 import com.vumobile.service.MyFirebaseInstanceIDService;
 import com.vumobile.videocall.CallReceiver;
 import com.vumobile.videocall.SinchService;
@@ -52,23 +55,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class CelebHomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SinchService.StartFailedListener {
 
+    static ArrayList<String> setTime = new ArrayList<>();
+    AlarmManager alarmManager;
+    private Context context;
     boolean isCeleb;
     TextView imgNewMsgCount, imgNewRequestCount;
     public static final int IMAGE_PICKER_SELECT = 1;
-    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage, nav_home,nav_gallery,
-            nav_gifts,nav_schedule,nav_post,nav_logout;
+    private ImageView profilePictureView, imgGoLive, imgPic, imgImageVideoCeleb, imgRequest, imgMessage, nav_home, nav_gallery,
+            nav_gifts, nav_schedule, nav_post, nav_logout;
     NavigationView navigationView;
     TextView txtProfileName, txtCele, txtFollowers, txtHomePageFollow;
     Button etWhatsYourMind;
-    String celebName,msisdn,imageUrl,celeb_id,gender,msisdnMy;
+    String celebName, msisdn, imageUrl, celeb_id, gender, msisdnMy;
     public static String totalFollowers;
-    PendingIntent pendingIntent;
+    PendingIntent pendingIntent, pendingIntentAlarm;
     ImageView imgImage;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     DrawerLayout drawer;
@@ -79,6 +87,9 @@ public class CelebHomeActivity extends BaseActivity
         setContentView(R.layout.activity_celeb_home);
         startService(new Intent(CelebHomeActivity.this, MyFirebaseInstanceIDService.class));
         notificationRegister();
+
+        parseAllScheduleTime(Api.URL_GET_SCHEDULES);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -112,19 +123,18 @@ public class CelebHomeActivity extends BaseActivity
         initNavHeaderView();
 
         String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
-       // getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdn);
-
+        // getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdn);
 
 
         SinchService.uName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
-        startService(new Intent(CelebHomeActivity.this,SinchService.class));
+        startService(new Intent(CelebHomeActivity.this, SinchService.class));
         // if can not access celeb name from session
-        if (Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)== null ||
-                Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME)=="null"){
-                txtCele.setText(celebName);
+        if (Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME) == null ||
+                Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME) == "null") {
+            txtCele.setText(celebName);
 
         }
-        isCeleb = Session.isCeleb(getApplicationContext(),Session.IS_CELEB);
+        isCeleb = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
 
 //        if (isCeleb){
 //            fetchNewMsg("1");
@@ -132,13 +142,109 @@ public class CelebHomeActivity extends BaseActivity
 //            fetchNewMsg("2");
 //        }
 
+    }
+
+    private void parseAllScheduleTime(String urlGetSchedules) {
+        Log.d("AlarmData", "AlarmData");
+        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlGetSchedules,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("AlarmData", response.toString());
+
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+                            JSONArray array = object.getJSONArray("result");
+
+                            for (int i = 0; i < array.length(); i++) {
+
+                                JSONObject obj = array.getJSONObject(i);
+                                String alarmTime = obj.getString("StartTime");
+                                Log.d("alarmTime", new AlarmTimeClass().timeFormat(alarmTime));
+
+                                long currentTime;
+                                currentTime = AlarmTimeClass.getCurrentTime();
+
+                                if (Long.parseLong(new AlarmTimeClass().timeFormat(alarmTime)) > currentTime) {
+
+                                    setTime.add(new AlarmTimeClass().timeFormat(alarmTime));
+                                }
+
+                            }
+
+                            SharedPref.clearListShared(getApplicationContext());
+                            SharedPref.SaveList(getApplicationContext(), setTime);
+
+                            startAlert(setTime, CelebHomeActivity.this);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                /*
+                *  request flag = 1 means it is a chat request
+                *  request flag = 2 means it is a video request
+                * */
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("flag", "1");
+                params.put("MSISDN", msisdn);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    public void startAlert(ArrayList<String> setTime, Context context) {
+
+//        long currentTime, alarmTime;
+//        alarmTime = Long.parseLong(setTime.get(0));
+//        currentTime = AlarmTimeClass.getCurrentTime();
+
+
+
+        Intent intent = new Intent(context, MyBroadcastReceiver.class);
+        pendingIntentAlarm = PendingIntent.getBroadcast(
+                context, 234324243, intent, 0);
+
+        try {
+            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(setTime.get(0)), pendingIntentAlarm);
+            Toast.makeText(this, "Alarm set in " + Long.parseLong(setTime.get(0)) + " seconds", Toast.LENGTH_LONG).show();
+            setTime.remove(0);
+            SharedPref.clearListShared(context);
+            SharedPref.SaveList(context, setTime);
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+
+        Log.d("alarmTime", "else");
 
     }
 
     private void fetchNewMsg(String userType) {
 
-        String my_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
-        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN="+my_msisdn+"&usertype="+userType;
+        String my_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/Notification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre&MSISDN=" + my_msisdn + "&usertype=" + userType;
         Log.d("FromServerNewMsg", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -148,10 +254,10 @@ public class CelebHomeActivity extends BaseActivity
                 try {
                     int msg_count = Integer.parseInt(response.getString("result"));
 
-                    if (msg_count != 0){
+                    if (msg_count != 0) {
                         imgNewMsgCount.setVisibility(View.VISIBLE);
                         imgNewMsgCount.setText(String.valueOf(msg_count));
-                    }else {
+                    } else {
                         imgNewMsgCount.setVisibility(View.GONE);
                     }
 
@@ -173,9 +279,9 @@ public class CelebHomeActivity extends BaseActivity
 
     private void fetchNewRequest() {
 
-        String my_msisdn = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
-        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/RequestCount?MSISDN="+msisdnMy+"&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-        Log.d("FromServerNewRequest", url+" "+msisdnMy);
+        String my_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+        String url = "http://wap.shabox.mobi/testwebapi/Celebrity/RequestCount?MSISDN=" + msisdnMy + "&key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+        Log.d("FromServerNewRequest", url + " " + msisdnMy);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -185,10 +291,10 @@ public class CelebHomeActivity extends BaseActivity
                     int msg_count = Integer.parseInt(response.getString("result"));
 
 
-                    if (msg_count != 0){
+                    if (msg_count != 0) {
                         imgNewRequestCount.setVisibility(View.VISIBLE);
                         imgNewRequestCount.setText(String.valueOf(msg_count));
-                    }else {
+                    } else {
                         imgNewRequestCount.setVisibility(View.GONE);
                     }
 
@@ -238,26 +344,26 @@ public class CelebHomeActivity extends BaseActivity
 
                     JSONObject obj = array.getJSONObject(0);
                     celebName = obj.getString("Name");
-                    Log.d("FromServer",celebName);
+                    Log.d("FromServer", celebName);
                     msisdn = obj.getString("MSISDN");
-                    Log.d("FromServer",msisdn);
+                    Log.d("FromServer", msisdn);
                     imageUrl = obj.getString("Image_url");
-                    Log.d("FromServer",imageUrl);
+                    Log.d("FromServer", imageUrl);
                     gender = obj.getString("gender");
-                    Log.d("FromServer",gender);
+                    Log.d("FromServer", gender);
                     celeb_id = obj.getString("Celeb_id");
-                    Log.d("FromServer",celeb_id);
+                    Log.d("FromServer", celeb_id);
                     totalFollowers = obj.getString("Follower");
-                    Log.d("FromServer",totalFollowers);
+                    Log.d("FromServer", totalFollowers);
 
-                    new Session().saveData(getApplicationContext(),celebName,msisdn,true,true,imageUrl);
-                    new Session().saveCelebId(celeb_id,CelebHomeActivity.this);
-                    new Session().saveGender(gender,CelebHomeActivity.this);
+                    new Session().saveData(getApplicationContext(), celebName, msisdn, true, true, imageUrl);
+                    new Session().saveCelebId(celeb_id, CelebHomeActivity.this);
+                    new Session().saveGender(gender, CelebHomeActivity.this);
 
                     txtHomePageFollow.setText(totalFollowers);
                     txtFollowers.setText(totalFollowers);
-                    txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
-                    Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgPic);
+                    txtCele.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+                    Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(imgPic);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -306,12 +412,12 @@ public class CelebHomeActivity extends BaseActivity
         etWhatsYourMind.setOnClickListener(this);
         imgImageVideoCeleb.setOnClickListener(this);
 
-        msisdnMy = Session.retreivePhone(getApplicationContext(),Session.USER_PHONE);
+        msisdnMy = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
         Log.d("FromServer", msisdnMy);
-        txtCele.setText(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
-        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL)).into(imgPic);
+        txtCele.setText(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+        Picasso.with(getApplicationContext()).load(Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL)).into(imgPic);
 
-        getCelebProfile(Api.URL_GET_SINGLE_CELEB+msisdnMy);
+        getCelebProfile(Api.URL_GET_SINGLE_CELEB + msisdnMy);
     }
 
     private void initNavHeaderView() {
@@ -381,10 +487,10 @@ public class CelebHomeActivity extends BaseActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(getApplicationContext(),RegisterForVideoCallActivity.class));
+            startActivity(new Intent(getApplicationContext(), RegisterForVideoCallActivity.class));
         } else if (id == R.id.nav_schedule) {
-            startActivity(new Intent(getApplicationContext(),ScheduleActivity.class));
-        }else if (id == R.id.log_out) {
+            startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+        } else if (id == R.id.log_out) {
             Session.clearAllSharedData(getApplicationContext());
             Intent intent = new Intent(CelebHomeActivity.this, LogInAcitvity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -406,11 +512,11 @@ public class CelebHomeActivity extends BaseActivity
                 break;
             case R.id.etWhatsYourMind:
                 //TODO
-                Intent intent = new Intent(CelebHomeActivity.this,FBPostActivity.class);
-                intent.putExtra("action_value","0");
-                intent.putExtra("celeb_id",celeb_id);
-                intent.putExtra("gender",gender);
-                intent.putExtra("image_url",imageUrl);
+                Intent intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+                intent.putExtra("action_value", "0");
+                intent.putExtra("celeb_id", celeb_id);
+                intent.putExtra("gender", gender);
+                intent.putExtra("image_url", imageUrl);
                 startActivity(intent);
                 //startActivity(new Intent(CelebHomeActivity.this,FBPostActivity.class));
                 break;
@@ -422,14 +528,15 @@ public class CelebHomeActivity extends BaseActivity
                 startActivity(new Intent(CelebHomeActivity.this, RequestActivity.class));
                 break;
             case R.id.imgMessage:
-                startActivity(new Intent(getApplicationContext(),MessageActivity.class));
+                startActivity(new Intent(getApplicationContext(), MessageActivity.class));
                 break;
             case R.id.nav_home:
                 drawer.closeDrawers();
                 break;
             case R.id.nav_gallery:
                 drawer.closeDrawers();
-                startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
+                //setCalldurationDialog();
+
                 break;
             case R.id.nav_gifts:
                 drawer.closeDrawers();
@@ -438,11 +545,11 @@ public class CelebHomeActivity extends BaseActivity
             case R.id.nav_schedule:
                 drawer.closeDrawers();
                 ScheduleActivity.USER_TYPE = "1";
-                startActivity(new Intent(CelebHomeActivity.this,ScheduleActivity.class));
+                startActivity(new Intent(CelebHomeActivity.this, ScheduleActivity.class));
                 break;
             case R.id.nav_post:
                 drawer.closeDrawers();
-                startActivity(new Intent(CelebHomeActivity.this,CelebEditPostActivity.class));
+                startActivity(new Intent(CelebHomeActivity.this, CelebEditPostActivity.class));
                 break;
             case R.id.nav_logout:
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(CelebHomeActivity.this);
@@ -468,62 +575,6 @@ public class CelebHomeActivity extends BaseActivity
         }
     }
 
-//    private void removeBadge() {
-//
-//        String url = "wap.shabox.mobi/testwebapi/Celebrity/UpdateNotification?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("FromServer", response.toString());
-////                        try {
-////                            JSONObject jsonObj = new JSONObject(response);
-////
-////
-////                        } catch (JSONException e) {
-////                            e.printStackTrace();
-////                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d("FromServer", "" + error.getMessage());
-//
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//
-//
-//                String userType;
-//
-//                if (isCeleb){
-//                    userType = "1";
-//                }else {
-//                    userType = "2";
-//                }
-//
-//                params.put("MSISDN", msisdnMy);
-//                params.put("Flag", userType);
-//                Log.d("lkdjalskdjasld",msisdnMy);
-//                Log.d("lkdjalskdjasld",userType);
-//
-//
-//
-//
-//                return params;
-//            }
-//
-//        };
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//        requestQueue.add(stringRequest);
-//
-//    }
-
 
     public void forwardToLiveRoom(int cRole) {
 
@@ -544,6 +595,7 @@ public class CelebHomeActivity extends BaseActivity
 
     @Override
     protected void onResume() {
+        runService();
         // get new message count
         fetchNewMsg("1");
         // get new request count
@@ -590,15 +642,15 @@ public class CelebHomeActivity extends BaseActivity
     @Override
     public void onStarted() {
         if (!getSinchServiceInterface().isStarted()) {
-            SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+            SinchService.uName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
             startService(new Intent(CelebHomeActivity.this, SinchService.class));
-            getSinchServiceInterface().startClient(Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME));
-            Log.d("SSSSSSSS","Sinch service started Home");
+            getSinchServiceInterface().startClient(Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME));
+            Log.d("SSSSSSSS", "Sinch service started Home");
         } else {
-            Intent intent = new Intent(CelebHomeActivity.this,SinchService.class);
-            SinchService.uName = Session.retreiveFbName(getApplicationContext(),Session.FB_PROFILE_NAME);
+            Intent intent = new Intent(CelebHomeActivity.this, SinchService.class);
+            SinchService.uName = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
             startService(intent);
-            Log.d("SSSSSSSS","Sinch service started else Home");
+            Log.d("SSSSSSSS", "Sinch service started else Home");
         }
     }
 
@@ -618,12 +670,12 @@ public class CelebHomeActivity extends BaseActivity
                 Uri uri = data.getData();
 
                 FBPostActivity.fromHomeUri = uri;
-                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
-                intent.putExtra("isImage","1");
-                intent.putExtra("action_value","1");
-                intent.putExtra("celeb_id",celeb_id);
-                intent.putExtra("gender",gender);
-                intent.putExtra("image_url",imageUrl);
+                Intent intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+                intent.putExtra("isImage", "1");
+                intent.putExtra("action_value", "1");
+                intent.putExtra("celeb_id", celeb_id);
+                intent.putExtra("gender", gender);
+                intent.putExtra("image_url", imageUrl);
                 startActivity(intent);
 
             } else if (selectedMediaUri.toString().contains("video")) {
@@ -631,13 +683,13 @@ public class CelebHomeActivity extends BaseActivity
                 Uri uri = data.getData();
 
                 FBPostActivity.fromHomeUri = uri;
-                Intent  intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
-                intent.putExtra("uri",uri);
-                intent.putExtra("isImage","0");
-                intent.putExtra("action_value","1");
-                intent.putExtra("celeb_id",celeb_id);
-                intent.putExtra("gender",gender);
-                intent.putExtra("image_url",imageUrl);
+                Intent intent = new Intent(CelebHomeActivity.this, FBPostActivity.class);
+                intent.putExtra("uri", uri);
+                intent.putExtra("isImage", "0");
+                intent.putExtra("action_value", "1");
+                intent.putExtra("celeb_id", celeb_id);
+                intent.putExtra("gender", gender);
+                intent.putExtra("image_url", imageUrl);
                 startActivity(intent);
 
             }
@@ -705,4 +757,5 @@ public class CelebHomeActivity extends BaseActivity
             }
         });
     }
+
 }
