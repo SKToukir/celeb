@@ -117,6 +117,7 @@ public class WorkerThread extends Thread {
 
     private AgoraYuvEnhancer mVideoEnhancer = null;
 
+
     public final void enablePreProcessor() {
         if (mEngineConfig.mClientRole == Constants.CLIENT_ROLE_BROADCASTER) {
             if (Constant.PRP_ENABLED) {
@@ -166,7 +167,6 @@ public class WorkerThread extends Thread {
             mWorkerHandler.sendMessage(envelop);
             return;
         }
-
         ensureRtcEngineReadyLock();
         mRtcEngine.joinChannel(null, channel, "OpenLive", uid);
         Log.d("viid",mRtcEngine.getCallId());
@@ -261,6 +261,7 @@ public class WorkerThread extends Thread {
             mRtcEngine = RtcEngine.create(mContext, appId, mEngineEventHandler.mRtcEventHandler);
             mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
             mRtcEngine.enableVideo();
+            mRtcEngine.setVideoQualityParameters(true);
             mRtcEngine.setLogFile(Environment.getExternalStorageDirectory()
                     + File.separator + mContext.getPackageName() + "/log/agora-rtc.log");
             mRtcEngine.enableDualStreamMode(false);

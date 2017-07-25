@@ -205,12 +205,7 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
                                 }else{
                                     timeSet = "AM";
                                 }
-
-
-
                                 etToTime.setText(hourOfDay + ":" + minute + " " + timeSet);
-
-
                                 endTime = String.valueOf(selectedYear) + "-" + String.valueOf(selectedMonth) + "-" + String.valueOf(selectedDate) + " " + String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + ":" + "00" + " " + timeSet;
                                 Log.d("dates", endTime);
                             }

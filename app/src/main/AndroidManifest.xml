@@ -136,6 +136,17 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name="com.vumobile.alarm.MyBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="YouWillNeverKillMe" />
+
+                <intent-filter>
+                    <action android:name="restartApps" />
+                </intent-filter>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name="com.vumobile.fan.login.SmsResultReceiver"
@@ -144,6 +155,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
 
         <service
             android:name="com.vumobile.notification.NetworkedService"
@@ -214,18 +226,12 @@
         <activity android:name=".ui.CelebEditPostActivity" />
         <activity android:name=".ui.EditPostActivity" />
         <activity android:name=".ui.EditImageActivity" />
-
         <service android:name="com.vumobile.utils.ChatService" />
-
         <activity android:name=".ui.GiftsActivity" />
         <activity android:name=".ui.SetScheduleForLiveActivity" />
         <activity android:name="com.vumobile.fan.login.LogInAcitvity" />
         <activity android:name=".ui.ShowAllGiftActivity" />
         <activity android:name="com.vumobile.MainActivity" />
-
-
-
-
         <activity android:name=".calender.CalendarView"></activity>
 
     </application>

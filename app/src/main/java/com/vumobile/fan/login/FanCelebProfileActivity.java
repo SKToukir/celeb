@@ -1,6 +1,7 @@
 package com.vumobile.fan.login;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -70,7 +73,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         });
 
 
-
         imageViewNotification = (ImageView) toolbar.findViewById(R.id.imageViewNotification);
         imageViewMessage = (ImageView) toolbar.findViewById(R.id.imageViewMessage);
         imageViewHome = (ImageView) toolbar.findViewById(R.id.imageViewHome);
@@ -87,7 +89,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         imageViewImageAndVideo.setOnClickListener(this);
         imageViewGift.setOnClickListener(this);
 
-        activity_fan_celeb_profile = (LinearLayout)findViewById(R.id.activity_fan_celeb_profile);
+        activity_fan_celeb_profile = (LinearLayout) findViewById(R.id.activity_fan_celeb_profile);
 
 
         CircleImageView imageViewProfilePicFan = (CircleImageView) findViewById(R.id.imageViewProfilePicFan);
@@ -108,12 +110,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         // show snackbar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, activity_fan_celeb_profile);
         new MyInternetCheckReceiver(activity_fan_celeb_profile);
-
-
-
-
     } // end of onCreate
-
 
 
     @Override
@@ -132,7 +129,6 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
             case R.id.imageViewHome:
                 finish();
                 break;
-
             case R.id.imageViewVideoCall:
 
                 String fan_msisdns = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
@@ -297,16 +293,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
                             } else if (request_status.matches("Accepted")) {
 
-                                String fan_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
-                                // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                intent.putExtra("celeb_name", fbName);
-                                intent.putExtra("fan_name", fan_name);
-                                intent.putExtra("profilePic", profilePic);
-                                intent.putExtra("celeb_msisdn", msisdn);
-                                startActivity(intent);
-                                //TastyToast.makeText(getApplicationContext(), "Start Video Call Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-                                //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
+                                setCalldurationDialog();
 
 
                             } else {
@@ -396,5 +383,72 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         startActivity(i);
     }
 
+    String duration = null;
 
+    private void setCalldurationDialog() {
+
+        SeekBar seekBar;
+        TextView textView;
+        Button dialogButtonOK;
+
+
+        final Dialog dialog = new Dialog(FanCelebProfileActivity.this);
+        dialog.setContentView(R.layout.custom);
+        dialog.setTitle("Set call duaration");
+        seekBar = (SeekBar) dialog.findViewById(R.id.seekBar);
+        textView = (TextView) dialog.findViewById(R.id.textView);
+        dialogButtonOK = (Button) dialog.findViewById(R.id.dialogButtonOK);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int seekBarProgress = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBarProgress = progress;
+                textView.setText("Call Duration: " + seekBarProgress +" min");
+
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                textView.setText("Call Duration: " + seekBarProgress +  " min");
+                duration = String.valueOf(seekBarProgress);
+                //Toast.makeText(getApplicationContext(), "SeekBar Touch Stop ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialogButtonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("duartion", "Call duartion: " + duration);
+                try {
+                    //startActivity(new Intent(CelebHomeActivity.this,FanCelebProfileImageVideo.class));
+                    if (!duration.equals("null") || duration != null && duration != "0" && duration.matches("0")) {
+                        dialog.dismiss();
+                        String fan_name = Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME);
+                        // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.putExtra("celeb_name", fbName);
+                        intent.putExtra("fan_name", fan_name);
+                        intent.putExtra("profilePic", profilePic);
+                        intent.putExtra("celeb_msisdn", msisdn);
+                        startActivity(intent);
+
+                    } else {
+                        TastyToast.makeText(FanCelebProfileActivity.this, "Set your call duration first", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
+                        dialog.dismiss();
+                    }
+                } catch (NullPointerException e) {
+                    TastyToast.makeText(FanCelebProfileActivity.this, "Set your call duration first", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
+                    dialog.dismiss();
+                }
+
+            }
+        });
+
+        dialog.show();
+    }
 }

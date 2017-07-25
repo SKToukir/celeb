@@ -64,7 +64,7 @@ public class MyVolleyRequest {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("FromServer", response.toString());
+                        Log.d("FromServer", ""+response.toString());
                         responseString.getResponse(response);
                     }
                 },

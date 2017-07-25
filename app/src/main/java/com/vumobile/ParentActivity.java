@@ -37,10 +37,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.vumobile.Config.Api;
+import com.vumobile.alarm.AlarmTimeClass;
+import com.vumobile.alarm.MyBroadcastReceiver;
+import com.vumobile.alarm.SharedPref;
 import com.vumobile.celeb.Adapters.CelebrityListAdapter;
 import com.vumobile.celeb.R;
 import com.vumobile.celeb.Utils.CelebrityClass;
@@ -72,6 +76,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.agora.rtc.Constants;
 
@@ -79,6 +84,9 @@ public class ParentActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
 
+    AlarmManager alarmManager;
+    PendingIntent pendingIntentAlarm;
+    static ArrayList<String> setTime = new ArrayList<>();
     private CelebrityClass celebrityClass;
     private List<CelebrityClass> celebrityClassList = new ArrayList<CelebrityClass>();
     private List<CelebrityClass> celebrityClassListCopy; // for search
@@ -112,6 +120,7 @@ public class ParentActivity extends BaseActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        parseAllScheduleTime(Api.URL_GET_SCHEDULES);
 
         initUI();
 
@@ -188,6 +197,98 @@ public class ParentActivity extends BaseActivity
         new MyInternetCheckReceiver(linearLayoutMain);
 
     } // end of onCreate
+
+    private void parseAllScheduleTime(String urlGetSchedules) {
+        Log.d("AlarmData", "AlarmData");
+        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlGetSchedules,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+                            JSONArray array = object.getJSONArray("result");
+
+                            for (int i = 0; i < array.length(); i++) {
+
+                                JSONObject obj = array.getJSONObject(i);
+                                String alarmTime = obj.getString("StartTime");
+                                Log.d("alarmTime", new AlarmTimeClass().timeFormat(alarmTime));
+
+                                long currentTime;
+                                currentTime = AlarmTimeClass.getCurrentTime();
+
+                                if (Long.parseLong(new AlarmTimeClass().timeFormat(alarmTime)) > currentTime) {
+
+                                    setTime.add(new AlarmTimeClass().timeFormat(alarmTime));
+                                }
+
+                            }
+
+                            SharedPref.clearListShared(getApplicationContext());
+                            SharedPref.SaveList(getApplicationContext(), setTime);
+
+                            startAlert(setTime, ParentActivity.this);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                /*
+                *  request flag = 1 means it is a chat request
+                *  request flag = 2 means it is a video request
+                * */
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("flag", "0");
+                params.put("MSISDN", msisdn);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void startAlert(ArrayList<String> setTime, Context context) {
+
+
+        Intent intent = new Intent(context, MyBroadcastReceiver.class);
+        pendingIntentAlarm = PendingIntent.getBroadcast(
+                context, 234324243, intent, 0);
+
+        try {
+            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(setTime.get(0)), pendingIntentAlarm);
+            Toast.makeText(this, "Alarm set in " + Long.parseLong(setTime.get(0)) + " seconds", Toast.LENGTH_LONG).show();
+            setTime.remove(0);
+            SharedPref.clearListShared(context);
+            SharedPref.SaveList(context, setTime);
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+
+        Log.d("alarmTime", "else");
+
+    }
 
     private void checkFromLiveNotificationGoLiveList() {
         if (getIntent().hasExtra("user")) {
@@ -907,6 +1008,7 @@ public class ParentActivity extends BaseActivity
 
         // show snack bar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
+        parseAllScheduleTime(Api.URL_GET_SCHEDULES);
         super.onResume();
     }
 

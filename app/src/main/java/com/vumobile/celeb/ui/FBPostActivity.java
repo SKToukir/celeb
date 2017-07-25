@@ -856,8 +856,15 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 params.put("Image_url", image_url);
                 params.put("Flags_Notificaton", "2");
                 params.put("post", cmnt);
-                //params.put("time", currentTime);
-//                params.put("Flag", String.valueOf(celebOrNot));
+
+                Log.d("FBPost",name);
+                Log.d("FBPost",msisdn);
+                Log.d("FBPost",cID);
+                Log.d("FBPost",gender);
+                Log.d("FBPost",IsImage(isImage));
+                Log.d("FBPost",image_url);
+                Log.d("FBPost","2");
+                Log.d("FBPost",cmnt);
 
 
                 return params;
