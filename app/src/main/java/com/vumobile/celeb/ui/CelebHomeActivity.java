@@ -169,7 +169,6 @@ public class CelebHomeActivity extends BaseActivity
                                 currentTime = AlarmTimeClass.getCurrentTime();
 
                                 if (Long.parseLong(new AlarmTimeClass().timeFormat(alarmTime)) > currentTime) {
-
                                     setTime.add(new AlarmTimeClass().timeFormat(alarmTime));
                                 }
 

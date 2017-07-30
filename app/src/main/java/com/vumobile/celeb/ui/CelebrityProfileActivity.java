@@ -84,7 +84,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         startService(new Intent(CelebrityProfileActivity.this, MyFirebaseInstanceIDService.class));
         notificationRegister();
 
-
         if (Session.isReg(getApplicationContext(), Session.REGISTERED_CELEB) == false) {
             initUI();
             initializeControls();
@@ -98,7 +97,6 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
             });
 
             thread.start();
-
 
             if (profile_url != "") {
                 Log.d("profile_url", "Url " + Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL));

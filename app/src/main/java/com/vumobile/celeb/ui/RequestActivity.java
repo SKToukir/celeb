@@ -166,7 +166,6 @@ public class RequestActivity extends AppCompatActivity implements View.OnClickLi
         Date date = null;
         try {
             date = dateFormat.parse(strDate);
-
         } catch (ParseException e) {
             e.printStackTrace();
         }

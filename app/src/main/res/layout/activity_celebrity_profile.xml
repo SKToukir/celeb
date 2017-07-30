@@ -30,7 +30,6 @@
                 android:scaleType="fitXY"
                 android:background="@drawable/logo" />
 
-
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"

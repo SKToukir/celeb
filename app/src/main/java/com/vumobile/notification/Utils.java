@@ -192,15 +192,6 @@ public class Utils extends BaseActivity {
         expandedView.setOnClickPendingIntent(R.id.MainlayoutCustom, pVolume);
         expandedView.setTextViewText(R.id.text_view, "New post of " + name);
 
-        //expandedView.setTextViewText(R.id.notificationTime, strDate);
-//        try {
-//            //expandedView.setImageViewBitmap(R.id.imageViewTest, remote_picture);
-//            //expandedView.setImageViewResource(R.id.imageViewTest,R.mipmap.ic_launcher);
-//
-//        } catch (Exception e) {
-//
-//            e.printStackTrace();
-//        }
 
         new Thread(new Runnable() {
             @Override

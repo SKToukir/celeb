@@ -28,7 +28,8 @@ public class SharedPref {
     static public ArrayList<String> getList(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> set = new HashSet<String>();
-        set = preferences.getStringSet("key", null);
+        Set<String> set2 = new HashSet<>();
+        set = preferences.getStringSet("key", set2);
 
         ArrayList<String> sample = new ArrayList<String>(set);
 

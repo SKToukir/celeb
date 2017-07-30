@@ -31,8 +31,7 @@
             android:maxLines="4"
             android:text="Test"
             android:textColor="#0e0e0e"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/notificationTime"

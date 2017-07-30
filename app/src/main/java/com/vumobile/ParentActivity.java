@@ -120,7 +120,7 @@ public class ParentActivity extends BaseActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        parseAllScheduleTime(Api.URL_GET_SCHEDULES);
+        //parseAllScheduleTime(Api.URL_GET_SCHEDULES);
 
         initUI();
 
@@ -145,11 +145,9 @@ public class ParentActivity extends BaseActivity
         navUserName = (TextView) hView.findViewById(R.id.textView);
         navUserPic = (ImageView) hView.findViewById(R.id.imageView);
 
-
         listCeleb.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
 
                 TempInfoModel.setCelebMsisdn(celebrityClassList.get(i).getCeleb_code());
 
@@ -206,12 +204,14 @@ public class ParentActivity extends BaseActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("FromServer", response.toString());
+                        Log.d("FromServer al", response.toString());
 
                         try {
                             JSONObject object = new JSONObject(response);
 
                             JSONArray array = object.getJSONArray("result");
+                            Log.d("myarray", "onResponse: "+array);
+                          //  if()
 
                             for (int i = 0; i < array.length(); i++) {
 
@@ -223,16 +223,16 @@ public class ParentActivity extends BaseActivity
                                 currentTime = AlarmTimeClass.getCurrentTime();
 
                                 if (Long.parseLong(new AlarmTimeClass().timeFormat(alarmTime)) > currentTime) {
-
                                     setTime.add(new AlarmTimeClass().timeFormat(alarmTime));
                                 }
 
                             }
 
-                            SharedPref.clearListShared(getApplicationContext());
-                            SharedPref.SaveList(getApplicationContext(), setTime);
-
-                            startAlert(setTime, ParentActivity.this);
+                            SharedPref.clearListShared(ParentActivity.this);
+                            SharedPref.SaveList(ParentActivity.this, setTime);
+                            if (SharedPref.getList(ParentActivity.this) != null) {
+                                startAlert(setTime, ParentActivity.this);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -243,8 +243,7 @@ public class ParentActivity extends BaseActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("FromServer", "" + error.getMessage());
-
+                        Log.d("FromServer al", "" + error.getMessage());
                     }
                 }) {
             @Override
@@ -282,7 +281,7 @@ public class ParentActivity extends BaseActivity
             setTime.remove(0);
             SharedPref.clearListShared(context);
             SharedPref.SaveList(context, setTime);
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
@@ -1008,7 +1007,7 @@ public class ParentActivity extends BaseActivity
 
         // show snack bar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
-        parseAllScheduleTime(Api.URL_GET_SCHEDULES);
+        // parseAllScheduleTime(Api.URL_GET_SCHEDULES);
         super.onResume();
     }
 
