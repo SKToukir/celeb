@@ -225,6 +225,19 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/btnSubmitCode"
+                android:layout_width="150dp"
+                android:layout_height="47dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/round_corner"
+                android:elevation="5dp"
+                android:onClick="btnSubmitCode"
+                android:text="Confirm"
+                android:textColor="#fff"
+                android:visibility="visible" />
+
+            <Button
                 android:id="@+id/btnResendPinSms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -241,18 +254,7 @@
                 android:textSize="18sp"
                 android:visibility="visible" />
 
-            <Button
-                android:id="@+id/btnSubmitCode"
-                android:layout_width="150dp"
-                android:layout_height="47dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/round_corner"
-                android:elevation="5dp"
-                android:onClick="btnSubmitCode"
-                android:text="Confirm"
-                android:textColor="#fff"
-                android:visibility="visible" />
+
 
 
         </LinearLayout>

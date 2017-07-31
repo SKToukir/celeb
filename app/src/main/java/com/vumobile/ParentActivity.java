@@ -86,7 +86,7 @@ public class ParentActivity extends BaseActivity
 
     AlarmManager alarmManager;
     PendingIntent pendingIntentAlarm;
-    static ArrayList<String> setTime = new ArrayList<>();
+    ArrayList<String> setTime = new ArrayList<>();
     private CelebrityClass celebrityClass;
     private List<CelebrityClass> celebrityClassList = new ArrayList<CelebrityClass>();
     private List<CelebrityClass> celebrityClassListCopy; // for search
@@ -270,23 +270,41 @@ public class ParentActivity extends BaseActivity
 
     private void startAlert(ArrayList<String> setTime, Context context) {
 
+        // context variable contains your `Context`
+        AlarmManager mgrAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+        ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 
-        Intent intent = new Intent(context, MyBroadcastReceiver.class);
-        pendingIntentAlarm = PendingIntent.getBroadcast(
-                context, 234324243, intent, 0);
+        for(int i = 0; i < setTime.size(); ++i)
+        {
+            Log.d("FireAlarmNot",setTime.get(i));
+            Intent intent = new Intent(ParentActivity.this, MyBroadcastReceiver.class);
+            // Loop counter `i` is used as a `requestCode`
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(ParentActivity.this, i, intent, 0);
+            // Single alarms in 1, 2, ..., 10 minutes (in `i` minutes)
+            mgrAlarm.set(AlarmManager.RTC_WAKEUP,
+                    Long.parseLong(setTime.get(i)),
+                    pendingIntent);
 
-        try {
-            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(setTime.get(0)), pendingIntentAlarm);
-            Toast.makeText(this, "Alarm set in " + Long.parseLong(setTime.get(0)) + " seconds", Toast.LENGTH_LONG).show();
-            setTime.remove(0);
-            SharedPref.clearListShared(context);
-            SharedPref.SaveList(context, setTime);
-        }catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
+            intentArray.add(pendingIntent);
         }
 
-        Log.d("alarmTime", "else");
+
+//        Intent intent = new Intent(context, MyBroadcastReceiver.class);
+//        pendingIntentAlarm = PendingIntent.getBroadcast(
+//                context, 234324243, intent, 0);
+//
+//        try {
+//            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(setTime.get(0)), pendingIntentAlarm);
+//            Toast.makeText(this, "Alarm set in " + Long.parseLong(setTime.get(0)) + " seconds", Toast.LENGTH_LONG).show();
+//            setTime.remove(0);
+//            SharedPref.clearListShared(context);
+//            SharedPref.SaveList(context, setTime);
+//        }catch (IndexOutOfBoundsException e){
+//            e.printStackTrace();
+//        }
+//
+//        Log.d("alarmTime", "else");
 
     }
 
@@ -674,6 +692,7 @@ public class ParentActivity extends BaseActivity
         buttonMostLive.setOnClickListener(this);
         buttonFilterLive.setOnClickListener(this);
         buttonFilterAll.setTag("SELECT_ITEM");
+
         swipeRefreshLayout.post(new Runnable() {
                                     @Override
                                     public void run() {
