@@ -393,17 +393,31 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
                 // if verification code length is 6 then it will be fan
                 if (verificationCode.length() == 6) {
                     new Session().saveData(uName, uPhone, isCeleb, true, LogInAcitvity.this);
-                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
+                   if (alreadyReg){
+                       Intent intent = new Intent(LogInAcitvity.this, CelebHomeActivity.class);
+                       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                       startActivity(intent);
+                       finish();
+                   }else {
+                       Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
+                       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                       startActivity(intent);
+                       finish();
+                   }
                     // if verification code length is less then 6 then it will be celebrity
                 } else if (verificationCode.length() < 6) {
                     new Session().saveData(uName, uPhone, isCeleb, true, LogInAcitvity.this);
-                    Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
+                   if (alreadyReg){
+                       Intent intent = new Intent(LogInAcitvity.this, ParentActivity.class);
+                       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                       startActivity(intent);
+                       finish();
+                   }else {
+                       Intent intent = new Intent(LogInAcitvity.this, CelebrityProfileActivity.class);
+                       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                       startActivity(intent);
+                       finish();
+                   }
                 }
             } else {
                 Toast.makeText(getApplicationContext(), "You enter incorrect code", Toast.LENGTH_LONG).show();

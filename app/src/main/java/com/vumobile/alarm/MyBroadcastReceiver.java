@@ -16,8 +16,6 @@ import com.vumobile.celeb.R;
 import com.vumobile.celeb.ui.CelebHomeActivity;
 import com.vumobile.fan.login.Session;
 
-import java.util.ArrayList;
-
 /**
  * Created by toukirul on 20/7/2017.
  */
@@ -36,7 +34,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         mp = MediaPlayer.create(context, R.raw.old);
         mp.start();
 
-        ArrayList<String> timeList = SharedPref.getList(context);
+
+
+//        ArrayList<String> timeList = SharedPref.getList(context);
 
 
 //        long currentTime, alarmTime;
@@ -46,17 +46,17 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 //        if (alarmTime >= currentTime){
 
 
-        if (timeList.size() > 0) {
-
-
-                SharedPref.clearListShared(context);
-                SharedPref.SaveList(context, timeList);
-                setAgai(context, Long.parseLong(timeList.get(i)));
-                Toast.makeText(context, "Alarm....", Toast.LENGTH_LONG).show();
-
-        } else {
-            MyBroadcastReceiver.this.abortBroadcast();
-        }
+//        if (timeList.size() > 0) {
+//
+//
+//                SharedPref.clearListShared(context);
+//                SharedPref.SaveList(context, timeList);
+//                setAgai(context, Long.parseLong(timeList.get(i)));
+//                Toast.makeText(context, "Alarm....", Toast.LENGTH_LONG).show();
+//
+//        } else {
+//            MyBroadcastReceiver.this.abortBroadcast();
+//        }
         //}
 
     }
