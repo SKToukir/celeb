@@ -236,12 +236,23 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
 //                }else {
 
 
-                if (request_type.matches("1")) {
-                    addEvent(selectedYear, selectedMonth, selectedDate, Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME + " set schedule in this time for fan"));
-                    confirmation(Api.URL_REQUESTS_ACCEPT, "1", "1");
-                } else {
-                    addEvent(selectedYear, selectedMonth, selectedDate, Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME + " set schedule in this time for fan"));
-                    confirmation(Api.URL_REQUESTS_ACCEPT, "1", "2");
+                try{
+                    if (request_type.matches("1")) {
+                        try{
+
+                            addEvent(selectedYear, selectedMonth, selectedDate, Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME + " set schedule in this time for fan"));
+                        }catch (NumberFormatException e){
+                            e.printStackTrace();
+                            TastyToast.makeText(getApplicationContext(),"FIll all the field!",TastyToast.LENGTH_LONG,TastyToast.ERROR);
+                        }
+                        confirmation(Api.URL_REQUESTS_ACCEPT, "1", "1");
+                    } else {
+                        addEvent(selectedYear, selectedMonth, selectedDate, Session.retreiveFbName(getApplicationContext(), Session.FB_PROFILE_NAME + " set schedule in this time for fan"));
+                        confirmation(Api.URL_REQUESTS_ACCEPT, "1", "2");
+                    }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    TastyToast.makeText(getApplicationContext(),"You have fill all the field!",TastyToast.LENGTH_LONG,TastyToast.ERROR);
                 }
 
 
@@ -258,7 +269,13 @@ public class SetScheduleActivity extends com.vumobile.videocall.BaseActivity imp
     private void addEvent(String selectedYear, String selectedMonth, String selectedDate, String title) {
 
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth), Integer.parseInt(selectedDate), Integer.parseInt(sHour), Integer.parseInt(sMin));
+        try{
+
+            beginTime.set(Integer.parseInt(selectedYear), Integer.parseInt(selectedMonth), Integer.parseInt(selectedDate), Integer.parseInt(sHour), Integer.parseInt(sMin));
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            TastyToast.makeText(getApplicationContext(),"FIll all the field!",TastyToast.LENGTH_LONG,TastyToast.ERROR);
+        }
 
         ContentResolver cr = getContentResolver();
         Calendar endTimes = Calendar.getInstance();

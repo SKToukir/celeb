@@ -95,6 +95,11 @@ public class CelebHomeActivity extends BaseActivity
 
         runService();
 
+        if (MyBroadcastReceiver.mp!=null){
+            MyBroadcastReceiver.mp.stop();
+            MyBroadcastReceiver.mp.seekTo(0);
+        }
+
 //        if (!Session.isFbLogIn(getApplicationContext(),Session.FB_LOGIN_STATUS)){
 //            startActivity(new Intent(CelebHomeActivity.this,LogInAcitvity.class));
 //        }
@@ -177,7 +182,7 @@ public class CelebHomeActivity extends BaseActivity
                             SharedPref.clearListShared(getApplicationContext());
                             SharedPref.SaveList(getApplicationContext(), setTime);
 
-                            startAlert(setTime, CelebHomeActivity.this);
+                            //startAlert(setTime, CelebHomeActivity.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -230,7 +235,7 @@ public class CelebHomeActivity extends BaseActivity
             // Loop counter `i` is used as a `requestCode`
             PendingIntent pendingIntent = PendingIntent.getBroadcast(CelebHomeActivity.this, i, intent, 0);
             // Single alarms in 1, 2, ..., 10 minutes (in `i` minutes)
-            mgrAlarm.set(AlarmManager.RTC_WAKEUP,
+            mgrAlarm.setExact(AlarmManager.RTC_WAKEUP,
                     Long.parseLong(setTime.get(i)),
                     pendingIntent);
 

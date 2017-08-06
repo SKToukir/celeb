@@ -19,7 +19,7 @@ public class Api {
     public static final String URL_EDIT_POST = "http://wap.shabox.mobi/testwebapi/Post/EditPost?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
     // this is a post api. takes flags and MSISDN. flags = 0 means he/she is fan and when 1 then he/she is celeb
     public static final String URL_GET_SCHEDULES = "http://wap.shabox.mobi/testwebapi/Notification/Schedule?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
-
+  
     // get celeb posts...
     public static final String URL_CELEB_POSTS = "http://wap.shabox.mobi/testwebapi/Notification/MyPost?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
 
@@ -140,6 +140,11 @@ public class Api {
     public static final String GIFT_SEND_SEND_FROM = "ReceiveFrom"; // 1=live, 2=chat, 3=direct
 
 
+    //fan check schedule time
+    public static final String URL_CHECK_SCHEDULE_TIME = "http://wap.shabox.mobi/testwebapi/Fan/CheckSchedule?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre";
+    public static final String FAN_MSISDN = "Fan";
+    public static final String CELEB_MSISDN = "Celebrity";
+    public static final String REQUEST_TYPE = "RequestType";
 
 
 

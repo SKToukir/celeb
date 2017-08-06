@@ -120,10 +120,14 @@ public class ParentActivity extends BaseActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //parseAllScheduleTime(Api.URL_GET_SCHEDULES);
+        parseAllScheduleTime(Api.URL_GET_SCHEDULES);
 
         initUI();
 
+        if (MyBroadcastReceiver.mp!=null){
+            MyBroadcastReceiver.mp.stop();
+            MyBroadcastReceiver.mp.seekTo(0);
+        }
 
         // Initialize comment list adapter
         adapter = new CelebrityListAdapter(this, R.layout.celeb_list_row, celebrityClassList);
@@ -405,7 +409,7 @@ public class ParentActivity extends BaseActivity
     }
 
     private void loadFanProfileData(String urlFanProfile) {
-
+        String msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
         String fullUrl = urlFanProfile + "&MSISDN=" + Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
         Log.d("fanurl", "loadFanProfileData: " + fullUrl);
 
@@ -417,7 +421,10 @@ public class ParentActivity extends BaseActivity
                     JSONArray array = jsonObject.getJSONArray("result");
                     JSONObject obj = array.getJSONObject(0);
                     navUserName.setText(obj.getString("Name"));
+                    String uName = obj.getString("Name");
                     Glide.with(ParentActivity.this).load(obj.getString("Image_url")).into(navUserPic);
+                    String imgUrl = obj.getString("Image_url");
+                    new Session().saveData(getApplicationContext(),uName,msisdn,false,true,imgUrl);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

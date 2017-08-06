@@ -6,6 +6,7 @@ package com.vumobile.videocall;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class IncomingCallScreenActivity extends BaseActivity {
 
+    PowerManager.WakeLock screenLock;
     private String remoteUserName;
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
     private String mCallId,mCallName;
@@ -56,6 +58,7 @@ public class IncomingCallScreenActivity extends BaseActivity {
         mCallName = getIntent().getStringExtra(SinchService.CALL_Name);
 
     }
+
 
     @Override
     protected void onServiceConnected() {
@@ -181,4 +184,5 @@ public class IncomingCallScreenActivity extends BaseActivity {
             }
         }
     };
+
 }

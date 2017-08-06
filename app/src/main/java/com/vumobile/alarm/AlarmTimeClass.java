@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class AlarmTimeClass {
 
-    public long getDateTimeInmilSec(String dateTime){
+    public long getDateTimeInmilSec(String dateTime) {
         String myDate = dateTime;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = null;
@@ -22,7 +22,7 @@ public class AlarmTimeClass {
             e.printStackTrace();
         }
         long millis = date.getTime();
-        Log.d("timeInmil",String.valueOf(millis));
+        Log.d("timeInmil", String.valueOf(millis));
         return millis;
     }
 
@@ -44,14 +44,13 @@ public class AlarmTimeClass {
         Log.d("dateyear", date);
 
 
-
         return String.valueOf(getDateTimeInmilSec(date));
 
     }
 
-    public static long getCurrentTime(){
-        long time= System.currentTimeMillis();
-        Log.d("alarmTime","currentTime "+String.valueOf(time));
+    public static long getCurrentTime() {
+        long time = System.currentTimeMillis();
+        Log.d("alarmTime", "currentTime " + String.valueOf(time));
         return time;
     }
 

@@ -42,6 +42,9 @@ import com.vumobile.videocall.LoginActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -165,24 +168,15 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
     }
 
-    private void chatRequestDialog(String celeb_msisdn, String fan_msisdn, String name, String type) {
+    private void messageDialog(String message) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        alertDialogBuilder.setMessage("Send chat request to " + name);
+        alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                // here fan request for chat to celebrity
-                requestForChat(celeb_msisdn, fan_msisdn, type);
-
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
 
             }
         });
@@ -212,15 +206,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
                             } else if (request_status.matches("Accepted")) {
 
-                                String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
-                                String room_name = celeb_msisdn + fan_msisdn;
-                                Log.d("room_name", room_name);
-//                                startActivity(new Intent(getApplicationContext(), ChatRoomActivity.class));
-                                Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class); //ChatViewActivity
-                                intent.putExtra("CELEB_PIC", profilePic);
-                                intent.putExtra("CELEB_NAME", fbName);
-                                intent.putExtra("room", room_name);
-                                startActivity(intent);
+                              checkScheduleTime(Api.URL_CHECK_SCHEDULE_TIME,fan_msisdn,msisdn,"1");
                                 //TastyToast.makeText(getApplicationContext(),"Start Chat Activity!",TastyToast.LENGTH_LONG,TastyToast.SUCCESS);
 
 //                                startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
@@ -228,7 +214,7 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 //                                intent.putExtra("imageUrl",profilePic);
 //                                intent.putExtra("name",fbName);
 //                                startActivity(intent);
-                                TastyToast.makeText(getApplicationContext(), "Start Chat Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                              //  TastyToast.makeText(getApplicationContext(), "Start Chat Activity!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                                 //startActivity(new Intent(getApplicationContext(), ChatViewActivity.class));
 
 
@@ -293,7 +279,8 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
 
                             } else if (request_status.matches("Accepted")) {
 
-                                setCalldurationDialog();
+                                checkScheduleTime(Api.URL_CHECK_SCHEDULE_TIME,fan_msisdn,msisdn,"2");
+
 
 
                             } else {
@@ -450,5 +437,109 @@ public class FanCelebProfileActivity extends BaseActivity implements View.OnClic
         });
 
         dialog.show();
+    }
+
+    public void checkScheduleTime(String url, String fanMsisdn, String celebMsisdn, String type){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("FromServer", response.toString());
+
+                        JSONObject obj = null;
+                        try {
+                            obj = new JSONObject(response);
+                            String scheduleTime = obj.getString("result");
+
+                            if (!scheduleTime.replaceAll(" ","_").equals("Cannot_find_any_schedule")) {
+
+                                if (type.equals("1")){
+                                    boolean isTime = isTime(scheduleTime);
+                                    if (isTime){
+                                        String fan_msisdn = Session.retreivePhone(getApplicationContext(), Session.USER_PHONE);
+                                        String room_name = celebMsisdn + fan_msisdn;
+                                        Log.d("room_name", room_name);
+                                        Intent intent = new Intent(getApplicationContext(), ChatRoomActivity.class); //ChatViewActivity
+                                        intent.putExtra("CELEB_PIC", profilePic);
+                                        intent.putExtra("CELEB_NAME", fbName);
+                                        intent.putExtra("room", room_name);
+                                        startActivity(intent);
+                                    }else {
+                                        messageDialog("Your Schedule time is "+scheduleTime +" and you can not chat before your schedule time.");
+                                    }
+                                }else if (type.equals("2")){
+                                    boolean isTime = isTime(scheduleTime);
+                                    if (isTime){
+                                        setCalldurationDialog();
+                                    }else {
+                                        messageDialog("Your Schedule time is "+scheduleTime +" and you can not call before your schedule time.");
+                                    }
+                                }
+
+                            }else {
+                                Log.d("FromServer", scheduleTime);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("FromServer", "" + error.getMessage());
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                /*
+                *  request flag = 1 means it is a chat request
+                *  request flag = 2 means it is a video request
+                * */
+
+                Map<String, String> params = new HashMap<>();
+                params.put("Fan", fanMsisdn);
+                params.put("Celebrity", celebMsisdn);
+                params.put("RequestType", type);
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+
+    private boolean isTime(String scheduleTime) {
+
+        Date date = new Date() ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:s a");
+        dateFormat.format(date);
+        System.out.println(dateFormat.format(date));
+
+        try {
+            if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(scheduleTime)))
+            {
+                System.out.println("Current time is greater than "+scheduleTime);
+                Log.d("FromServer","True");
+                return true;
+            }else{
+                System.out.println("Current time is less than "+scheduleTime);
+                Log.d("FromServer","False");
+                return false;
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

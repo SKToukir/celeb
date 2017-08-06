@@ -7,6 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,7 +24,7 @@ import com.vumobile.fan.login.Session;
  */
 public class MyBroadcastReceiver extends BroadcastReceiver {
 
-    static MediaPlayer mp;
+    public static MediaPlayer mp;
     static int i = 0;
 
     @Override
@@ -34,6 +37,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         mp = MediaPlayer.create(context, R.raw.old);
         mp.start();
 
+        SharedPref.clearListShared(context);
 
 
 //        ArrayList<String> timeList = SharedPref.getList(context);
@@ -76,6 +80,14 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     }
 
     public void setNotification(Context context) {
+
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(context, notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         boolean isCeleb = Session.isCeleb(context,Session.IS_CELEB);
 
