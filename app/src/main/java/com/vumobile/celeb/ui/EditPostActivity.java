@@ -494,7 +494,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 //         */
     private void showAlert(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(EditPostActivity.this);
-        builder.setMessage(message).setTitle("Response from Servers")
+        builder.setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

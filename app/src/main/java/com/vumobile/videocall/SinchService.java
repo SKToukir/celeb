@@ -175,6 +175,7 @@ public class SinchService extends Service {
         @Override
         public void onLogMessage(int level, String area, String message) {
             switch (level) {
+
                 case Log.DEBUG:
                     Log.d(area, message);
                     break;
