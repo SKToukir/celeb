@@ -52,7 +52,7 @@ public class ScheduleAdapter extends ArrayAdapter<CelebScheduleClass> {
             if (p.getRequestType().equals("3")){
                 tt4type.setText("Live Schedule");
                 tt2from.setVisibility(View.GONE);
-            }else if (p.getRequestType().equals("1")){
+            }else if (p.getRequestType().equals("2")){
                 tt4type.setText("Video Schedule");
             }else {
                 tt4type.setText("Chat Schedule");

@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.PushPair;
@@ -228,7 +227,7 @@ public class CallScreenActivity extends BaseActivity {
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
             String endMsg = "Call ended: " + call.getDetails().toString();
 
-            Toast.makeText(CallScreenActivity.this, "Call duaration: "+call.getDetails().getDuration() + "sec", Toast.LENGTH_LONG).show();
+            //Toast.makeText(CallScreenActivity.this, "Call duaration: "+call.getDetails().getDuration() + "sec", Toast.LENGTH_LONG).show();
 
             Log.d("Cause",endMsg);
 
