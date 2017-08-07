@@ -67,7 +67,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public Button btn_edit;
-        public ImageView editButton,deleteButton;
+        public ImageView editButton, deleteButton;
         public LinearLayout editDeleteLayout;
         public ImageView imageViewNotificationProfilePic, imageViewNotificationImage, imageViewNotificationLike, imageViewPlayIcon;
         public TextView textViewNotificationCelebName, textViewNotificationTime, textViewNotificationMessage, textViewNotificationLikeCount;
@@ -116,7 +116,6 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
     }
 
 
-
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
@@ -146,29 +145,36 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
             public void onClick(View view) {
 
                 String url = fanNotificationModelEnity.getPost_Urls();
-                String postUrl = null;
+                String postUrl = "";
                 try {
                     postUrl = getUrlFromArray(url);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                String commentText = fanNotificationModelEnity.getPost();
-                Log.d("share_content","Post url "+ postUrl + " Comment "+commentText);
+                String commentText = "" + fanNotificationModelEnity.getPost();
+                Log.d("share_content", "Post url " + postUrl + " Comment " + commentText);
 
-               if (!postUrl.isEmpty() && commentText.isEmpty()){
-                   // share only url
-                   Log.d("share_content","share only url");
 
-                   shareContentUrl(postUrl);
-               }else if (!postUrl.isEmpty() && !commentText.isEmpty()){
-                   // share url and post
-                   Log.d("share_content","share url and post");
-                   shareContentNpost(postUrl,commentText);
-               }else if (postUrl.isEmpty() && !commentText.isEmpty()){
-                   // share only post
-                   Log.d("share_content","share only post");
-                   sharePost(commentText);
-               }
+                //        shareContentUrl(postUrl);
+
+
+//               if (!postUrl.isEmpty() && commentText.isEmpty()){
+//                   // share only url
+//                   Log.d("share_content","share only url");
+//
+//
+//               }
+
+
+//               else if (!postUrl.isEmpty() && !commentText.isEmpty()){
+//                   // share url and post
+//                   Log.d("share_content","share url and post");
+                shareContentNpost(postUrl, commentText);
+//               }else if (postUrl.isEmpty() && !commentText.isEmpty()){
+//                   // share only post
+//                   Log.d("share_content","share only post");
+//                   sharePost(commentText);
+//               }
 
             }
         });
@@ -179,19 +185,19 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, EditPostActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id",fanNotificationModelEnity.getId());
-                intent.putExtra("isImage",fanNotificationModelEnity.getIsImage());
-                intent.putExtra("post",fanNotificationModelEnity.getPost());
-                intent.putExtra("post_urls",fanNotificationModelEnity.getUrl());
+                intent.putExtra("id", fanNotificationModelEnity.getId());
+                intent.putExtra("isImage", fanNotificationModelEnity.getIsImage());
+                intent.putExtra("post", fanNotificationModelEnity.getPost());
+                intent.putExtra("post_urls", fanNotificationModelEnity.getUrl());
                 mContext.startActivity(intent);
-                Toast.makeText(mContext,"Edit post",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Edit post", Toast.LENGTH_LONG).show();
             }
         });
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (holder.editDeleteLayout.getVisibility()==View.VISIBLE){
+                if (holder.editDeleteLayout.getVisibility() == View.VISIBLE) {
                     holder.editDeleteLayout.setVisibility(View.GONE);
                 }
 
@@ -199,7 +205,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
                 fanNotificationModelEnities.remove(position);
                 notifyDataSetChanged();
 
-                Toast.makeText(mContext,"Delete post",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Delete post", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -233,7 +239,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
 //                        holder.videoViewNotif.pause();
                         JSONArray array1 = new JSONArray(fanNotificationModelEnity.getPost_Urls());
                         holder.videoViewNotif.setTag(array1.get(0).toString());
-                        Log.d("hhhhhhhhhh",array1.get(0).toString());
+                        Log.d("hhhhhhhhhh", array1.get(0).toString());
                         Picasso.with(mContext).load(fanNotificationModelEnity.getThumbImage()).into(holder.videoViewNotif);
 
                     }
@@ -248,9 +254,9 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
 
         holder.linearLayoutMain.setOnClickListener(v -> {
 
-            if (holder.editDeleteLayout.getVisibility()==View.VISIBLE){
+            if (holder.editDeleteLayout.getVisibility() == View.VISIBLE) {
                 holder.editDeleteLayout.setVisibility(View.GONE);
-            }else {
+            } else {
                 if (fanNotificationModelEnity.getFlags_Notificaton().equals("1")) {
                     // Go to live
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Api.CELEB_IS_ONLINE + fanNotificationModelEnity.getMSISDN(), null, new Response.Listener<JSONObject>() {
@@ -265,7 +271,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
                                     intent.putExtra("CELEB_FB_NAME", holder.textViewNotificationCelebName.getText().toString());
                                     mContext.startActivity(intent);
                                 } else {
-                                    Toast.makeText(mContext, holder.textViewNotificationCelebName.getText().toString()+" is offline now.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, holder.textViewNotificationCelebName.getText().toString() + " is offline now.", Toast.LENGTH_SHORT).show();
                                 }
 
                             } catch (JSONException e) {
@@ -282,13 +288,13 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
 
                 } else {
 
-                    try{
+                    try {
                         Intent intent = new Intent(mContext, ImageOrVideoView.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("IMG_OR_VID", holder.textViewNotificationMessage.getTag().toString());
                         intent.putExtra("IMG_OR_VID_URL", holder.videoViewNotif.getTag().toString());
                         mContext.startActivity(intent);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -330,36 +336,35 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
 
     // share text
     private void sharePost(String commentText) {
-        Log.d("share_content","Comment "+commentText);
+        Log.d("share_content", "Comment " + commentText);
         shareDialog = new ShareDialog((Activity) mContext);
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle("CelebAp")
-                .setContentDescription(
-                        commentText).setQuote(commentText)
+                .setContentTitle("CelebApp")
+                .setContentDescription(commentText)
+                .setQuote(commentText)
                 .build();
         shareDialog.show(linkContent);
     }
 
     // share url n text
     private void shareContentNpost(String postUrl, String commentText) {
-        Log.d("share_content","Post url "+ postUrl + "Comment "+commentText);
+        Log.d("share_content", "Post url " + postUrl + "Comment " + commentText);
         shareDialog = new ShareDialog((Activity) mContext);
         ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                .setContentTitle("CelebAp")
+                .setContentTitle("CelebApp")
+                .setContentDescription(commentText)
                 .setQuote(commentText)
                 .setContentUrl(Uri.parse(postUrl)).build();
-        shareDialog.show(linkContent);
+        shareDialog.show(linkContent, ShareDialog.Mode.NATIVE);
     }
 
     // share url
     private void shareContentUrl(String postUrl) {
-        Log.d("share_content","Post url "+ postUrl);
+        Log.d("share_content", "Post url " + postUrl);
         URI uri = null;
         try {
             uri = new URI(postUrl);
-
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
 
         }
         Intent shareIntent = new Intent();
@@ -371,8 +376,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
 
     private void deleteItem(String id) {
 
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_DELETE_POST+id,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Api.URL_DELETE_POST + id,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -380,7 +384,7 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
                         try {
                             JSONObject object = new JSONObject(response);
                             String log = object.getString("result");
-                            Log.d("sucessresult",log);
+                            Log.d("sucessresult", log);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -391,7 +395,6 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("FromServer", "" + error.getMessage());
-
                     }
                 });
 

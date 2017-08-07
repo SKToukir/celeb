@@ -210,8 +210,8 @@ public class ParentActivity extends BaseActivity
                             JSONObject object = new JSONObject(response);
 
                             JSONArray array = object.getJSONArray("result");
-                            Log.d("myarray", "onResponse: "+array);
-                          //  if()
+                            Log.d("myarray", "onResponse: " + array);
+                            //  if()
 
                             for (int i = 0; i < array.length(); i++) {
 
@@ -231,7 +231,7 @@ public class ParentActivity extends BaseActivity
                             SharedPref.clearListShared(ParentActivity.this);
                             SharedPref.SaveList(ParentActivity.this, setTime);
                             if (SharedPref.getList(ParentActivity.this) != null) {
-                                startAlert(setTime, ParentActivity.this);
+//                                startAlert(setTime, ParentActivity.this);
                             }
 
                         } catch (JSONException e) {

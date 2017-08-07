@@ -159,7 +159,8 @@ public class CelebrityProfileActivity extends BaseActivity implements View.OnCli
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         txtStatus = (TextView) findViewById(R.id.txtStatus);
-        loginButton.setReadPermissions("public_profile email");
+        loginButton.setReadPermissions("public_profile email publish_actions");
+
 
     }
 
