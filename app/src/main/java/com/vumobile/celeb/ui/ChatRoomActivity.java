@@ -152,7 +152,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
         boolean celebOrNot = Session.isCeleb(getApplicationContext(), Session.IS_CELEB);
 
-
         // 1 = celeb and 2 = fan
 
         if (celebOrNot){

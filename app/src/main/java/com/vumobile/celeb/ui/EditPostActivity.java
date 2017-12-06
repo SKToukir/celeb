@@ -35,7 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 import com.vumobile.Config.Api;
 import com.vumobile.celeb.R;
-import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
+import com.vumobile.celeb.Utils.AndroidMultipartEntity;
 import com.vumobile.celeb.Utils.ScalingUtilities;
 
 import org.apache.http.HttpEntity;
@@ -430,8 +430,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             HttpPost httppost = new HttpPost(Api.URL_EDIT_POST);
 
             try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
+                AndroidMultipartEntity entity = new AndroidMultipartEntity(
+                        new AndroidMultipartEntity.ProgressListener() {
 
                             @Override
                             public void transferred(long num) {

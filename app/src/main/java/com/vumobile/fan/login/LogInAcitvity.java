@@ -286,7 +286,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
                 showConfirmDialog(uPhone, "0");
 
-
             } else if (uPhone.equals("") || uPhone.equals(" ")
                     || uPhone.equals(null) || uPhone.isEmpty()
                     || uPhone.length() > 13 || uPhone.length() < 11 || !uPhone.startsWith("01")) {
@@ -331,8 +330,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
-
     }
 
     private void otpRequest(String s) {
@@ -376,7 +373,6 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
 
 
     public void btnSubmitCode(View view) {
-
         // here user put verification code
         verificationCode = etVerificationCode.getText().toString();
 
@@ -385,13 +381,11 @@ public class LogInAcitvity extends AppCompatActivity implements View.OnClickList
         } else {
             userCodeWrapper.setError(null);
         }
-
         if (userCodeWrapper.getError() == null) {
 
             // TODO
             /* Hit server to check verification code.
             If verification code check success then go to home page */
-
             if (tempVerificationCode.equals(verificationCode)) {
                 // if verification code length is 6 then it will be fan
                 if (verificationCode.length() == 6) {

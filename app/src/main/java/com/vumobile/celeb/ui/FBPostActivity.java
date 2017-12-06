@@ -42,7 +42,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.squareup.picasso.Picasso;
 import com.vumobile.celeb.R;
-import com.vumobile.celeb.Utils.AndroidMultiPartEntity;
+import com.vumobile.celeb.Utils.AndroidMultipartEntity;
 import com.vumobile.celeb.Utils.ScalingUtilities;
 import com.vumobile.celeb.model.ConstantApp;
 import com.vumobile.celeb.model.ServerPostRequest;
@@ -81,7 +81,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
     private ImageView imgCelebImage;
     private TextView txtCelebName;
     private LinearLayout btnGetPhotoVideo;
-    private Button  btn_close, btn_edit;
+    private Button btn_close, btn_edit;
     public static final int IMAGE_PICKER_SELECT = 1;
     private String filePath = "null";
     private boolean isImage = true;
@@ -154,17 +154,14 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 previewMedia(isImage, filePath);
             }
         }
-
     }
 
     @Override
     protected void initUIandEvent() {
-
     }
 
     @Override
     protected void deInitUIandEvent() {
-
     }
 
     private void initUI() {
@@ -214,17 +211,17 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btnPost:
 
-                Log.d("IsImageOrNot",String.valueOf(isImage));
+                Log.d("IsImageOrNot", String.valueOf(isImage));
 
                 hideKeyboard();
 
                 celebComment = etComment.getText().toString();
-                Log.d("IsImageOrNot",celebComment);
+                Log.d("IsImageOrNot", celebComment);
 
-                if (filePath.equals("null") && celebComment.equals("")){
+                if (filePath.equals("null") && celebComment.equals("")) {
                     TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
 
-                }else {
+                } else {
                     if (filePath.equals("null")) {
                         postComment(celebComment);
                     } else {
@@ -232,9 +229,6 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                         new UploadFileToServer().execute(filePath, celebComment);
                     }
                 }
-
-
-
 
 //                if (celebComment == null || celebComment.equals(null) || celebComment.equals("")) {
 //                    TastyToast.makeText(getApplicationContext(), "Nothing to post", TastyToast.LENGTH_LONG, TastyToast.CONFUSING);
@@ -588,8 +582,8 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
             HttpPost httppost = new HttpPost("http://wap.shabox.mobi/testwebapi/Notification/up?key=m5lxe8qg96K7U9k3eYItJ7k6kCSDre");
 
             try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
+                AndroidMultipartEntity entity = new AndroidMultipartEntity(
+                        new AndroidMultipartEntity.ProgressListener() {
 
                             @Override
                             public void transferred(long num) {
@@ -599,7 +593,7 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
 
                 celebID = Session.fetchCelebId(getApplicationContext());
                 gender = Session.fetchGender(getApplicationContext());
-                image_url = Session.retreivePFUrl(getApplicationContext(),Session.FB_PROFILE_PIC_URL);
+                image_url = Session.retreivePFUrl(getApplicationContext(), Session.FB_PROFILE_PIC_URL);
 
                 File sourceFile = new File(fPath);
 
@@ -857,14 +851,14 @@ public class FBPostActivity extends BaseActivity implements View.OnClickListener
                 params.put("Flags_Notificaton", "2");
                 params.put("post", cmnt);
 
-                Log.d("FBPost",name);
-                Log.d("FBPost",msisdn);
-                Log.d("FBPost",cID);
-                Log.d("FBPost",gender);
-                Log.d("FBPost",IsImage(isImage));
-                Log.d("FBPost",image_url);
-                Log.d("FBPost","2");
-                Log.d("FBPost",cmnt);
+                Log.d("FBPost", name);
+                Log.d("FBPost", msisdn);
+                Log.d("FBPost", cID);
+                Log.d("FBPost", gender);
+                Log.d("FBPost", IsImage(isImage));
+                Log.d("FBPost", image_url);
+                Log.d("FBPost", "2");
+                Log.d("FBPost", cmnt);
 
 
                 return params;

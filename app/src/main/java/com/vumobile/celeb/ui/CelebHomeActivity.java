@@ -311,7 +311,6 @@ public class CelebHomeActivity extends BaseActivity
                 try {
                     int msg_count = Integer.parseInt(response.getString("result"));
 
-
                     if (msg_count != 0) {
                         imgNewRequestCount.setVisibility(View.VISIBLE);
                         imgNewRequestCount.setText(String.valueOf(msg_count));
@@ -322,7 +321,6 @@ public class CelebHomeActivity extends BaseActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -389,7 +387,6 @@ public class CelebHomeActivity extends BaseActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -403,19 +400,16 @@ public class CelebHomeActivity extends BaseActivity
         //Adding request to the queue
         requestQueue.add(request);
     }
-
-
     @Override
     protected void initUIandEvent() {
-
     }
 
     @Override
     protected void deInitUIandEvent() {
-
     }
 
     private void initUI() {
+
         imgNewRequestCount = (TextView) findViewById(R.id.imgNewRequestCount);
         imgNewMsgCount = (TextView) findViewById(R.id.imgNewMsgCount);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -588,11 +582,9 @@ public class CelebHomeActivity extends BaseActivity
                 alertDialog.setNegativeButton("NO", (dialog, which) -> {
 
                 });
-
                 alertDialog.create().show();
                 drawer.closeDrawers();
                 break;
-
         }
     }
 
@@ -714,7 +706,6 @@ public class CelebHomeActivity extends BaseActivity
                 startActivity(intent);
 
             }
-
         }
     }
 

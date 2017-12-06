@@ -13,24 +13,24 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 @SuppressWarnings("deprecation")
-public class AndroidMultiPartEntity extends MultipartEntity
+public class AndroidMultipartEntity extends MultipartEntity
 
 {
 
     private final ProgressListener listener;
 
-    public AndroidMultiPartEntity(final ProgressListener listener) {
+    public AndroidMultipartEntity(final ProgressListener listener) {
         super();
         this.listener = listener;
     }
 
-    public AndroidMultiPartEntity(final HttpMultipartMode mode,
+    public AndroidMultipartEntity(final HttpMultipartMode mode,
                                   final ProgressListener listener) {
         super(mode);
         this.listener = listener;
     }
 
-    public AndroidMultiPartEntity(HttpMultipartMode mode, final String boundary,
+    public AndroidMultipartEntity(HttpMultipartMode mode, final String boundary,
                                   final Charset charset, final ProgressListener listener) {
         super(mode, boundary, charset);
         this.listener = listener;

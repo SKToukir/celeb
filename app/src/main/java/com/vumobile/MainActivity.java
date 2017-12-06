@@ -80,15 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     userRegisteredphoneWrapper.setError(null);
                 }
-
                 if (userRegisteredphoneWrapper.getError() == null && userRegisteredphoneWrapper.getError() == null) {
-
                     if (registeredPhone.startsWith("01")) {
                         registeredPhone = "88" + registeredPhone;
                         Log.d("msisdn", registeredPhone);
 
                         showConfirmDialog(registeredPhone);
-
 
                     } else if (registeredPhone.equals("") || registeredPhone.equals(" ")
                             || registeredPhone.equals(null) || registeredPhone.isEmpty()
@@ -98,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Toast.LENGTH_LONG).show();
                     }
                 }
-
                 break;
             case R.id.btnNewUser:
                 Intent intent = new Intent(MainActivity.this, LogInAcitvity.class);
@@ -109,17 +105,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.btnResendPinSmsR:
-
-
-
                 break;
             case R.id.btnSubmitCodeR:
-
-
-
                 break;
         }
-
     }
 
     private void showConfirmDialog(String registeredPhone) {
@@ -131,10 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                //TODO
-                // here check user registered or not
                 checkRegOrNot(registeredPhone);
-
 
             }
         });
@@ -142,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
             }
         });
 
@@ -192,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
