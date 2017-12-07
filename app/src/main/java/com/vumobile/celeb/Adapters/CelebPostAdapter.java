@@ -306,7 +306,11 @@ public class CelebPostAdapter extends RecyclerView.Adapter<CelebPostAdapter.MyVi
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.editDeleteLayout.setVisibility(View.VISIBLE);
+                if (holder.editDeleteLayout.getVisibility() == View.GONE) {
+                    holder.editDeleteLayout.setVisibility(View.VISIBLE);
+                }else {
+                    holder.editDeleteLayout.setVisibility(View.GONE);
+                }
             }
         });
 

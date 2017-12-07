@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@color/new_base_color"
     android:fitsSystemWindows="true"
-    android:minHeight="?attr/actionBarSize">
+    android:minHeight="?attr/actionBarSize"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"

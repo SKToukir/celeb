@@ -82,7 +82,6 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="Celeb Name"
-                    android:textColor="@color/myColorTwoHeader"
                     android:textSize="25sp" />
 
             </LinearLayout>
@@ -158,9 +157,8 @@
 
                         <ImageView
                             android:id="@+id/imgPreview"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:scaleType="fitXY" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
                         <VideoView
                             android:id="@+id/videoPreview"
