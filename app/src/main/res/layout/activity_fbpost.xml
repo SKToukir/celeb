@@ -12,12 +12,12 @@
         layout="@layout/tool_bar_post" />
 
     <ScrollView
-        android:layout_below="@+id/toolBar_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolBar_post">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,12 +26,12 @@
 
             <Button
                 android:id="@+id/btnPost"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/button_border_radius_background"
                 android:text="POST"
                 android:textColor="#fff" />
@@ -82,6 +82,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="Celeb Name"
+                    android:textColor="@color/text_color_new"
                     android:textSize="25sp" />
 
             </LinearLayout>
@@ -92,10 +93,9 @@
                 android:orientation="vertical">
 
 
-
-
                 <EditText
                     android:id="@+id/etWhatsYourMind"
+                    style="@style/AppTheme"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_below="@+id/btnPost"
@@ -109,8 +109,7 @@
                     android:inputType="textMultiLine"
                     android:isScrollContainer="true"
                     android:maxLines="6"
-                    android:minLines="6"
-                    style="@style/AppTheme"/>
+                    android:minLines="6" />
 
 
                 <!-- Videoview to preview recorded video -->
@@ -190,7 +189,6 @@
 
 
                     <com.vumobile.utils.MyTextView
-                        android:visibility="gone"
                         android:id="@+id/myText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -200,26 +198,27 @@
                         android:layout_marginTop="5dp"
                         android:text="Add More"
                         android:textColor="#000"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:visibility="gone" />
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/imageIcon"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="5dp"
                         android:layout_toLeftOf="@+id/myText"
-                        android:src="@drawable/iamgeicon" />
+                        android:src="@drawable/iamgeicon"
+                        android:visibility="gone" />
 
                     <ImageView
-                        android:visibility="gone"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="5dp"
                         android:layout_toLeftOf="@+id/imageIcon"
-                        android:src="@drawable/videoicon" />
+                        android:src="@drawable/videoicon"
+                        android:visibility="gone" />
 
 
                 </RelativeLayout>
@@ -231,82 +230,82 @@
                     android:orientation="vertical">
 
                     <!--<Button-->
-                        <!--android:visibility="gone"-->
-                        <!--android:id="@+id/btnGetPhotoVideo"-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="35dp"-->
-                        <!--android:layout_alignLeft="@+id/btnGoLive"-->
-                        <!--android:layout_alignStart="@+id/btnGoLive"-->
-                        <!--android:layout_below="@+id/btnGoLive"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginTop="19dp"-->
-                        <!--android:background="@drawable/photovbutton" />-->
+                    <!--android:visibility="gone"-->
+                    <!--android:id="@+id/btnGetPhotoVideo"-->
+                    <!--android:layout_width="150dp"-->
+                    <!--android:layout_height="35dp"-->
+                    <!--android:layout_alignLeft="@+id/btnGoLive"-->
+                    <!--android:layout_alignStart="@+id/btnGoLive"-->
+                    <!--android:layout_below="@+id/btnGoLive"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_marginTop="19dp"-->
+                    <!--android:background="@drawable/photovbutton" />-->
 
                     <LinearLayout
-                        android:clickable="true"
-                        android:gravity="left|center"
                         android:id="@+id/btnGetPhotoVideo"
-                        android:background="@drawable/round_corner"
-                        android:orientation="horizontal"
                         android:layout_width="170dp"
                         android:layout_height="35dp"
                         android:layout_alignLeft="@+id/btnGoLive"
                         android:layout_alignStart="@+id/btnGoLive"
                         android:layout_below="@+id/btnGoLive"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="19dp">
+                        android:layout_marginTop="19dp"
+                        android:background="@drawable/round_corner"
+                        android:clickable="true"
+                        android:gravity="left|center"
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:src="@drawable/llkk"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/llkk" />
 
                         <TextView
-                            android:textSize="17sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Photo/Videos"
                             android:textColor="#fff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:textSize="17sp" />
 
                     </LinearLayout>
 
                     <!--<Button-->
-                        <!--android:visibility="gone"-->
-                        <!--android:id="@+id/btnGoLive"-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="35dp"-->
-                        <!--android:layout_alignLeft="@+id/etWhatsYourMind"-->
-                        <!--android:layout_alignStart="@+id/etWhatsYourMind"-->
-                        <!--android:layout_below="@+id/etWhatsYourMind"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/glivebutton" />-->
+                    <!--android:visibility="gone"-->
+                    <!--android:id="@+id/btnGoLive"-->
+                    <!--android:layout_width="150dp"-->
+                    <!--android:layout_height="35dp"-->
+                    <!--android:layout_alignLeft="@+id/etWhatsYourMind"-->
+                    <!--android:layout_alignStart="@+id/etWhatsYourMind"-->
+                    <!--android:layout_below="@+id/etWhatsYourMind"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:background="@drawable/glivebutton" />-->
 
                     <LinearLayout
-                        android:clickable="true"
-                        android:gravity="left|center"
                         android:id="@+id/btnGoLive"
-                        android:background="@drawable/round_corner"
-                        android:orientation="horizontal"
                         android:layout_width="170dp"
                         android:layout_height="35dp"
                         android:layout_alignLeft="@+id/btnGoLive"
                         android:layout_alignStart="@+id/btnGoLive"
                         android:layout_below="@+id/btnGoLive"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="19dp">
+                        android:layout_marginTop="19dp"
+                        android:background="@drawable/round_corner"
+                        android:clickable="true"
+                        android:gravity="left|center"
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:src="@drawable/vvvvvv"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/vvvvvv" />
 
                         <TextView
-                            android:textSize="17sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Go Live"
                             android:textColor="#fff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:textSize="17sp" />
 
                     </LinearLayout>
 

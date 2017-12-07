@@ -4,7 +4,7 @@
     android:id="@+id/activity_fan_celeb_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/pure_white"
     android:orientation="vertical"
     tools:context="com.vumobile.fan.login.FanCelebProfileActivity">
 
@@ -51,7 +51,6 @@
             android:layout_gravity="center"
             android:padding="8dp"
             android:text="John Dow"
-            android:textColor="#232323"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -72,7 +71,6 @@
                 android:layout_gravity="center"
                 android:padding="2dp"
                 android:text="John Dow"
-                android:textColor="#414141"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -104,23 +102,22 @@
                     android:padding="10dp"
                     android:src="@drawable/camera" />
 
-               <FrameLayout
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight=".5">
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
 
-                   <ImageView
-                       android:id="@+id/imageViewChat"
-                      android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:background="?attr/selectableItemBackgroundBorderless"
-                       android:clickable="true"
-                       android:padding="10dp"
-                       android:src="@drawable/chat" />
+                    <ImageView
+                        android:id="@+id/imageViewChat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:padding="10dp"
+                        android:src="@drawable/chat" />
 
 
-
-               </FrameLayout>
+                </FrameLayout>
 
             </LinearLayout>
 

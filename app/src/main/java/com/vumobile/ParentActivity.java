@@ -58,6 +58,7 @@ import com.vumobile.fan.login.LogInAcitvity;
 import com.vumobile.fan.login.Session;
 import com.vumobile.fan.login.model.TempInfoModel;
 import com.vumobile.fan.login.serverrequest.AllVolleyInterfaces;
+import com.vumobile.fan.login.serverrequest.MySingleton;
 import com.vumobile.fan.login.serverrequest.MyVolleyRequest;
 import com.vumobile.fan.login.ui.FanNotificationActivity;
 import com.vumobile.fan.login.ui.fragment.Credits;
@@ -124,7 +125,7 @@ public class ParentActivity extends BaseActivity
 
         initUI();
 
-        if (MyBroadcastReceiver.mp!=null){
+        if (MyBroadcastReceiver.mp != null) {
             MyBroadcastReceiver.mp.stop();
             MyBroadcastReceiver.mp.seekTo(0);
         }
@@ -292,9 +293,8 @@ public class ParentActivity extends BaseActivity
         AlarmManager mgrAlarm = (AlarmManager) getSystemService(ALARM_SERVICE);
         ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 
-        for(int i = 0; i < setTime.size(); ++i)
-        {
-            Log.d("FireAlarmNot",setTime.get(i));
+        for (int i = 0; i < setTime.size(); ++i) {
+            Log.d("FireAlarmNot", setTime.get(i));
             Intent intent = new Intent(ParentActivity.this, MyBroadcastReceiver.class);
             // Loop counter `i` is used as a `requestCode`
             PendingIntent pendingIntent = PendingIntent.getBroadcast(ParentActivity.this, i, intent, 0);
@@ -416,7 +416,7 @@ public class ParentActivity extends BaseActivity
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, fullUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.d("FromServer fan p", jsonObject.toString());
+                Log.d("FromServer-- fan p", jsonObject.toString());
                 try {
                     JSONArray array = jsonObject.getJSONArray("result");
                     JSONObject obj = array.getJSONObject(0);
@@ -424,7 +424,7 @@ public class ParentActivity extends BaseActivity
                     String uName = obj.getString("Name");
                     Glide.with(ParentActivity.this).load(obj.getString("Image_url")).into(navUserPic);
                     String imgUrl = obj.getString("Image_url");
-                    new Session().saveData(getApplicationContext(),uName,msisdn,false,true,imgUrl);
+                    new Session().saveData(getApplicationContext(), uName, msisdn, false, true, imgUrl);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -438,7 +438,8 @@ public class ParentActivity extends BaseActivity
         });
 
         //Adding request to the queue
-        Volley.newRequestQueue(ParentActivity.this).add(request);
+
+        MySingleton.getInstance(ParentActivity.this).addToRequestQueue(request);
 
     }
 
@@ -491,10 +492,8 @@ public class ParentActivity extends BaseActivity
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        RequestQueue requestQueue = Volley.newRequestQueue(ParentActivity.this);
 
-        //Adding request to the queue
-        requestQueue.add(request);
+        MySingleton.getInstance(ParentActivity.this).addToRequestQueue(request);
 
     }
 
@@ -696,6 +695,8 @@ public class ParentActivity extends BaseActivity
         imageViewLogout.setOnClickListener(this);
 
         listCeleb = (ListView) findViewById(R.id.list_of_celeb);
+        listCeleb.setDivider(null);
+        listCeleb.setDividerHeight(0);
 
         imageViewNotification = (ImageView) toolbar.findViewById(R.id.imageViewNotification);
         imageViewMessage = (ImageView) toolbar.findViewById(R.id.imageViewMessage);
@@ -1047,6 +1048,9 @@ public class ParentActivity extends BaseActivity
         // from intent of notif click
         checkFromLiveNotificationGoLiveList();
 
+        // profile pic
+        loadFanProfileData(Api.URL_GET_CELEB_PROFILE);
+
         // show snack bar while no internet
         MyInternetCheckReceiver.isNetworkAvailableShowSnackbar(this, linearLayoutMain);
         // parseAllScheduleTime(Api.URL_GET_SCHEDULES);
@@ -1083,8 +1087,8 @@ public class ParentActivity extends BaseActivity
             }
         });
 
-        Volley.newRequestQueue(this).add(request);
 
+        MySingleton.getInstance(this).addToRequestQueue(request);
     }
 
 }

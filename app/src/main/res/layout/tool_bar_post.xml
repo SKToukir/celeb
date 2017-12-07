@@ -7,7 +7,7 @@
     android:id="@+id/tool_bar"
     android:fitsSystemWindows="true"
     android:minHeight="?attr/actionBarSize"
-    android:background="@color/new_base_color">
+    android:background="@color/pure_white">
 
     <RelativeLayout
         android:layout_width="match_parent"

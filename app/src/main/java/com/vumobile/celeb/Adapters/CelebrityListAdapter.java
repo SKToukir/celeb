@@ -37,7 +37,6 @@ public class CelebrityListAdapter extends ArrayAdapter<CelebrityClass> {
 
     Context mContext;
 
-
     public CelebrityListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }

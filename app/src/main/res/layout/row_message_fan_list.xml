@@ -34,9 +34,7 @@
                 android:background="@drawable/b"
                 android:scaleType="fitXY" />
 
-
         </FrameLayout>
-
 
         <com.vumobile.utils.MyTextView
             android:id="@+id/txtFanMessageName"

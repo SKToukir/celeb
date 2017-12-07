@@ -39,7 +39,7 @@ public class MyVolleyRequest {
                     }
                 });
 
-        Volley.newRequestQueue(context).add(stringRequest);
+        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
     public static void getAllGenericDataJsonObject(Context context, int method, String url, AllVolleyInterfaces.MyJsonObjectRequest myJsonObjectRequest) {
@@ -54,7 +54,7 @@ public class MyVolleyRequest {
                 myJsonObjectRequest.getResponseErr(volleyError);
             }
         });
-        Volley.newRequestQueue(context).add(request);
+        MySingleton.getInstance(context).addToRequestQueue(request);
     }
 
     public static void sendAllGenericDataJsonObject(Context context, int method, String url, HashMap<String, String> params,
@@ -81,7 +81,8 @@ public class MyVolleyRequest {
             }
         };
 
-        Volley.newRequestQueue(context).add(stringRequest);
+
+        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
     public static void setRegId(Context context, int method, String url, HashMap<String, String> params, AllVolleyInterfaces.ResponseString responseString) {
@@ -107,7 +108,8 @@ public class MyVolleyRequest {
             }
         };
 
-        Volley.newRequestQueue(context).add(stringRequest);
+
+        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
 
 
