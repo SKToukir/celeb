@@ -18,4 +18,7 @@
     <color name="sinch_purple">#ff63029d</color>
     <color name="off_white">#fffafafa</color>
     <color name="greyish">#fff2f1f2</color>
+    <color name="text_color_new">#767676</color>
+    <color name="new_base_color">#4285F4</color>
+    <color name="new_back_color">#FFDCD9D9</color>
 </resources>

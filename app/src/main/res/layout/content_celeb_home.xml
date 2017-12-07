@@ -75,7 +75,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily=""
                         android:text="Someone Celeb"
-                        android:textColor="#0072bc"
+                        android:textColor="@color/text_color_new"
                         android:textSize="20sp" />
 
                     <com.vumobile.utils.MyTextView
@@ -107,7 +107,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_toRightOf="@+id/follow"
                         android:text="1212"
-                        android:textColor="#0072bc" />
+                        android:textColor="@color/text_color_new" />
                 </RelativeLayout>
 
             </LinearLayout>
